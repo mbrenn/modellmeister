@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{93A15C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B8C0C657-6FDF-4C25-AEBB-B276E743AB88}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{73E6F42A-6655-49DF-929C-62798A962B66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Tests", "ModellMeister.Tests\ModellMeister.Tests.csproj", "{CBE712E5-7C47-483B-9D41-69DDD885657D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,10 @@ Global
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE712E5-7C47-483B-9D41-69DDD885657D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE712E5-7C47-483B-9D41-69DDD885657D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE712E5-7C47-483B-9D41-69DDD885657D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE712E5-7C47-483B-9D41-69DDD885657D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,5 +47,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1E6407E2-E1DC-40ED-A202-5A9BA519D353} = {D2C2071D-10E1-4B7E-BBB0-6570FECF5500}
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D} = {B8C0C657-6FDF-4C25-AEBB-B276E743AB88}
+		{CBE712E5-7C47-483B-9D41-69DDD885657D} = {73E6F42A-6655-49DF-929C-62798A962B66}
 	EndGlobalSection
 EndGlobal
