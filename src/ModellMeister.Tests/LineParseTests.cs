@@ -42,7 +42,7 @@ namespace ModellMeister.Tests
         public void TestRobustness()
         {
             var lineParser = new LineParser();
-            var line3 = lineParser.ParseLine("B\tothername :   \t type");
+            var line3 = lineParser.ParseLine("B\tothername   :   \t type");
             Assert.That(line3.LineType, Is.EqualTo(ModelType.Block));
             Assert.That(line3.Name, Is.EqualTo("othername"));
             Assert.That(line3.Parameters.Count, Is.EqualTo(1));

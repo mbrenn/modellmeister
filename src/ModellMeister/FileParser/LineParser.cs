@@ -15,11 +15,6 @@ namespace ModellMeister.FileParser
     public class LineParser
     {
         /// <summary>
-        /// Stores the stream reader being used
-        /// </summary>
-        private StreamReader reader;
-
-        /// <summary>
         /// Stores the model types
         /// </summary>
         private static Dictionary<string, ModelType> modelTypes = new Dictionary<string, ModelType>();
@@ -52,17 +47,17 @@ namespace ModellMeister.FileParser
         /// Initializes a new instance of the LineParser class
         /// </summary>
         /// <param name="reader"></param>
-        public void ParseFile(StreamReader reader)
+        public IEnumerable<ParsedLine> ParseFile(StreamReader reader)
         {
             if (reader == null)
             {
                 throw new ArgumentNullException("reader");
             }
 
-            this.reader = reader;
+            return this.GetLines(reader);
         }
 
-        public IEnumerable<ParsedLine> GetLines()
+        private IEnumerable<ParsedLine> GetLines(StreamReader reader)
         {
             string line;
             while ((line = reader.ReadLine()) != null)

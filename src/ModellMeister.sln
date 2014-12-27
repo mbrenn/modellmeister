@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister", "ModellMeister.csproj", "{1E6407E2-E1DC-40ED-A202-5A9BA519D353}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister", "ModellMeister\ModellMeister.csproj", "{1E6407E2-E1DC-40ED-A202-5A9BA519D353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mbgi2cs", "..\mbgi2cs\mbgi2cs.csproj", "{C5EEB41D-DD47-4EE9-87DF-78F62203604D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mbgi2cs", "mbgi2cs\mbgi2cs.csproj", "{C5EEB41D-DD47-4EE9-87DF-78F62203604D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{D2C2071D-10E1-4B7E-BBB0-6570FECF5500}"
 EndProject
@@ -17,10 +17,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{93A15C
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B8C0C657-6FDF-4C25-AEBB-B276E743AB88}"
+	ProjectSection(SolutionItems) = preProject
+		post_build.ps1 = post_build.ps1
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{73E6F42A-6655-49DF-929C-62798A962B66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Tests", "ModellMeister.Tests\ModellMeister.Tests.csproj", "{CBE712E5-7C47-483B-9D41-69DDD885657D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{C39F6691-9536-4810-B5B0-6D4E5E2CE4E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\examples\build_examples.ps1 = ..\examples\build_examples.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MBGI-Files", "MBGI-Files", "{D7EEC84E-8D99-4D36-B580-6E74F3F551AA}"
+	ProjectSection(SolutionItems) = preProject
+		..\examples\mbgi\onlytype.mbgi = ..\examples\mbgi\onlytype.mbgi
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +61,6 @@ Global
 		{1E6407E2-E1DC-40ED-A202-5A9BA519D353} = {D2C2071D-10E1-4B7E-BBB0-6570FECF5500}
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D} = {B8C0C657-6FDF-4C25-AEBB-B276E743AB88}
 		{CBE712E5-7C47-483B-9D41-69DDD885657D} = {73E6F42A-6655-49DF-929C-62798A962B66}
+		{D7EEC84E-8D99-4D36-B580-6E74F3F551AA} = {C39F6691-9536-4810-B5B0-6D4E5E2CE4E8}
 	EndGlobalSection
 EndGlobal
