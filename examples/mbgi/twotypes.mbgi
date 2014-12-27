@@ -1,0 +1,10 @@
+
+T  Summer
+TI Summand1		: Double
+TI Summand2		: Double
+TO Sum			: Double
+
+T  Multiplier
+TI Factor1		: Double
+TI Factor2		: Double
+TO Product		: Double
