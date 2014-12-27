@@ -1,4 +1,5 @@
 ﻿using ModellMeister.FileParser;
+using ModellMeister.SourceGenerator.CSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,16 +21,24 @@ namespace ModellMeister
                 throw new InvalidOperationException("Source file was not found: " + pathSourceFile);
             }
 
-            var reader = new StreamReader(pathSourceFile);
-            var writer = new StreamWriter(pathTargetFile);
-
-            this.ConvertFile(reader, writer);
+            using (var reader = new StreamReader(pathSourceFile))
+            {
+                using (var writer = new StreamWriter(pathTargetFile))
+                {
+                    this.ConvertFile(reader, writer);
+                }
+            }
         }
 
-        public void ConvertFile(StreamReader reader, StreamWriter writer)
+        public void ConvertFile(TextReader reader, TextWriter writer)
         {
+            Console.WriteLine("Parsing MBGI File");
             var parser = new MbgiFileParser();
-            parser.ParseFile(reader);
+            var model = parser.ParseFile(reader);
+
+            Console.WriteLine("Writing C#-Code");
+            var generator = new CSharpGenerator();
+            generator.CreateSource(model, writer);
         }
     }
 }

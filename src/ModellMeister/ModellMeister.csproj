@@ -52,6 +52,7 @@
     <Compile Include="Model\ModelType.cs" />
     <Compile Include="Model\CompositeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SourceGenerator\CSharp\CSharpGenerator.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -22,4 +22,16 @@ namespace ModelBased {
         private double Sum {
         }
     }
+    
+    public class Multiplier {
+        
+        private double Factor1 {
+        }
+        
+        private double Factor2 {
+        }
+        
+        private double Product {
+        }
+    }
 }
