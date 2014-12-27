@@ -8,30 +8,103 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelBased {
+namespace ModelBased
+{
     
     
-    public class Summer {
+    public partial class _
+    {
+    }
+    
+    public partial class Summer
+    {
         
-        private double Summand1 {
+        private double _Summand1;
+        
+        private double _Summand2;
+        
+        private double _Sum;
+        
+        public virtual double Summand1
+        {
+            get
+            {
+                return this._Summand1;
+            }
+            set
+            {
+                this._Summand1 = value;
+            }
         }
         
-        private double Summand2 {
+        public virtual double Summand2
+        {
+            get
+            {
+                return this._Summand2;
+            }
+            set
+            {
+                this._Summand2 = value;
+            }
         }
         
-        private double Sum {
+        public virtual double Sum
+        {
+            get
+            {
+                return this._Sum;
+            }
+            set
+            {
+                this._Sum = value;
+            }
         }
     }
     
-    public class Multiplier {
+    public partial class Multiplier
+    {
         
-        private double Factor1 {
+        private double _Factor1;
+        
+        private double _Factor2;
+        
+        private double _Product;
+        
+        public virtual double Factor1
+        {
+            get
+            {
+                return this._Factor1;
+            }
+            set
+            {
+                this._Factor1 = value;
+            }
         }
         
-        private double Factor2 {
+        public virtual double Factor2
+        {
+            get
+            {
+                return this._Factor2;
+            }
+            set
+            {
+                this._Factor2 = value;
+            }
         }
         
-        private double Product {
+        public virtual double Product
+        {
+            get
+            {
+                return this._Product;
+            }
+            set
+            {
+                this._Product = value;
+            }
         }
     }
 }

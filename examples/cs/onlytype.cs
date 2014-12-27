@@ -8,18 +8,57 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelBased {
+namespace ModelBased
+{
     
     
-    public class Summer {
+    public partial class _
+    {
+    }
+    
+    public partial class Summer
+    {
         
-        private double Summand1 {
+        private double _Summand1;
+        
+        private double _Summand2;
+        
+        private double _Sum;
+        
+        public virtual double Summand1
+        {
+            get
+            {
+                return this._Summand1;
+            }
+            set
+            {
+                this._Summand1 = value;
+            }
         }
         
-        private double Summand2 {
+        public virtual double Summand2
+        {
+            get
+            {
+                return this._Summand2;
+            }
+            set
+            {
+                this._Summand2 = value;
+            }
         }
         
-        private double Sum {
+        public virtual double Sum
+        {
+            get
+            {
+                return this._Sum;
+            }
+            set
+            {
+                this._Sum = value;
+            }
         }
     }
 }

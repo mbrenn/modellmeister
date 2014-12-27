@@ -34,6 +34,7 @@ namespace ModellMeister.FileParser
         public CompositeType ParseFile(TextReader reader)
         {
             var result = new CompositeType();
+            result.Name = "_";
 
             this.currentScope = CurrentScope.Global;
 
