@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace ModellMeister.Model
 {
-    public class ModelType : EntityWithPorts
+    /// <summary>
+    /// Stores the data types
+    /// </summary>
+    public enum DataType
     {
+        Double,
+        Integer,
+        String
     }
 }

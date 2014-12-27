@@ -43,8 +43,14 @@
     <Compile Include="FileParser\MbgiFileParser.cs" />
     <Compile Include="FileParser\ParsedLine.cs" />
     <Compile Include="Mbgi2CsConverter.cs" />
-    <Compile Include="Model\ModelType.cs" />
+    <Compile Include="Model\DataType.cs" />
+    <Compile Include="Model\Entity.cs" />
+    <Compile Include="Model\EntityType.cs" />
+    <Compile Include="Model\EntityWithPorts.cs" />
+    <Compile Include="Model\Port.cs" />
     <Compile Include="Model\PropertyType.cs" />
+    <Compile Include="Model\ModelType.cs" />
+    <Compile Include="Model\CompositeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

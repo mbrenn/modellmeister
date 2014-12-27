@@ -12,7 +12,7 @@ namespace ModellMeister.FileParser
     /// </summary>
     public class ParsedLine
     {
-        public ModelType LineType
+        public EntityType LineType
         {
             get;
             set;
@@ -30,12 +30,37 @@ namespace ModellMeister.FileParser
             private set;
         }
 
+        /// <summary>
+        /// Gets the property or returns null, if the property does not exist
+        /// </summary>
+        /// <param name="type">Type to be queried</param>
+        /// <returns>the content or null if not found</returns>
+        public string GetProperty(PropertyType type)
+        {
+            string result;
+            if (this.Parameters.TryGetValue(type, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ParsedLine class.
+        /// </summary>
         public ParsedLine()
         {
             this.Parameters = new Dictionary<PropertyType, string>();
         }
 
-        public ParsedLine(ModelType type, string name)
+        /// <summary>
+        /// Initializes a new instance of the ParsedLine class.
+        /// </summary>
+        /// <param name="type">Type to be queried</param>
+        /// <param name="name">Name of the object</param>
+        /// 
+        public ParsedLine(EntityType type, string name)
             : this()
         {
             this.LineType = type;

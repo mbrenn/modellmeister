@@ -1,5 +1,5 @@
 
-T summer
-TI summand1		: Double
-TI summand2		: Double
-TO sum			: Double
+T  Summer
+TI Summand1		: Double
+TI Summand2		: Double
+TO Sum			: Double
