@@ -17,6 +17,12 @@ namespace ModellMeister.SourceGenerator.CSharp
         private CodeNamespace nameSpace;
 
         /// <summary>
+        /// Stores the type mapping
+        /// </summary>
+        private Dictionary<EntityWithPorts, CodeTypeDeclaration> typeMapping =
+            new Dictionary<EntityWithPorts, CodeTypeDeclaration>();
+
+        /// <summary>
         /// Creates the source code for a specific scope by
         /// using the text writer
         /// </summary>
@@ -25,7 +31,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         public void CreateSource(CompositeType model, TextWriter writer)
         {
             this.compileUnit = new CodeCompileUnit();
-            this.nameSpace= new CodeNamespace("ModelBased");
+            this.nameSpace = new CodeNamespace("ModelBased");
             this.compileUnit.Namespaces.Add(this.nameSpace);
 
             var sharpProvider = new CSharpCodeProvider();
@@ -50,12 +56,12 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="compositeType">The composite type</param>
         private void CreateClassForCompositeType(CompositeType compositeType)
         {
-            this.CreateClassForEntityWithPorts(compositeType);
-
             foreach (var type in compositeType.Types)
             {
                 this.CreateClassForType(type);
             }
+
+            this.CreateClassForEntityWithPorts(compositeType);            
         }
 
         /// <summary>
@@ -80,6 +86,22 @@ namespace ModellMeister.SourceGenerator.CSharp
             csharpType.Attributes = MemberAttributes.Public;
             csharpType.IsPartial = true;
 
+            this.typeMapping[type] = csharpType;
+
+            this.CreatePorts(type, csharpType);
+
+            this.nameSpace.Types.Add(csharpType);
+
+            return csharpType;
+        }
+
+        /// <summary>
+        /// Creates the members and properties of for the ports
+        /// </summary>
+        /// <param name="type">Type, containing the ports</param>
+        /// <param name="csharpType">The C# Type, which will host the ports</param>
+        private void CreatePorts(EntityWithPorts type, CodeTypeDeclaration csharpType)
+        {
             // Creates the properties for the input and output ports
             foreach (var inputPort in type.Inputs.Union(type.Outputs))
             {
@@ -112,10 +134,6 @@ namespace ModellMeister.SourceGenerator.CSharp
 
                 csharpType.Members.Add(property);
             }
-
-            this.nameSpace.Types.Add(csharpType);
-
-            return csharpType;
         }
 
         private string ConvertToDotNetType(DataType dataType)

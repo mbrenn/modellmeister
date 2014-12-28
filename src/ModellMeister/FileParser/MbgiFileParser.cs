@@ -128,7 +128,10 @@ namespace ModellMeister.FileParser
             var wire = new Wire();
             this.root.Wires.Add(wire);
 
-            Console.WriteLine("Wire is created.");
+            Console.WriteLine("Wire is created between "
+                + line.Arguments[0]
+                + " and "
+                + line.Arguments[1]);
 
             var inputPort = this.FindPort(this.root, line.Arguments[0]);
             var outputPort = this.FindPort(this.root, line.Arguments[1]);
