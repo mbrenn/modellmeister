@@ -139,19 +139,30 @@ namespace ModellMeister.FileParser
             }
 
             // Sets the other variables
-            var n = 2;
-            while (n < parts.Count)
+            if (parsedLine.LineType == EntityType.Wire)
             {
-                var key = parts[n];
-                var value = parts[n + 1];
-
-                PropertyType foundPropertyType = ConvertToPropertyType(key);
-
-                parsedLine.Parameters[foundPropertyType] = value;
-
-                n += 2;
+                for (var n = 1; n < parts.Count; n++)
+                {
+                    parsedLine.Arguments.Add(parts[n]);
+                }
             }
-            
+            else
+            {
+                for (var n = 2; n < parts.Count; n += 2)
+                {
+                    var key = parts[n];
+                    if ((n + 1) == parts.Count)
+                    {
+                        throw new InvalidOperationException("Parameter '" + key + "' has just a key and does not have a value");
+                    }
+
+                    var value = parts[n + 1];
+
+                    PropertyType foundPropertyType = ConvertToPropertyType(key);
+
+                    parsedLine.Parameters[foundPropertyType] = value;
+                }
+            }
             return parsedLine;
         }
 
@@ -178,9 +189,9 @@ namespace ModellMeister.FileParser
         public static DataType ConvertToDataType(string text)
         {
             DataType result;
-            if ( !dataTypes.TryGetValue(text, out result) )
+            if (!dataTypes.TryGetValue(text, out result))
             {
-                throw new InvalidOperationException("Unknown data type '" + text + "'");                
+                throw new InvalidOperationException("Unknown data type '" + text + "'");
             }
 
             return result;

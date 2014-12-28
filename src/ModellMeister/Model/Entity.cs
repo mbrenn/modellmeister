@@ -16,5 +16,21 @@ namespace ModellMeister.Model
             get;
             set;
         }
+
+        /// <summary>
+        /// Converts the entity to a string
+        /// </summary>
+        /// <returns>The converted entity</returns>
+        public override string ToString()
+        {
+            if (this.Name != null)
+            {
+                return "[" + this.GetType() + "] " + this.Name.ToString();
+            }
+            else
+            {
+                return "[" + this.GetType() + "] null" + this.Name.ToString();
+            }
+        }
     }
 }

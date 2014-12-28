@@ -13,7 +13,9 @@ namespace ModellMeister.SourceGenerator.CSharp
     public class CSharpGenerator
     {
         private CodeCompileUnit compileUnit;
+
         private CodeNamespace nameSpace;
+
         /// <summary>
         /// Creates the source code for a specific scope by
         /// using the text writer
@@ -31,7 +33,6 @@ namespace ModellMeister.SourceGenerator.CSharp
 
             this.CreateClassForCompositeType(model);
 
-
             var generator = sharpProvider.CreateGenerator(writer);
             generator.GenerateCodeFromCompileUnit(
                 this.compileUnit,
@@ -43,6 +44,10 @@ namespace ModellMeister.SourceGenerator.CSharp
                 });
         }
 
+        /// <summary>
+        /// Creates a class for the composite type
+        /// </summary>
+        /// <param name="compositeType">The composite type</param>
         private void CreateClassForCompositeType(CompositeType compositeType)
         {
             this.CreateClassForEntityWithPorts(compositeType);

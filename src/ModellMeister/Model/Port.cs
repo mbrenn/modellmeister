@@ -19,5 +19,17 @@ namespace ModellMeister.Model
             get;
             set;
         }
+
+        /// <summary>
+        /// Clones the port
+        /// </summary>
+        /// <returns></returns>
+        public Port Clone()
+        {
+            var newPort = new Port();
+            newPort.Name = this.Name;
+            newPort.DataType = this.DataType;
+            return newPort;            
+        }
     }
 }

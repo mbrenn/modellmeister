@@ -24,10 +24,38 @@ namespace ModellMeister.FileParser
             set;
         }
 
+        public List<string> Arguments
+        {
+            get;
+            set;
+        }
+
         public Dictionary<PropertyType, string> Parameters
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ParsedLine class.
+        /// </summary>
+        public ParsedLine()
+        {
+            this.Parameters = new Dictionary<PropertyType, string>();
+            this.Arguments = new List<string>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ParsedLine class.
+        /// </summary>
+        /// <param name="type">Type to be queried</param>
+        /// <param name="name">Name of the object</param>
+        /// 
+        public ParsedLine(EntityType type, string name)
+            : this()
+        {
+            this.LineType = type;
+            this.Name = name;
         }
 
         /// <summary>
@@ -44,27 +72,6 @@ namespace ModellMeister.FileParser
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the ParsedLine class.
-        /// </summary>
-        public ParsedLine()
-        {
-            this.Parameters = new Dictionary<PropertyType, string>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the ParsedLine class.
-        /// </summary>
-        /// <param name="type">Type to be queried</param>
-        /// <param name="name">Name of the object</param>
-        /// 
-        public ParsedLine(EntityType type, string name)
-            : this()
-        {
-            this.LineType = type;
-            this.Name = name;
         }
     }
 }

@@ -47,14 +47,18 @@
     <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\EntityType.cs" />
     <Compile Include="Model\EntityWithPorts.cs" />
+    <Compile Include="Model\ModelBlock.cs" />
     <Compile Include="Model\Port.cs" />
     <Compile Include="Model\PropertyType.cs" />
     <Compile Include="Model\ModelType.cs" />
     <Compile Include="Model\CompositeType.cs" />
+    <Compile Include="Model\Wire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceGenerator\CSharp\CSharpGenerator.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Model\Models.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

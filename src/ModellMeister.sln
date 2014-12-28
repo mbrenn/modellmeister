@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MBGI-Files", "MBGI-Files", "{D7EEC84E-8D99-4D36-B580-6E74F3F551AA}"
 	ProjectSection(SolutionItems) = preProject
 		..\examples\mbgi\onlytype.mbgi = ..\examples\mbgi\onlytype.mbgi
+		..\examples\mbgi\twoblocks.mbgi = ..\examples\mbgi\twoblocks.mbgi
 		..\examples\mbgi\twotypes.mbgi = ..\examples\mbgi\twotypes.mbgi
 	EndProjectSection
 EndProject

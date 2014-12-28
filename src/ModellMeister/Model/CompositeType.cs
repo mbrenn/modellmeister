@@ -16,12 +16,32 @@ namespace ModellMeister.Model
         /// </summary>
         private List<ModelType> types = new List<ModelType>();
 
+        private List<ModelBlock> blocks = new List<ModelBlock>();
+
+        private List<Wire> wires = new List<Wire>();
+
         /// <summary>
         /// Gets the types
         /// </summary>
         public List<ModelType> Types
         {
             get { return this.types; }
+        }
+
+        /// <summary>
+        /// Gets the types
+        /// </summary>
+        public List<ModelBlock> Blocks
+        {
+            get { return this.blocks; }
+        }
+
+        /// <summary>
+        /// Gets the types
+        /// </summary>
+        public List<Wire> Wires
+        {
+            get { return this.wires; }
         }
     }
 }
