@@ -1,4 +1,5 @@
 ﻿using Microsoft.CSharp;
+using ModellMeister.Logic;
 using ModellMeister.Model;
 using System;
 using System.CodeDom;
@@ -35,9 +36,9 @@ namespace ModellMeister.SourceGenerator.CSharp
             this.compileUnit.Namespaces.Add(this.nameSpace);
 
             var sharpProvider = new CSharpCodeProvider();
-            // Creates the models for each type
 
-            this.CreateClassForCompositeType(model);
+            // Creates the models for each type
+            this.CreateClassForType(model);
 
             var generator = sharpProvider.CreateGenerator(writer);
             generator.GenerateCodeFromCompileUnit(
@@ -54,23 +55,33 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// Creates a class for the composite type
         /// </summary>
         /// <param name="compositeType">The composite type</param>
-        private void CreateClassForCompositeType(CompositeType compositeType)
+        /// <param name="typeDeclaration">Creates the class</param>
+        private void FillClassForCompositeType(CompositeType compositeType, CodeTypeDeclaration typeDeclaration)
         {
+            // Creates the types within the composite type
             foreach (var type in compositeType.Types)
             {
                 this.CreateClassForType(type);
             }
 
-            var createdClass = this.CreateClassForEntityWithPorts(compositeType);
-
+            // Returns an empty init method
             var initMethod = new CodeMemberMethod();
             initMethod.Name = "Init";
             initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             
-            createdClass.Members.Add(initMethod);
+            typeDeclaration.Members.Add(initMethod);
             var initMethodStatements = initMethod.Statements;
 
-            foreach (var block in compositeType.Blocks)
+            // Returns an empty execution method
+            var executeMethod = new CodeMemberMethod();
+            executeMethod.Name = "Execute";
+            executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+
+            typeDeclaration.Members.Add(executeMethod);
+
+            // Creates the block properties
+            var flowLogic = new DataFlowLogic(compositeType);
+            foreach (var block in flowLogic.GetBlocksByDataFlow())
             {
                 // Creates the block properties themselves
                 var dotNetTypeOfBlock = this.typeMapping[block.Type];
@@ -82,11 +93,14 @@ namespace ModellMeister.SourceGenerator.CSharp
                 blockField.Type = fieldType;
                 blockField.Attributes = MemberAttributes.Private | MemberAttributes.Final;
 
-                createdClass.Members.Add(blockField);
+                typeDeclaration.Members.Add(blockField);
+
+                // Stores the expression to retrieve the field
                 var fieldExpression = new CodeFieldReferenceExpression(
                     new CodeThisReferenceExpression(),
                     fieldName);
 
+                // Creates the property
                 var property = new CodeMemberProperty();
                 property.Name = block.Name;
                 property.Type = fieldType;
@@ -101,7 +115,7 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldExpression,
                         new CodePropertySetValueReferenceExpression()));
 
-                createdClass.Members.Add(property);
+                typeDeclaration.Members.Add(property);
 
                 // Adds some statements to the initialization
                 initMethodStatements.Add(
@@ -109,6 +123,32 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldExpression,
                         new CodeObjectCreateExpression(
                             fieldType)));
+
+                // Adds some statements to the execution method
+                // First, populate the input values
+                foreach (var tuple in flowLogic.GetInputWiresForBlock(block))
+                {
+                    var targetPortName =
+                        new CodeFieldReferenceExpression(
+                            new CodeFieldReferenceExpression(
+                                new CodeThisReferenceExpression(),
+                                block.Name), tuple.Item2.OutputOfWire.Name);
+                    var sourcePortName =
+                        new CodeFieldReferenceExpression(
+                            new CodeFieldReferenceExpression(
+                                new CodeThisReferenceExpression(),
+                                tuple.Item1.Name), tuple.Item2.InputOfWire.Name);
+                    executeMethod.Statements.Add(new CodeAssignStatement(
+                        targetPortName,
+                        sourcePortName));
+                }
+
+                // Second, Execute it
+                executeMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeMethodReferenceExpression(
+                            fieldExpression,
+                            "Execute")));
             }
         }
 
@@ -117,7 +157,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// </summary>
         /// <param name="nameSpace">Namespace, where properties will be added</param>
         /// <param name="type">The type to be added</param>
-        private CodeTypeDeclaration CreateClassForType(ModelType type)
+        private CodeTypeDeclaration CreateClassForType(EntityWithPorts type)
         {
             return this.CreateClassForEntityWithPorts(type);
         }
@@ -129,7 +169,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="type">Entity type with ports</param>
         /// <returns></returns>
         private CodeTypeDeclaration CreateClassForEntityWithPorts(EntityWithPorts type)
-        {
+        {            
             var csharpType = new CodeTypeDeclaration(type.Name);
             csharpType.Attributes = MemberAttributes.Public;
             csharpType.IsPartial = true;
@@ -139,6 +179,20 @@ namespace ModellMeister.SourceGenerator.CSharp
             this.CreatePorts(type, csharpType);
 
             this.nameSpace.Types.Add(csharpType);
+
+            if (type.GetType() == typeof(ModelType))
+            {
+                // Returns an empty execution method
+                var executeMethod = new CodeMemberMethod();
+                executeMethod.Name = "Execute";
+                executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+
+                csharpType.Members.Add(executeMethod);
+            }
+            else if (type.GetType() == typeof(CompositeType))
+            {
+                this.FillClassForCompositeType(type as CompositeType, csharpType);
+            }
 
             return csharpType;
         }

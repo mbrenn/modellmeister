@@ -142,5 +142,26 @@ namespace ModellMeister.Logic
 
             return false;
         }
+
+        /// <summary>
+        /// Gets the input wires for a specific block
+        /// </summary>
+        /// <param name="block">Block, whose wires are requested</param>
+        /// <returns>A tuple containing the block and wires of the input</returns>
+        public IEnumerable<Tuple<EntityWithPorts, Wire>> GetInputWiresForBlock(ModelBlock block)
+        {
+            foreach (var wire in compositeType.Wires)
+            {
+                var toModel = this.cachePortToBlock[wire.OutputOfWire];
+                if (toModel != block)
+                {
+                    // Skip the wire because it is not going to the current block
+                    continue;
+                }
+
+                var fromModel = this.cachePortToBlock[wire.InputOfWire];
+                yield return new Tuple<EntityWithPorts, Wire>(fromModel, wire);
+            }    
+        }
     }
 }
