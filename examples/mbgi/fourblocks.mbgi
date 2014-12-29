@@ -1,0 +1,22 @@
+T Sine
+TO Output : Double
+
+T Constant
+TO Output : Double
+
+T Adder
+TI Summand1 : Double
+TI Summand2 : Double
+TO Sum : Double
+
+T CSVWriter
+TI Input : Double
+
+B Writer : CSVWriter
+B Summer : Adder
+B Source1 : Sine
+B Source2 : Constant
+
+W Source1.Output Summer.Summand1
+W Source2.Output Summer.Summand2
+W Summer.Sum Writer.Input

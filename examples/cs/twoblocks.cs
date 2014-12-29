@@ -46,7 +46,9 @@ namespace ModelBased
         public void Init()
         {
             this._FirstSummer = new Summer();
+            this._FirstSummer.Init();
             this._SecondSummer = new Summer();
+            this._SecondSummer.Init();
         }
         
         public void Execute()
@@ -103,6 +105,10 @@ namespace ModelBased
         }
         
         public void Execute()
+        {
+        }
+        
+        public void Init()
         {
         }
     }

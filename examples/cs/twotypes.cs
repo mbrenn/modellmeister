@@ -72,6 +72,10 @@ namespace ModelBased
         public void Execute()
         {
         }
+        
+        public void Init()
+        {
+        }
     }
     
     public partial class Multiplier
@@ -120,6 +124,10 @@ namespace ModelBased
         }
         
         public void Execute()
+        {
+        }
+        
+        public void Init()
         {
         }
     }

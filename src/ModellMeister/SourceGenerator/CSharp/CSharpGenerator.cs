@@ -123,6 +123,10 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldExpression,
                         new CodeObjectCreateExpression(
                             fieldType)));
+                initMethodStatements.Add(
+                    new CodeMethodInvokeExpression(
+                        fieldExpression,
+                        "Init"));
 
                 // Adds some statements to the execution method
                 // First, populate the input values
@@ -188,6 +192,13 @@ namespace ModellMeister.SourceGenerator.CSharp
                 executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
                 csharpType.Members.Add(executeMethod);
+
+                // Returns an empty init method
+                var initMethod = new CodeMemberMethod();
+                initMethod.Name = "Init";
+                initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+
+                csharpType.Members.Add(initMethod);
             }
             else if (type.GetType() == typeof(CompositeType))
             {

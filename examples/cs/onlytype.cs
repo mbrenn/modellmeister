@@ -72,5 +72,9 @@ namespace ModelBased
         public void Execute()
         {
         }
+        
+        public void Init()
+        {
+        }
     }
 }
