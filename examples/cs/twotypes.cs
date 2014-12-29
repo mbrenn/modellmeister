@@ -12,10 +12,6 @@ namespace ModelBased
 {
     
     
-    public partial class _
-    {
-    }
-    
     public partial class Summer
     {
         
@@ -105,6 +101,14 @@ namespace ModelBased
             {
                 this._Product = value;
             }
+        }
+    }
+    
+    public partial class _
+    {
+        
+        public void Init()
+        {
         }
     }
 }

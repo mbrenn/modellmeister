@@ -37,6 +37,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MBGI-Files", "MBGI-Files", 
 		..\examples\mbgi\twotypes.mbgi = ..\examples\mbgi\twotypes.mbgi
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CS-Files", "CS-Files", "{19A1CD52-792E-4E26-A88E-5CB7B38C36FE}"
+	ProjectSection(SolutionItems) = preProject
+		..\examples\cs\onlytype.cs = ..\examples\cs\onlytype.cs
+		..\examples\cs\twoblocks.cs = ..\examples\cs\twoblocks.cs
+		..\examples\cs\twotypes.cs = ..\examples\cs\twotypes.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,5 +71,6 @@ Global
 		{C5EEB41D-DD47-4EE9-87DF-78F62203604D} = {B8C0C657-6FDF-4C25-AEBB-B276E743AB88}
 		{CBE712E5-7C47-483B-9D41-69DDD885657D} = {73E6F42A-6655-49DF-929C-62798A962B66}
 		{D7EEC84E-8D99-4D36-B580-6E74F3F551AA} = {C39F6691-9536-4810-B5B0-6D4E5E2CE4E8}
+		{19A1CD52-792E-4E26-A88E-5CB7B38C36FE} = {C39F6691-9536-4810-B5B0-6D4E5E2CE4E8}
 	EndGlobalSection
 EndGlobal

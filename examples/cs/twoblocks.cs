@@ -12,10 +12,6 @@ namespace ModelBased
 {
     
     
-    public partial class _
-    {
-    }
-    
     public partial class Summer
     {
         
@@ -59,6 +55,44 @@ namespace ModelBased
             {
                 this._Sum = value;
             }
+        }
+    }
+    
+    public partial class _
+    {
+        
+        private Summer _FirstSummer;
+        
+        private Summer _SecondSummer;
+        
+        public virtual Summer FirstSummer
+        {
+            get
+            {
+                return this._FirstSummer;
+            }
+            set
+            {
+                this._FirstSummer = value;
+            }
+        }
+        
+        public virtual Summer SecondSummer
+        {
+            get
+            {
+                return this._SecondSummer;
+            }
+            set
+            {
+                this._SecondSummer = value;
+            }
+        }
+        
+        public virtual void Init()
+        {
+            this._FirstSummer = new Summer();
+            this._SecondSummer = new Summer();
         }
     }
 }

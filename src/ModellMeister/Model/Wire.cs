@@ -28,5 +28,15 @@ namespace ModellMeister.Model
             get;
             set;
         }
+
+        public Wire()
+        {
+        }
+
+        public Wire(Port inputOfWire, Port outputOfWire)
+        {
+            this.InputOfWire = inputOfWire;
+            this.OutputOfWire = outputOfWire;
+        }
     }
 }

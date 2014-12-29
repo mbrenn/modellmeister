@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="GeneratorTests.cs" />
     <Compile Include="LineParseTests.cs" />
+    <Compile Include="LogicTests.cs" />
     <Compile Include="MbgiParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

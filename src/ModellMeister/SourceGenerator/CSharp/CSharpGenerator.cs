@@ -61,7 +61,55 @@ namespace ModellMeister.SourceGenerator.CSharp
                 this.CreateClassForType(type);
             }
 
-            this.CreateClassForEntityWithPorts(compositeType);            
+            var createdClass = this.CreateClassForEntityWithPorts(compositeType);
+
+            var initMethod = new CodeMemberMethod();
+            initMethod.Name = "Init";
+            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            
+            createdClass.Members.Add(initMethod);
+            var initMethodStatements = initMethod.Statements;
+
+            foreach (var block in compositeType.Blocks)
+            {
+                // Creates the block properties themselves
+                var dotNetTypeOfBlock = this.typeMapping[block.Type];
+                var fieldType = new CodeTypeReference(dotNetTypeOfBlock.Name);
+                var fieldName = "_" + block.Name;
+                
+                var blockField = new CodeMemberField();
+                blockField.Name = fieldName;
+                blockField.Type = fieldType;
+                blockField.Attributes = MemberAttributes.Private | MemberAttributes.Final;
+
+                createdClass.Members.Add(blockField);
+                var fieldExpression = new CodeFieldReferenceExpression(
+                    new CodeThisReferenceExpression(),
+                    fieldName);
+
+                var property = new CodeMemberProperty();
+                property.Name = block.Name;
+                property.Type = fieldType;
+                property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+                property.HasGet = true;
+                property.HasSet = true;
+                property.GetStatements.Add(
+                    new CodeMethodReturnStatement(
+                        fieldExpression));
+                property.SetStatements.Add(
+                    new CodeAssignStatement(
+                        fieldExpression,
+                        new CodePropertySetValueReferenceExpression()));
+
+                createdClass.Members.Add(property);
+
+                // Adds some statements to the initialization
+                initMethodStatements.Add(
+                    new CodeAssignStatement(
+                        fieldExpression,
+                        new CodeObjectCreateExpression(
+                            fieldType)));
+            }
         }
 
         /// <summary>

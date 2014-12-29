@@ -12,10 +12,6 @@ namespace ModelBased
 {
     
     
-    public partial class _
-    {
-    }
-    
     public partial class Summer
     {
         
@@ -59,6 +55,14 @@ namespace ModelBased
             {
                 this._Sum = value;
             }
+        }
+    }
+    
+    public partial class _
+    {
+        
+        public void Init()
+        {
         }
     }
 }

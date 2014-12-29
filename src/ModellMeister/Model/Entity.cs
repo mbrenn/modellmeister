@@ -25,11 +25,11 @@ namespace ModellMeister.Model
         {
             if (this.Name != null)
             {
-                return "[" + this.GetType() + "] " + this.Name.ToString();
+                return "[" + this.GetType().Name + "] " + this.Name.ToString();
             }
             else
             {
-                return "[" + this.GetType() + "] null" + this.Name.ToString();
+                return "[" + this.GetType().Name + "] null";
             }
         }
     }
