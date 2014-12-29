@@ -8,59 +8,48 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelBased
-{
+namespace ModelBased {
     
     
-    public partial class _
-    {
+    public partial class _ {
         
-        private Summer _FirstSummer;
+        private Adder _FirstSummer;
         
-        private Summer _SecondSummer;
+        private Adder _SecondSummer;
         
-        public Summer FirstSummer
-        {
-            get
-            {
+        public Adder FirstSummer {
+            get {
                 return this._FirstSummer;
             }
-            set
-            {
+            set {
                 this._FirstSummer = value;
             }
         }
         
-        public Summer SecondSummer
-        {
-            get
-            {
+        public Adder SecondSummer {
+            get {
                 return this._SecondSummer;
             }
-            set
-            {
+            set {
                 this._SecondSummer = value;
             }
         }
         
-        public void Init()
-        {
-            this._FirstSummer = new Summer();
+        public void Init() {
+            this._FirstSummer = new Adder();
             this._FirstSummer.Init();
-            this._SecondSummer = new Summer();
+            this._SecondSummer = new Adder();
             this._SecondSummer.Init();
         }
         
-        public void Execute()
-        {
+        public void Execute() {
             this._FirstSummer.Execute();
             this.SecondSummer.Summand1 = this.FirstSummer.Sum;
             this._SecondSummer.Execute();
         }
     }
     
-    public partial class Summer
-    {
+    public partial class Adder {
         
         private double _Summand1;
         
@@ -68,48 +57,43 @@ namespace ModelBased
         
         private double _Sum;
         
-        public virtual double Summand1
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Summand1 {
+            get {
                 return this._Summand1;
             }
-            set
-            {
+            set {
                 this._Summand1 = value;
             }
         }
         
-        public virtual double Summand2
-        {
-            get
-            {
+        public virtual double Summand2 {
+            get {
                 return this._Summand2;
             }
-            set
-            {
+            set {
                 this._Summand2 = value;
             }
         }
         
-        public virtual double Sum
-        {
-            get
-            {
+        public virtual double Sum {
+            get {
                 return this._Sum;
             }
-            set
-            {
+            set {
                 this._Sum = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
 }

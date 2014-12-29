@@ -44,11 +44,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             generator.GenerateCodeFromCompileUnit(
                 this.compileUnit,
                 writer,
-                new System.CodeDom.Compiler.CodeGeneratorOptions()
-                {
-                    BlankLinesBetweenMembers = true,
-                    BracingStyle = "C"                    
-                });
+                new System.CodeDom.Compiler.CodeGeneratorOptions());
         }
 
         /// <summary>
@@ -190,6 +186,10 @@ namespace ModellMeister.SourceGenerator.CSharp
                 var executeMethod = new CodeMemberMethod();
                 executeMethod.Name = "Execute";
                 executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+                executeMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        "DoExecute"));
 
                 csharpType.Members.Add(executeMethod);
 
@@ -197,8 +197,30 @@ namespace ModellMeister.SourceGenerator.CSharp
                 var initMethod = new CodeMemberMethod();
                 initMethod.Name = "Init";
                 initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+                initMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        "DoInit"));
 
                 csharpType.Members.Add(initMethod);
+
+                // Returns an partial declaration for the init method
+                // Partial methods are not supported by CodeDom...
+                // This will be called by the Init Method
+                var initImplMethod = new CodeMemberField();
+                initImplMethod.Name = "DoInit()";
+                initImplMethod.Type = new CodeTypeReference("partial void");
+                initImplMethod.Attributes = MemberAttributes.Final;
+
+                csharpType.Members.Add(initImplMethod);
+
+                var execImplMethod = new CodeMemberField();
+                execImplMethod.Name = "DoExecute()";
+                execImplMethod.Type = new CodeTypeReference("partial void");
+                execImplMethod.Attributes = MemberAttributes.Final;
+
+                csharpType.Members.Add(execImplMethod);
+                                
             }
             else if (type.GetType() == typeof(CompositeType))
             {

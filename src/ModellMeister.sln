@@ -41,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CS-Files", "CS-Files", "{19A1CD52-792E-4E26-A88E-5CB7B38C36FE}"
 	ProjectSection(SolutionItems) = preProject
 		..\examples\cs\fourblocks.cs = ..\examples\cs\fourblocks.cs
+		..\examples\cs\Implementation.cs = ..\examples\cs\Implementation.cs
 		..\examples\cs\onlytype.cs = ..\examples\cs\onlytype.cs
 		..\examples\cs\twoblocks.cs = ..\examples\cs\twoblocks.cs
 		..\examples\cs\twotypes.cs = ..\examples\cs\twotypes.cs

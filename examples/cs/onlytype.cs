@@ -8,24 +8,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelBased
-{
+namespace ModelBased {
     
     
-    public partial class _
-    {
+    public partial class _ {
         
-        public void Init()
-        {
+        public void Init() {
         }
         
-        public void Execute()
-        {
+        public void Execute() {
         }
     }
     
-    public partial class Summer
-    {
+    public partial class Adder {
         
         private double _Summand1;
         
@@ -33,48 +28,43 @@ namespace ModelBased
         
         private double _Sum;
         
-        public virtual double Summand1
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Summand1 {
+            get {
                 return this._Summand1;
             }
-            set
-            {
+            set {
                 this._Summand1 = value;
             }
         }
         
-        public virtual double Summand2
-        {
-            get
-            {
+        public virtual double Summand2 {
+            get {
                 return this._Summand2;
             }
-            set
-            {
+            set {
                 this._Summand2 = value;
             }
         }
         
-        public virtual double Sum
-        {
-            get
-            {
+        public virtual double Sum {
+            get {
                 return this._Sum;
             }
-            set
-            {
+            set {
                 this._Sum = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
 }

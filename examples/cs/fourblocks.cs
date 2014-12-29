@@ -8,12 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModelBased
-{
+namespace ModelBased {
     
     
-    public partial class _
-    {
+    public partial class _ {
         
         private Sine _Source1;
         
@@ -23,56 +21,43 @@ namespace ModelBased
         
         private CSVWriter _Writer;
         
-        public Sine Source1
-        {
-            get
-            {
+        public Sine Source1 {
+            get {
                 return this._Source1;
             }
-            set
-            {
+            set {
                 this._Source1 = value;
             }
         }
         
-        public Constant Source2
-        {
-            get
-            {
+        public Constant Source2 {
+            get {
                 return this._Source2;
             }
-            set
-            {
+            set {
                 this._Source2 = value;
             }
         }
         
-        public Adder Summer
-        {
-            get
-            {
+        public Adder Summer {
+            get {
                 return this._Summer;
             }
-            set
-            {
+            set {
                 this._Summer = value;
             }
         }
         
-        public CSVWriter Writer
-        {
-            get
-            {
+        public CSVWriter Writer {
+            get {
                 return this._Writer;
             }
-            set
-            {
+            set {
                 this._Writer = value;
             }
         }
         
-        public void Init()
-        {
+        public void Init() {
             this._Source1 = new Sine();
             this._Source1.Init();
             this._Source2 = new Constant();
@@ -83,8 +68,7 @@ namespace ModelBased
             this._Writer.Init();
         }
         
-        public void Execute()
-        {
+        public void Execute() {
             this._Source1.Execute();
             this._Source2.Execute();
             this.Summer.Summand1 = this.Source1.Output;
@@ -95,60 +79,59 @@ namespace ModelBased
         }
     }
     
-    public partial class Sine
-    {
+    public partial class Sine {
         
         private double _Output;
         
-        public virtual double Output
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Output {
+            get {
                 return this._Output;
             }
-            set
-            {
+            set {
                 this._Output = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
     
-    public partial class Constant
-    {
+    public partial class Constant {
         
         private double _Output;
         
-        public virtual double Output
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Output {
+            get {
                 return this._Output;
             }
-            set
-            {
+            set {
                 this._Output = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
     
-    public partial class Adder
-    {
+    public partial class Adder {
         
         private double _Summand1;
         
@@ -156,74 +139,69 @@ namespace ModelBased
         
         private double _Sum;
         
-        public virtual double Summand1
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Summand1 {
+            get {
                 return this._Summand1;
             }
-            set
-            {
+            set {
                 this._Summand1 = value;
             }
         }
         
-        public virtual double Summand2
-        {
-            get
-            {
+        public virtual double Summand2 {
+            get {
                 return this._Summand2;
             }
-            set
-            {
+            set {
                 this._Summand2 = value;
             }
         }
         
-        public virtual double Sum
-        {
-            get
-            {
+        public virtual double Sum {
+            get {
                 return this._Sum;
             }
-            set
-            {
+            set {
                 this._Sum = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
     
-    public partial class CSVWriter
-    {
+    public partial class CSVWriter {
         
         private double _Input;
         
-        public virtual double Input
-        {
-            get
-            {
+        partial void DoInit();
+        
+        partial void DoExecute();
+        
+        public virtual double Input {
+            get {
                 return this._Input;
             }
-            set
-            {
+            set {
                 this._Input = value;
             }
         }
         
-        public void Execute()
-        {
+        public void Execute() {
+            this.DoExecute();
         }
         
-        public void Init()
-        {
+        public void Init() {
+            this.DoInit();
         }
     }
 }
