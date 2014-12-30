@@ -1,5 +1,7 @@
+#
+# Defines the types
 T Sine
-TO Output : Double
+TO Output : Double  # One output
 
 T Constant
 TO Output : Double
@@ -12,11 +14,13 @@ TO Sum : Double
 T CSVWriter
 TI Input : Double
 
+# Instantiates the types and 
 B Writer : CSVWriter
 B Summer : Adder
 B Source1 : Sine
 B Source2 : Constant
 
+# Connects the instantiated types with wires
 W Source1.Output Summer.Summand1
 W Source2.Output Summer.Summand2
 W Summer.Sum Writer.Input
