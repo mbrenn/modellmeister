@@ -10,12 +10,14 @@ Write-Output "Creates the C# files"
 Push-Location ..\examples\cs\
 
 Write-Output "Compiles the C# files"
-."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\onlytype.dll /debug+ onlytype.cs
-."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twotypes.dll /debug+ twotypes.cs
-."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twoblocks.dll /debug+ twoblocks.cs
-."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\fourblocks.dll /debug+ fourblocks.cs Implementation.cs
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\onlytype.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll onlytype.cs
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twotypes.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twotypes.cs
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twoblocks.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twoblocks.cs
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\fourblocks.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll fourblocks.cs Implementation.cs
 
 Pop-Location
+
+..\bin\mbsim.exe ..\examples\bin\fourblocks.dll
 
 # [System.Console]::ReadKey()
  

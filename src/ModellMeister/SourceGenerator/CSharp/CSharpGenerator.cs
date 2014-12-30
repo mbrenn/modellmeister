@@ -38,7 +38,11 @@ namespace ModellMeister.SourceGenerator.CSharp
             var sharpProvider = new CSharpCodeProvider();
 
             // Creates the models for each type
-            this.CreateClassForType(model);
+            var typeDeclaration = this.CreateClassForType(model);
+            
+            // Adds the attribute for the root element
+            typeDeclaration.CustomAttributes.Add(
+                new CodeAttributeDeclaration("ModellMeister.Runtime.RootModelAttribute"));
 
             var generator = sharpProvider.CreateGenerator(writer);
             generator.GenerateCodeFromCompileUnit(
@@ -48,11 +52,92 @@ namespace ModellMeister.SourceGenerator.CSharp
         }
 
         /// <summary>
+        /// Creates the class for a simple type
+        /// </summary>
+        /// <param name="nameSpace">Namespace, where properties will be added</param>
+        /// <param name="type">The type to be added</param>
+        private CodeTypeDeclaration CreateClassForType(EntityWithPorts type)
+        {
+            return this.CreateClassForEntityWithPorts(type);
+        }
+
+        /// <summary>
+        /// Creates the type for every entity type with ports
+        /// </summary>
+        /// <param name="nameSpace">C# namespace</param>
+        /// <param name="type">Entity type with ports</param>
+        /// <returns></returns>
+        private CodeTypeDeclaration CreateClassForEntityWithPorts(EntityWithPorts type)
+        {            
+            var csharpType = new CodeTypeDeclaration(type.Name);
+            csharpType.Attributes = MemberAttributes.Public;
+            csharpType.IsPartial = true;
+            csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
+
+            this.typeMapping[type] = csharpType;
+
+            this.CreatePorts(type, csharpType);
+
+            this.nameSpace.Types.Add(csharpType);
+
+            if (type.GetType() == typeof(ModelType))
+            {
+                // Returns an empty execution method
+                var executeMethod = new CodeMemberMethod();
+                executeMethod.Name = "Execute";
+                executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+                executeMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        "DoExecute"));
+
+                csharpType.Members.Add(executeMethod);
+
+                // Returns an empty init method
+                var initMethod = new CodeMemberMethod();
+                initMethod.Name = "Init";
+                initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+                initMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        "DoInit"));
+
+                csharpType.Members.Add(initMethod);
+
+                // Returns an partial declaration for the init method
+                // Partial methods are not supported by CodeDom...
+                // This will be called by the Init Method
+                var initImplMethod = new CodeMemberField();
+                initImplMethod.Name = "DoInit()";
+                initImplMethod.Type = new CodeTypeReference("partial void");
+                initImplMethod.Attributes = MemberAttributes.Final;
+
+                csharpType.Members.Add(initImplMethod);
+
+                var execImplMethod = new CodeMemberField();
+                execImplMethod.Name = "DoExecute()";
+                execImplMethod.Type = new CodeTypeReference("partial void");
+                execImplMethod.Attributes = MemberAttributes.Final;
+
+                csharpType.Members.Add(execImplMethod);
+                                
+            }
+            else if (type.GetType() == typeof(CompositeType))
+            {
+                this.FillClassForCompositeType(type as CompositeType, csharpType);
+            }
+
+            return csharpType;
+        }
+
+        /// <summary>
         /// Creates a class for the composite type
         /// </summary>
         /// <param name="compositeType">The composite type</param>
         /// <param name="typeDeclaration">Creates the class</param>
-        private void FillClassForCompositeType(CompositeType compositeType, CodeTypeDeclaration typeDeclaration)
+        private void FillClassForCompositeType(
+            CompositeType compositeType, 
+            CodeTypeDeclaration typeDeclaration)
         {
             // Creates the types within the composite type
             foreach (var type in compositeType.Types)
@@ -64,7 +149,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             var initMethod = new CodeMemberMethod();
             initMethod.Name = "Init";
             initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            
+
             typeDeclaration.Members.Add(initMethod);
             var initMethodStatements = initMethod.Statements;
 
@@ -83,7 +168,7 @@ namespace ModellMeister.SourceGenerator.CSharp
                 var dotNetTypeOfBlock = this.typeMapping[block.Type];
                 var fieldType = new CodeTypeReference(dotNetTypeOfBlock.Name);
                 var fieldName = "_" + block.Name;
-                
+
                 var blockField = new CodeMemberField();
                 blockField.Name = fieldName;
                 blockField.Type = fieldType;
@@ -150,84 +235,6 @@ namespace ModellMeister.SourceGenerator.CSharp
                             fieldExpression,
                             "Execute")));
             }
-        }
-
-        /// <summary>
-        /// Creates the class for a simple type
-        /// </summary>
-        /// <param name="nameSpace">Namespace, where properties will be added</param>
-        /// <param name="type">The type to be added</param>
-        private CodeTypeDeclaration CreateClassForType(EntityWithPorts type)
-        {
-            return this.CreateClassForEntityWithPorts(type);
-        }
-
-        /// <summary>
-        /// Creates the type for every entity type with ports
-        /// </summary>
-        /// <param name="nameSpace">C# namespace</param>
-        /// <param name="type">Entity type with ports</param>
-        /// <returns></returns>
-        private CodeTypeDeclaration CreateClassForEntityWithPorts(EntityWithPorts type)
-        {            
-            var csharpType = new CodeTypeDeclaration(type.Name);
-            csharpType.Attributes = MemberAttributes.Public;
-            csharpType.IsPartial = true;
-
-            this.typeMapping[type] = csharpType;
-
-            this.CreatePorts(type, csharpType);
-
-            this.nameSpace.Types.Add(csharpType);
-
-            if (type.GetType() == typeof(ModelType))
-            {
-                // Returns an empty execution method
-                var executeMethod = new CodeMemberMethod();
-                executeMethod.Name = "Execute";
-                executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                executeMethod.Statements.Add(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        "DoExecute"));
-
-                csharpType.Members.Add(executeMethod);
-
-                // Returns an empty init method
-                var initMethod = new CodeMemberMethod();
-                initMethod.Name = "Init";
-                initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                initMethod.Statements.Add(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        "DoInit"));
-
-                csharpType.Members.Add(initMethod);
-
-                // Returns an partial declaration for the init method
-                // Partial methods are not supported by CodeDom...
-                // This will be called by the Init Method
-                var initImplMethod = new CodeMemberField();
-                initImplMethod.Name = "DoInit()";
-                initImplMethod.Type = new CodeTypeReference("partial void");
-                initImplMethod.Attributes = MemberAttributes.Final;
-
-                csharpType.Members.Add(initImplMethod);
-
-                var execImplMethod = new CodeMemberField();
-                execImplMethod.Name = "DoExecute()";
-                execImplMethod.Type = new CodeTypeReference("partial void");
-                execImplMethod.Attributes = MemberAttributes.Final;
-
-                csharpType.Members.Add(execImplMethod);
-                                
-            }
-            else if (type.GetType() == typeof(CompositeType))
-            {
-                this.FillClassForCompositeType(type as CompositeType, csharpType);
-            }
-
-            return csharpType;
         }
 
         /// <summary>

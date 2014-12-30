@@ -11,7 +11,8 @@
 namespace ModelBased {
     
     
-    public partial class _ {
+    [ModellMeister.Runtime.RootModelAttribute()]
+    public partial class _ : ModellMeister.Runtime.IModelType {
         
         public void Init() {
         }
@@ -20,7 +21,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Adder {
+    public partial class Adder : ModellMeister.Runtime.IModelType {
         
         private double _Summand1;
         
@@ -68,7 +69,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Multiplier {
+    public partial class Multiplier : ModellMeister.Runtime.IModelType {
         
         private double _Factor1;
         

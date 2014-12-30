@@ -24,7 +24,7 @@ namespace ModellMeister.Tests
             Assert.That(globalScope.Types.Count, Is.EqualTo(1));
             
             var currentType = globalScope.Types[0];
-            Assert.That(currentType.Name, Is.EqualTo("Summer"));
+            Assert.That(currentType.Name, Is.EqualTo("Adder"));
 
             Assert.That(currentType.Inputs.Count, Is.EqualTo(2));
             Assert.That(currentType.Outputs.Count, Is.EqualTo(1));
@@ -49,7 +49,7 @@ namespace ModellMeister.Tests
             Assert.That(globalScope.Types.Count, Is.EqualTo(2));
 
             var currentType = globalScope.Types[0];
-            Assert.That(currentType.Name, Is.EqualTo("Summer"));
+            Assert.That(currentType.Name, Is.EqualTo("Adder"));
 
             Assert.That(currentType.Inputs.Count, Is.EqualTo(2));
             Assert.That(currentType.Outputs.Count, Is.EqualTo(1));
@@ -91,7 +91,7 @@ namespace ModellMeister.Tests
             
             // Checks the Type
             var currentType = globalScope.Types[0];
-            Assert.That(currentType.Name, Is.EqualTo("Summer"));
+            Assert.That(currentType.Name, Is.EqualTo("Adder"));
 
             Assert.That(currentType.Inputs.Count, Is.EqualTo(2));
             Assert.That(currentType.Outputs.Count, Is.EqualTo(1));

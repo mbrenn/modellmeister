@@ -11,7 +11,8 @@
 namespace ModelBased {
     
     
-    public partial class _ {
+    [ModellMeister.Runtime.RootModelAttribute()]
+    public partial class _ : ModellMeister.Runtime.IModelType {
         
         private Sine _Source1;
         
@@ -79,7 +80,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Sine {
+    public partial class Sine : ModellMeister.Runtime.IModelType {
         
         private double _Output;
         
@@ -105,7 +106,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Constant {
+    public partial class Constant : ModellMeister.Runtime.IModelType {
         
         private double _Output;
         
@@ -131,7 +132,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Adder {
+    public partial class Adder : ModellMeister.Runtime.IModelType {
         
         private double _Summand1;
         
@@ -179,7 +180,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class CSVWriter {
+    public partial class CSVWriter : ModellMeister.Runtime.IModelType {
         
         private double _Input;
         

@@ -11,7 +11,8 @@
 namespace ModelBased {
     
     
-    public partial class _ {
+    [ModellMeister.Runtime.RootModelAttribute()]
+    public partial class _ : ModellMeister.Runtime.IModelType {
         
         private Adder _FirstSummer;
         
@@ -49,7 +50,7 @@ namespace ModelBased {
         }
     }
     
-    public partial class Adder {
+    public partial class Adder : ModellMeister.Runtime.IModelType {
         
         private double _Summand1;
         

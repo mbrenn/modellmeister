@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5EEB41D-DD47-4EE9-87DF-78F62203604D}</ProjectGuid>
+    <ProjectGuid>{C02B41E5-0A7C-48B9-B828-DD06D39D0BB9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>mbgi2cs</RootNamespace>
-    <AssemblyName>mbgi2cs</AssemblyName>
+    <RootNamespace>mbsim</RootNamespace>
+    <AssemblyName>mbsim</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
