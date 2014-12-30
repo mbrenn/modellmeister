@@ -38,5 +38,14 @@ namespace ModellMeister.Model
             this.InputOfWire = inputOfWire;
             this.OutputOfWire = outputOfWire;
         }
+        public override string ToString()
+        {
+            if (this.InputOfWire == null || this.OutputOfWire == null)
+            {
+                return base.ToString();
+            }
+
+            return string.Format("Wire: " + this.InputOfWire.Name + " -> " + this.OutputOfWire.Name);
+        }
     }
 }

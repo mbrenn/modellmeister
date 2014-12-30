@@ -1,52 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ModellMeister.Model.CompositeType">
-    <Position X="4.25" Y="5.25" Width="1.5" />
+  <Class Name="ModellMeister.Model.CompositeType" Collapsed="true">
+    <Position X="6.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAEAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAIABAA=</HashCode>
       <FileName>Model\CompositeType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.Entity">
+  <Class Name="ModellMeister.Model.Entity" Collapsed="true">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Entity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.EntityWithPorts">
-    <Position X="2.5" Y="2.5" Width="1.5" />
+  <Class Name="ModellMeister.Model.EntityWithPorts" Collapsed="true">
+    <Position X="2.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAQAAAA=</HashCode>
       <FileName>Model\EntityWithPorts.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.ModelBlock">
-    <Position X="2.5" Y="5.25" Width="1.5" />
+  <Class Name="ModellMeister.Model.ModelBlock" Collapsed="true">
+    <Position X="2.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Model\ModelBlock.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.ModelType">
-    <Position X="6" Y="5.25" Width="1.5" />
+  <Class Name="ModellMeister.Model.ModelType" Collapsed="true">
+    <Position X="4.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\ModelType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.Port">
-    <Position X="4.25" Y="2.5" Width="1.5" />
+  <Class Name="ModellMeister.Model.Port" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>Model\Port.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.Wire">
+  <Class Name="ModellMeister.Model.Wire" Collapsed="true">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Wire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ModellMeister.Model.ModelNativeType" Collapsed="true">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ModelNativeType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

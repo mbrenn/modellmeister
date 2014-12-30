@@ -52,6 +52,8 @@ namespace ModellMeister.FileParser
             modelTypes["C"] = EntityType.CompositeType;
             modelTypes["CI"] = EntityType.CompositeTypeInput;
             modelTypes["CO"] = EntityType.CompositeTypeOutput;
+            modelTypes["CB"] = EntityType.CompositeBlock;
+            modelTypes["CW"] = EntityType.CompositeWire;
             modelTypes["S"] = EntityType.Setting;
             modelTypes["T"] = EntityType.Type;
             modelTypes["TI"] = EntityType.TypeInput;
@@ -139,7 +141,8 @@ namespace ModellMeister.FileParser
             }
 
             // Sets the other variables
-            if (parsedLine.LineType == EntityType.Wire)
+            if (parsedLine.LineType == EntityType.Wire
+                || parsedLine.LineType == EntityType.CompositeWire)
             {
                 for (var n = 1; n < parts.Count; n++)
                 {

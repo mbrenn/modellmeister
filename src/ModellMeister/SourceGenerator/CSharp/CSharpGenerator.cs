@@ -80,7 +80,7 @@ namespace ModellMeister.SourceGenerator.CSharp
 
             this.nameSpace.Types.Add(csharpType);
 
-            if (type.GetType() == typeof(ModelType))
+            if (type.GetType() == typeof(ModelNativeType))
             {
                 // Returns an empty execution method
                 var executeMethod = new CodeMemberMethod();
@@ -216,16 +216,34 @@ namespace ModellMeister.SourceGenerator.CSharp
                 // First, populate the input values
                 foreach (var tuple in flowLogic.GetInputWiresForBlock(block))
                 {
+                    var targetBlockExpression =
+                            new CodeFieldReferenceExpression(
+                                    new CodeThisReferenceExpression(),
+                                    block.Name);
+
                     var targetPortName =
                         new CodeFieldReferenceExpression(
+                            targetBlockExpression,
+                            tuple.Item2.OutputOfWire.Name);
+
+                    CodeExpression sourceBlockExpression;
+
+                    if (tuple.Item1 != compositeType)
+                    {
+                        sourceBlockExpression =
                             new CodeFieldReferenceExpression(
                                 new CodeThisReferenceExpression(),
-                                block.Name), tuple.Item2.OutputOfWire.Name);
+                                tuple.Item1.Name);
+                    }
+                    else
+                    {
+                        sourceBlockExpression = new CodeThisReferenceExpression();
+                    }
+
                     var sourcePortName =
                         new CodeFieldReferenceExpression(
-                            new CodeFieldReferenceExpression(
-                                new CodeThisReferenceExpression(),
-                                tuple.Item1.Name), tuple.Item2.InputOfWire.Name);
+                            sourceBlockExpression,
+                            tuple.Item2.InputOfWire.Name);
                     executeMethod.Statements.Add(new CodeAssignStatement(
                         targetPortName,
                         sourcePortName));
@@ -238,6 +256,37 @@ namespace ModellMeister.SourceGenerator.CSharp
                             fieldExpression,
                             "Execute"),
                         new CodeArgumentReferenceExpression("info")));
+            }
+
+            // Populate the input of the wires
+            foreach (var tuple in flowLogic.GetInputWiresForBlock(compositeType))
+            {
+                var targetPortName =
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(),
+                        tuple.Item2.OutputOfWire.Name);
+
+                CodeExpression sourceBlockExpression;
+
+                if (tuple.Item1 != compositeType)
+                {
+                    sourceBlockExpression =
+                        new CodeFieldReferenceExpression(
+                            new CodeThisReferenceExpression(),
+                            tuple.Item1.Name);
+                }
+                else
+                {
+                    sourceBlockExpression = new CodeThisReferenceExpression();
+                }
+
+                var sourcePortName =
+                    new CodeFieldReferenceExpression(
+                        sourceBlockExpression,
+                        tuple.Item2.InputOfWire.Name);
+                executeMethod.Statements.Add(new CodeAssignStatement(
+                    targetPortName,
+                    sourcePortName));
             }
         }
 

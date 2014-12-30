@@ -18,7 +18,7 @@ namespace ModellMeister.FileParser
         /// <summary>
         /// Stores the current tpye
         /// </summary>
-        private ModelType currentType;
+        private ModelNativeType currentNativeType;
 
         /// <summary>
         /// Stores the root
@@ -29,6 +29,11 @@ namespace ModellMeister.FileParser
         /// Stores the current tpye
         /// </summary>
         private ModelBlock currentBlock;
+
+        /// <summary>
+        /// Stores the composite type
+        /// </summary>
+        private CompositeType currentCompositeType;
 
         public CompositeType ParseFileFromText(string loadedFile)
         {
@@ -79,6 +84,26 @@ namespace ModellMeister.FileParser
                 {
                     this.ReadWire(line);
                 }
+                else if (line.LineType == EntityType.CompositeType)
+                {
+                    this.ReadCompositeType(line);
+                }
+                else if (line.LineType == EntityType.CompositeBlock)
+                {
+                    this.ReadCompositeBlock(line);
+                }
+                else if (line.LineType == EntityType.CompositeTypeInput)
+                {
+                    this.ReadCompositeTypeInput(line);
+                }
+                else if (line.LineType == EntityType.CompositeTypeOutput)
+                {
+                    this.ReadCompositeTypeOutput(line);
+                }
+                else if (line.LineType == EntityType.CompositeWire)
+                {
+                    this.ReadCompositeWire(line);
+                }
                 else
                 {
                     throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
@@ -92,29 +117,20 @@ namespace ModellMeister.FileParser
         {
             this.currentBlock = null;
             this.currentScope = CurrentScope.InType;
-            this.currentType = new ModelType();
-            this.currentType.Name = line.Name;
+            this.currentNativeType = new ModelNativeType();
+            this.currentNativeType.Name = line.Name;
 
-            this.root.Types.Add(this.currentType);
+            this.root.Types.Add(this.currentNativeType);
 
-            Console.WriteLine("Type is created: " + this.currentType.Name);
+            Console.WriteLine("Type is created: " + this.currentNativeType.Name);
         }
 
         private void ReadBlock(ParsedLine line)
         {
-            this.currentType = null;
+            var compositeBlock = this.root;
+            this.currentNativeType = null;
             this.currentScope = CurrentScope.InBlock;
-            this.currentBlock = new ModelBlock();
-            this.currentBlock.Name = line.Name;
-
-            this.root.Blocks.Add(this.currentBlock);
-
-            Console.WriteLine("Block is created: " + this.currentBlock.Name);
-
-            this.currentBlock.Type =
-                this.FindModelType(line.GetProperty(PropertyType.OfType));
-
-            this.PopulateBlock(this.currentBlock);
+            this.currentBlock = ReadAndAddBlock(line, compositeBlock);
         }
 
         private void ReadWire(ParsedLine line)
@@ -125,18 +141,8 @@ namespace ModellMeister.FileParser
             }
 
             this.currentScope = CurrentScope.Global;
-            var wire = new Wire();
-            this.root.Wires.Add(wire);
-
-            Console.WriteLine("Wire is created between "
-                + line.Arguments[0]
-                + " and "
-                + line.Arguments[1]);
-
-            var inputPort = this.FindPort(this.root, line.Arguments[0]);
-            var outputPort = this.FindPort(this.root, line.Arguments[1]);
-            wire.InputOfWire = inputPort;
-            wire.OutputOfWire = outputPort;
+            var compositeType = this.root;
+            this.ReadAndAddWire(line, compositeType);
         }
 
         private void ReadTypeInput(ParsedLine line)
@@ -147,7 +153,7 @@ namespace ModellMeister.FileParser
             }
 
             var port = CreatePort(line);
-            this.currentType.Inputs.Add(port);
+            this.currentNativeType.Inputs.Add(port);
 
             Console.WriteLine("- Input is created: " + port.Name);
         }
@@ -160,7 +166,7 @@ namespace ModellMeister.FileParser
             }
 
             var port = CreatePort(line);
-            this.currentType.Outputs.Add(port);
+            this.currentNativeType.Outputs.Add(port);
 
             Console.WriteLine("- Output is created: " + port.Name);
         }
@@ -189,6 +195,97 @@ namespace ModellMeister.FileParser
             this.currentBlock.Outputs.Add(port);
 
             Console.WriteLine("- Output is created: " + port.Name);
+        }
+
+        private void ReadCompositeType(ParsedLine line)
+        {
+            this.currentScope = CurrentScope.InCompositeBlock;
+
+            this.currentCompositeType = new CompositeType();
+            this.currentCompositeType.Name = line.Name;
+
+            this.root.Types.Add(this.currentCompositeType);
+        }
+
+        private void ReadCompositeBlock(ParsedLine line)
+        {
+            if (this.currentScope != CurrentScope.InCompositeBlock)
+            {
+                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+            }
+
+            this.ReadAndAddBlock(line, this.currentCompositeType);
+        }
+
+        private void ReadCompositeTypeInput(ParsedLine line)
+        {
+            if (this.currentScope != CurrentScope.InCompositeBlock)
+            {
+                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+            }
+
+            var port = CreatePort(line);
+            this.currentCompositeType.Inputs.Add(port);
+
+            Console.WriteLine("- Input for composite Block is created: " + port.Name);
+        }
+
+        private void ReadCompositeTypeOutput(ParsedLine line)
+        {
+            if (this.currentScope != CurrentScope.InCompositeBlock)
+            {
+                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+            }
+
+            var port = CreatePort(line);
+            this.currentCompositeType.Inputs.Add(port);
+
+            Console.WriteLine("- Output for composite Block is created: " + port.Name);
+        }
+
+        private void ReadCompositeWire(ParsedLine line)
+        {
+            if (this.currentScope != CurrentScope.InCompositeBlock)
+            {
+                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+            }
+
+            this.ReadAndAddWire(line, this.currentCompositeType);
+        }
+
+        /// <summary>
+        /// Reads a block and adds it to the composite type
+        /// </summary>
+        /// <param name="line">Line to be parsed</param>
+        /// <param name="compositeBlock">Composite type where the block will be added</param>
+        /// <returns>The created block</returns>
+        private ModelBlock ReadAndAddBlock(ParsedLine line, CompositeType compositeBlock)
+        {
+            var currentBlock = new ModelBlock();
+            currentBlock.Name = line.Name;
+            currentBlock.Type =
+                this.FindModelType(line.GetProperty(PropertyType.OfType));
+            this.PopulateBlock(currentBlock);
+
+            Console.WriteLine("Block is created: " + currentBlock.Name);
+            compositeBlock.Blocks.Add(currentBlock);
+            return currentBlock;
+        }
+
+        private void ReadAndAddWire(ParsedLine line, CompositeType compositeType)
+        {
+            var wire = new Wire();
+            compositeType.Wires.Add(wire);
+
+            Console.WriteLine("Wire is created between "
+                + line.Arguments[0]
+                + " and "
+                + line.Arguments[1]);
+
+            var inputPort = this.FindPort(compositeType, line.Arguments[0]);
+            var outputPort = this.FindPort(compositeType, line.Arguments[1]);
+            wire.InputOfWire = inputPort;
+            wire.OutputOfWire = outputPort;
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace ModellMeister.Model
     /// <summary>
     /// STre
     /// </summary>
-    public class CompositeType : EntityWithPorts
+    public class CompositeType : ModelType
     {
         /// <summary>
         /// Stores the list of types

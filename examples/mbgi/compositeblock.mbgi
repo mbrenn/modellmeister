@@ -1,0 +1,41 @@
+#
+# Defines the types
+T Sine
+TO Output : Double  # One output
+
+T Constant
+TO Output : Double
+
+T Adder
+TI Summand1 : Double
+TI Summand2 : Double
+TO Sum : Double
+
+T CSVWriter
+TI Input : Double
+
+C ThreeAdder
+CB Summer1 : Adder
+CB Summer2 : Adder
+CI OuterSummand1 : Double
+CI OuterSummand2 : Double
+CI OuterSummand3 : Double
+CO OuterSum : Double
+CW OuterSummand1 Summer1.Summand1
+CW OuterSummand2 Summer1.Summand2
+CW Summer1.Sum Summer2.Summand1
+CW OuterSummand3 Summer2.Summand2
+CW Summer2.Sum OuterSum
+
+# Instantiates the types and 
+B Writer : CSVWriter
+B Summer : ThreeAdder
+B Source1 : Constant
+B Source2 : Constant
+B Source3 : Constant
+
+# Connects the instantiated types with wires
+W Source1.Output Summer.OuterSummand1
+W Source2.Output Summer.OuterSummand2
+W Source3.Output Summer.OuterSummand3
+W Summer.OuterSum Writer.Input

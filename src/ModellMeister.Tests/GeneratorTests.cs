@@ -34,5 +34,18 @@ namespace ModellMeister.Tests
             var content = File.ReadAllText("../../../../examples/cs/onlytype.cs");
             Assert.That(content.Length, Is.GreaterThan(0));
         }
+
+        [Test]
+        public void TestGeneratorForCompositeBlock()
+        {
+            var converter = new Mbgi2CsConverter();
+            converter.ConvertFile(
+                "../../../../examples/mbgi/compositeblock.mbgi",
+                "../../../../examples/cs/compositeblock.cs");
+
+            var content = File.ReadAllText("../../../../examples/cs/compositeblock.cs");
+            Assert.That(content.Length, Is.GreaterThan(0));
+        }
+
     }
 }

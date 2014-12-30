@@ -21,16 +21,16 @@ namespace ModellMeister.Logic
         /// Caches the association from ports to modelblocks, 
         /// since the wires do not contain information about the modelblocks being connected
         /// </summary>
-        private Dictionary<Port, ModelBlock> cachePortToBlock 
-            = new Dictionary<Port, ModelBlock>();
+        private Dictionary<Port, EntityWithPorts> cachePortToBlock
+            = new Dictionary<Port, EntityWithPorts>();
 
         /// <summary>
         /// Caches the information whether a block is dependent on another block
         /// The key is the block, receiving the data. 
         /// The values are sources for the of data
         /// </summary>
-        private MultiValueDictionary<ModelBlock, ModelBlock> dependencies
-             = new MultiValueDictionary<ModelBlock, ModelBlock>();
+        private MultiValueDictionary<EntityWithPorts, EntityWithPorts> dependencies
+             = new MultiValueDictionary<EntityWithPorts, EntityWithPorts>();
 
         public DataFlowLogic(CompositeType type)
         {
@@ -44,7 +44,8 @@ namespace ModellMeister.Logic
         /// </summary>
         private void FillCaches()
         {
-            // First, fill the port cache
+            // 1) Fill the port cache
+            // 1a) In subblocks
             foreach (var block in this.compositeType.Blocks)
             {
                 foreach (var port in block.Inputs.Union(block.Outputs))
@@ -53,9 +54,27 @@ namespace ModellMeister.Logic
                 }
             }
 
-            // Second, the dependency cache
+            // 1b) In Input and Outputs
+            foreach (var port in this.compositeType.Inputs.Union(this.compositeType.Outputs))
+            {
+                this.cachePortToBlock[port] = this.compositeType;
+            }
+
+            // 2) Fill the dependency cache, connecting wires to blocks
+
             foreach (var wire in this.compositeType.Wires)
             {
+#if DEBUG
+                if ( !this.cachePortToBlock.ContainsKey(wire.InputOfWire))
+                {
+                    throw new InvalidOperationException(wire.InputOfWire.Name + " not found at wire: " + wire.ToString());
+                }
+
+                if (!this.cachePortToBlock.ContainsKey(wire.OutputOfWire))
+                {
+                    throw new InvalidOperationException(wire.OutputOfWire.Name + " not found at wire: " + wire.ToString());
+                }
+#endif
                 var sendingBlock = this.cachePortToBlock[wire.InputOfWire];
                 var receivingBlock = this.cachePortToBlock[wire.OutputOfWire];
 
@@ -148,7 +167,7 @@ namespace ModellMeister.Logic
         /// </summary>
         /// <param name="block">Block, whose wires are requested</param>
         /// <returns>A tuple containing the block and wires of the input</returns>
-        public IEnumerable<Tuple<EntityWithPorts, Wire>> GetInputWiresForBlock(ModelBlock block)
+        public IEnumerable<Tuple<EntityWithPorts, Wire>> GetInputWiresForBlock(EntityWithPorts block)
         {
             foreach (var wire in compositeType.Wires)
             {

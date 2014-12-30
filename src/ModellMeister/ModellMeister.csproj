@@ -54,6 +54,7 @@
     <Compile Include="Model\EntityType.cs" />
     <Compile Include="Model\EntityWithPorts.cs" />
     <Compile Include="Model\ModelBlock.cs" />
+    <Compile Include="Model\ModelNativeType.cs" />
     <Compile Include="Model\Port.cs" />
     <Compile Include="Model\PropertyType.cs" />
     <Compile Include="Model\ModelType.cs" />

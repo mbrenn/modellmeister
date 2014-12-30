@@ -21,6 +21,8 @@ namespace ModellMeister.Model
         TypeOutput,
         CompositeType,
         CompositeTypeInput,
-        CompositeTypeOutput
+        CompositeTypeOutput,
+        CompositeBlock,
+        CompositeWire
     }
 }

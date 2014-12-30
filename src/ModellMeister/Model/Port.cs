@@ -29,7 +29,7 @@ namespace ModellMeister.Model
             var newPort = new Port();
             newPort.Name = this.Name;
             newPort.DataType = this.DataType;
-            return newPort;            
+            return newPort;
         }
     }
 }
