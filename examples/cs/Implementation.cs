@@ -3,18 +3,15 @@ namespace ModelBased
 {
     public partial class Sine
     {
-        private double time = 0.0;
-
-        partial void DoExecute()
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
-            time += 0.1;
-            this.Output = System.Math.Sin(time);
+            this.Output = System.Math.Sin(info.AbsoluteTime.TotalSeconds);
         }
     }
 
     public partial class Constant
     {
-        partial void DoExecute()
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
             this.Output = 1;
         }
@@ -22,7 +19,7 @@ namespace ModelBased
 
     public partial class Adder
     {
-        partial void DoExecute()
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
             this.Sum = this.Summand1 + this.Summand2;
         }
@@ -30,7 +27,7 @@ namespace ModelBased
 
     public partial class CSVWriter
     {
-        partial void DoExecute()
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
             System.Console.WriteLine(this.Input);
         }

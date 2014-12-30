@@ -16,6 +16,6 @@ namespace ModellMeister.Runtime
         /// <summary>
         /// Executes the object
         /// </summary>
-        void Execute();
+        void Execute(StepInfo info);
     }
 }

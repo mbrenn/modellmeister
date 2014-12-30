@@ -69,14 +69,14 @@ namespace ModelBased {
             this._Writer.Init();
         }
         
-        public void Execute() {
-            this._Source1.Execute();
-            this._Source2.Execute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this._Source1.Execute(info);
+            this._Source2.Execute(info);
             this.Summer.Summand1 = this.Source1.Output;
             this.Summer.Summand2 = this.Source2.Output;
-            this._Summer.Execute();
+            this._Summer.Execute(info);
             this.Writer.Input = this.Summer.Sum;
-            this._Writer.Execute();
+            this._Writer.Execute(info);
         }
     }
     
@@ -86,7 +86,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Output {
             get {
@@ -97,8 +97,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {
@@ -112,7 +112,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Output {
             get {
@@ -123,8 +123,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {
@@ -142,7 +142,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Summand1 {
             get {
@@ -171,8 +171,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {
@@ -186,7 +186,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Input {
             get {
@@ -197,8 +197,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {

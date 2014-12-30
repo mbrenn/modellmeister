@@ -17,7 +17,7 @@ namespace ModelBased {
         public void Init() {
         }
         
-        public void Execute() {
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
         }
     }
     
@@ -31,7 +31,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Summand1 {
             get {
@@ -60,8 +60,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {

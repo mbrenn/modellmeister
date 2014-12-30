@@ -43,10 +43,10 @@ namespace ModelBased {
             this._SecondSummer.Init();
         }
         
-        public void Execute() {
-            this._FirstSummer.Execute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this._FirstSummer.Execute(info);
             this.SecondSummer.Summand1 = this.FirstSummer.Sum;
-            this._SecondSummer.Execute();
+            this._SecondSummer.Execute(info);
         }
     }
     
@@ -60,7 +60,7 @@ namespace ModelBased {
         
         partial void DoInit();
         
-        partial void DoExecute();
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         public virtual double Summand1 {
             get {
@@ -89,8 +89,8 @@ namespace ModelBased {
             }
         }
         
-        public void Execute() {
-            this.DoExecute();
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
         }
         
         public void Init() {

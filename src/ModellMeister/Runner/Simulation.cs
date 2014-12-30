@@ -98,11 +98,16 @@ namespace ModellMeister.Runner
 
             this.modelType.Init();
 
+            var step = new StepInfo();
+            step.TimeInterval = this.settings.TimeInterval;
+
             for (var currentTime = 0.0;
                 currentTime < this.settings.SimulationTime.TotalSeconds;
                 currentTime += this.settings.TimeInterval.TotalSeconds)
             {
-                this.modelType.Execute();
+                step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
+                
+                this.modelType.Execute(step);
             }
         }
     }

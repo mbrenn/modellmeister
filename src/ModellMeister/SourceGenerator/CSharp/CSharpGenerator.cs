@@ -85,11 +85,14 @@ namespace ModellMeister.SourceGenerator.CSharp
                 // Returns an empty execution method
                 var executeMethod = new CodeMemberMethod();
                 executeMethod.Name = "Execute";
+                executeMethod.Parameters.Add(
+                    new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
                 executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
                 executeMethod.Statements.Add(
                     new CodeMethodInvokeExpression(
                         new CodeThisReferenceExpression(),
-                        "DoExecute"));
+                        "DoExecute",
+                        new CodeArgumentReferenceExpression("info")));
 
                 csharpType.Members.Add(executeMethod);
 
@@ -115,12 +118,11 @@ namespace ModellMeister.SourceGenerator.CSharp
                 csharpType.Members.Add(initImplMethod);
 
                 var execImplMethod = new CodeMemberField();
-                execImplMethod.Name = "DoExecute()";
+                execImplMethod.Name = "DoExecute(ModellMeister.Runtime.StepInfo info)";
                 execImplMethod.Type = new CodeTypeReference("partial void");
                 execImplMethod.Attributes = MemberAttributes.Final;
 
                 csharpType.Members.Add(execImplMethod);
-                                
             }
             else if (type.GetType() == typeof(CompositeType))
             {
@@ -156,6 +158,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Returns an empty execution method
             var executeMethod = new CodeMemberMethod();
             executeMethod.Name = "Execute";
+            executeMethod.Parameters.Add(new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
             executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
             typeDeclaration.Members.Add(executeMethod);
@@ -233,7 +236,8 @@ namespace ModellMeister.SourceGenerator.CSharp
                     new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(
                             fieldExpression,
-                            "Execute")));
+                            "Execute"),
+                        new CodeArgumentReferenceExpression("info")));
             }
         }
 
