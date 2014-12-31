@@ -103,7 +103,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
-        public virtual double Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -129,7 +129,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
-        public virtual double Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -159,7 +159,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
-        public virtual double Summand1 {
+        public double Summand1 {
             get {
                 return this._Summand1;
             }
@@ -168,7 +168,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double Summand2 {
+        public double Summand2 {
             get {
                 return this._Summand2;
             }
@@ -177,7 +177,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double Sum {
+        public double Sum {
             get {
                 return this._Sum;
             }
@@ -203,7 +203,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
-        public virtual double Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -235,7 +235,7 @@ namespace ModelBased {
         
         private Adder _Summer2;
         
-        public virtual double OuterSummand1 {
+        public double OuterSummand1 {
             get {
                 return this._OuterSummand1;
             }
@@ -244,7 +244,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double OuterSummand2 {
+        public double OuterSummand2 {
             get {
                 return this._OuterSummand2;
             }
@@ -253,7 +253,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double OuterSummand3 {
+        public double OuterSummand3 {
             get {
                 return this._OuterSummand3;
             }
@@ -262,7 +262,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double OuterSum {
+        public double OuterSum {
             get {
                 return this._OuterSum;
             }

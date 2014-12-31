@@ -9,7 +9,7 @@ namespace ModellMeister.Model
     /// <summary>
     /// Describes the general entity
     /// </summary>
-    public class Entity
+    public abstract class Entity
     {
         public string Name
         {

@@ -9,7 +9,7 @@ namespace ModellMeister.Model
     /// <summary>
     /// Defines an entity which has a name and contains several ports
     /// </summary>
-    public class EntityWithPorts : Entity
+    public abstract class EntityWithPorts : Entity
     {
         private List<ModelPort> inputs = new List<ModelPort>();
 

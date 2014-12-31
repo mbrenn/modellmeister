@@ -33,7 +33,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
-        public virtual double Summand1 {
+        public double Summand1 {
             get {
                 return this._Summand1;
             }
@@ -42,7 +42,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double Summand2 {
+        public double Summand2 {
             get {
                 return this._Summand2;
             }
@@ -51,7 +51,7 @@ namespace ModelBased {
             }
         }
         
-        public virtual double Sum {
+        public double Sum {
             get {
                 return this._Sum;
             }

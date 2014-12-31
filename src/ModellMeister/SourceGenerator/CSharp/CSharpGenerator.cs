@@ -312,7 +312,7 @@ namespace ModellMeister.SourceGenerator.CSharp
                 var property = new CodeMemberProperty();
                 property.Name = inputPort.Name;
                 property.Type = fieldType;
-                property.Attributes = MemberAttributes.Public;
+                property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
                 property.HasGet = true;
                 property.HasSet = true;
                 property.GetStatements.Add(

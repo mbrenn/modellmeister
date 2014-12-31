@@ -1,0 +1,13 @@
+B Random
+BO Output : Double
+
+B Square
+BI Input : Double
+BO Output : Double
+
+B ToConsole
+BI Input : Double
+
+W Random.Output Square.Input
+W Square.Output ToConsole.Input
+
