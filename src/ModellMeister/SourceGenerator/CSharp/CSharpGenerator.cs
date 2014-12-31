@@ -306,7 +306,7 @@ namespace ModellMeister.SourceGenerator.CSharp
                 var field = new CodeMemberField();
                 field.Name = fieldName;
                 field.Type = fieldType;
-                field.Attributes = MemberAttributes.Private;
+                field.Attributes = MemberAttributes.Private | MemberAttributes.Final;
                 csharpType.Members.Add(field);
 
                 var property = new CodeMemberProperty();
