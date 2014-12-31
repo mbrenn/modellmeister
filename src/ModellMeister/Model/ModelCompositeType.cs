@@ -9,7 +9,7 @@ namespace ModellMeister.Model
     /// <summary>
     /// STre
     /// </summary>
-    public class CompositeType : ModelType
+    public class ModelCompositeType : ModelType
     {
         /// <summary>
         /// Stores the list of types
@@ -18,7 +18,7 @@ namespace ModellMeister.Model
 
         private List<ModelBlock> blocks = new List<ModelBlock>();
 
-        private List<Wire> wires = new List<Wire>();
+        private List<ModelWire> wires = new List<ModelWire>();
 
         /// <summary>
         /// Gets the types
@@ -39,7 +39,7 @@ namespace ModellMeister.Model
         /// <summary>
         /// Gets the types
         /// </summary>
-        public List<Wire> Wires
+        public List<ModelWire> Wires
         {
             get { return this.wires; }
         }

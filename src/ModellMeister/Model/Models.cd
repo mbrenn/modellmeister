@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ModellMeister.Model.CompositeType" Collapsed="true">
+  <Class Name="ModellMeister.Model.ModelCompositeType" Collapsed="true">
     <Position X="6.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAEAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAIABAA=</HashCode>
-      <FileName>Model\CompositeType.cs</FileName>
+      <FileName>Model\ModelCompositeType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ModellMeister.Model.Entity" Collapsed="true">
@@ -35,18 +35,18 @@
       <FileName>Model\ModelType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.Port" Collapsed="true">
+  <Class Name="ModellMeister.Model.ModelPort" Collapsed="true">
     <Position X="4.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
-      <FileName>Model\Port.cs</FileName>
+      <FileName>Model\ModelPort.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ModellMeister.Model.Wire" Collapsed="true">
+  <Class Name="ModellMeister.Model.ModelWire" Collapsed="true">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Wire.cs</FileName>
+      <HashCode>AAAAAAAAAgAAAAAEAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ModelWire.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ModellMeister.Model.ModelNativeType" Collapsed="true">

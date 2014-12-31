@@ -15,14 +15,14 @@ namespace ModellMeister.Logic
         /// <summary>
         /// Stores the type
         /// </summary>
-        private CompositeType compositeType;
+        private ModelCompositeType compositeType;
 
         /// <summary>
         /// Caches the association from ports to modelblocks, 
         /// since the wires do not contain information about the modelblocks being connected
         /// </summary>
-        private Dictionary<Port, EntityWithPorts> cachePortToBlock
-            = new Dictionary<Port, EntityWithPorts>();
+        private Dictionary<ModelPort, EntityWithPorts> cachePortToBlock
+            = new Dictionary<ModelPort, EntityWithPorts>();
 
         /// <summary>
         /// Caches the information whether a block is dependent on another block
@@ -32,7 +32,7 @@ namespace ModellMeister.Logic
         private MultiValueDictionary<EntityWithPorts, EntityWithPorts> dependencies
              = new MultiValueDictionary<EntityWithPorts, EntityWithPorts>();
 
-        public DataFlowLogic(CompositeType type)
+        public DataFlowLogic(ModelCompositeType type)
         {
             this.compositeType = type;
 
@@ -167,7 +167,7 @@ namespace ModellMeister.Logic
         /// </summary>
         /// <param name="block">Block, whose wires are requested</param>
         /// <returns>A tuple containing the block and wires of the input</returns>
-        public IEnumerable<Tuple<EntityWithPorts, Wire>> GetInputWiresForBlock(EntityWithPorts block)
+        public IEnumerable<Tuple<EntityWithPorts, ModelWire>> GetInputWiresForBlock(EntityWithPorts block)
         {
             foreach (var wire in compositeType.Wires)
             {
@@ -179,7 +179,7 @@ namespace ModellMeister.Logic
                 }
 
                 var fromModel = this.cachePortToBlock[wire.InputOfWire];
-                yield return new Tuple<EntityWithPorts, Wire>(fromModel, wire);
+                yield return new Tuple<EntityWithPorts, ModelWire>(fromModel, wire);
             }    
         }
     }

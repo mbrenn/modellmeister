@@ -23,7 +23,7 @@ namespace ModellMeister.FileParser
         /// <summary>
         /// Stores the root
         /// </summary>
-        private CompositeType root;
+        private ModelCompositeType root;
 
         /// <summary>
         /// Stores the current tpye
@@ -33,9 +33,9 @@ namespace ModellMeister.FileParser
         /// <summary>
         /// Stores the composite type
         /// </summary>
-        private CompositeType currentCompositeType;
+        private ModelCompositeType currentCompositeType;
 
-        public CompositeType ParseFileFromText(string loadedFile)
+        public ModelCompositeType ParseFileFromText(string loadedFile)
         {
             var reader = new StringReader(loadedFile);
             return this.ParseFile(reader);
@@ -46,9 +46,9 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="reader">The reader to be used</param>
         /// <returns>The created environment containing the complete information</returns>
-        public CompositeType ParseFile(TextReader reader)
+        public ModelCompositeType ParseFile(TextReader reader)
         {
-            this.root = new CompositeType();
+            this.root = new ModelCompositeType();
             this.root.Name = "_";
 
             this.currentScope = CurrentScope.Global;
@@ -201,7 +201,7 @@ namespace ModellMeister.FileParser
         {
             this.currentScope = CurrentScope.InCompositeBlock;
 
-            this.currentCompositeType = new CompositeType();
+            this.currentCompositeType = new ModelCompositeType();
             this.currentCompositeType.Name = line.Name;
 
             this.root.Types.Add(this.currentCompositeType);
@@ -259,7 +259,7 @@ namespace ModellMeister.FileParser
         /// <param name="line">Line to be parsed</param>
         /// <param name="compositeBlock">Composite type where the block will be added</param>
         /// <returns>The created block</returns>
-        private ModelBlock ReadAndAddBlock(ParsedLine line, CompositeType compositeBlock)
+        private ModelBlock ReadAndAddBlock(ParsedLine line, ModelCompositeType compositeBlock)
         {
             var currentBlock = new ModelBlock();
             currentBlock.Name = line.Name;
@@ -272,9 +272,9 @@ namespace ModellMeister.FileParser
             return currentBlock;
         }
 
-        private void ReadAndAddWire(ParsedLine line, CompositeType compositeType)
+        private void ReadAndAddWire(ParsedLine line, ModelCompositeType compositeType)
         {
-            var wire = new Wire();
+            var wire = new ModelWire();
             compositeType.Wires.Add(wire);
 
             Console.WriteLine("Wire is created between "
@@ -317,9 +317,9 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="line">ine to be parsed</param>
         /// <returns>The created port</returns>
-        public static Port CreatePort(ParsedLine line)
+        public static ModelPort CreatePort(ParsedLine line)
         {
-            var port = new Port();
+            var port = new ModelPort();
             port.Name = line.Name;
             port.DataType = LineParser.ConvertToDataType(line.GetProperty(PropertyType.OfType));
             return port;
@@ -351,7 +351,7 @@ namespace ModellMeister.FileParser
         /// <param name="compositeType">Composite type to be used</param>
         /// <param name="portName">Name of the port to be used</param>
         /// <returns></returns>
-        private Port FindPort(CompositeType compositeType, string portName)
+        private ModelPort FindPort(ModelCompositeType compositeType, string portName)
         {
             var portParts = portName.Split(new[] { '.' });
             if (portParts.Length == 1)

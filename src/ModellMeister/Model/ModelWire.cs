@@ -9,12 +9,12 @@ namespace ModellMeister.Model
     /// <summary>
     /// Defines a wire between two points
     /// </summary>
-    public class Wire
+    public class ModelWire
     {
         /// <summary>
         /// Gets or sets the input of the wire
         /// </summary>
-        public Port InputOfWire
+        public ModelPort InputOfWire
         {
             get;
             set;
@@ -23,17 +23,17 @@ namespace ModellMeister.Model
         /// <summary>
         /// Gets or sets the output of the wire
         /// </summary>
-        public Port OutputOfWire
+        public ModelPort OutputOfWire
         {
             get;
             set;
         }
 
-        public Wire()
+        public ModelWire()
         {
         }
 
-        public Wire(Port inputOfWire, Port outputOfWire)
+        public ModelWire(ModelPort inputOfWire, ModelPort outputOfWire)
         {
             this.InputOfWire = inputOfWire;
             this.OutputOfWire = outputOfWire;

@@ -29,7 +29,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// </summary>
         /// <param name="model">Scope to be converted</param>
         /// <param name="writer">Writer to be used</param>
-        public void CreateSource(CompositeType model, TextWriter writer)
+        public void CreateSource(ModelCompositeType model, TextWriter writer)
         {
             this.compileUnit = new CodeCompileUnit();
             this.nameSpace = new CodeNamespace("ModelBased");
@@ -124,9 +124,9 @@ namespace ModellMeister.SourceGenerator.CSharp
 
                 csharpType.Members.Add(execImplMethod);
             }
-            else if (type.GetType() == typeof(CompositeType))
+            else if (type.GetType() == typeof(ModelCompositeType))
             {
-                this.FillClassForCompositeType(type as CompositeType, csharpType);
+                this.FillClassForCompositeType(type as ModelCompositeType, csharpType);
             }
 
             return csharpType;
@@ -138,7 +138,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="compositeType">The composite type</param>
         /// <param name="typeDeclaration">Creates the class</param>
         private void FillClassForCompositeType(
-            CompositeType compositeType, 
+            ModelCompositeType compositeType, 
             CodeTypeDeclaration typeDeclaration)
         {
             // Creates the types within the composite type

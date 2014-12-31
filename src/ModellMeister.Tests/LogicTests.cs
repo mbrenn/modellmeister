@@ -15,7 +15,7 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationWithEmptyList()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
             var blockOrder = new DataFlowLogic(compositeType);
 
             var list = blockOrder.GetBlocksByDataFlow().ToList();
@@ -25,7 +25,7 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationWithOneItem()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
             var block1 = new ModelBlock();
             compositeType.Blocks.Add(block1);
             var blockOrder = new DataFlowLogic(compositeType);
@@ -38,7 +38,7 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationWithTwoItems()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
             var block1 = new ModelBlock();
             var block2 = new ModelBlock();
             compositeType.Blocks.Add(block1);
@@ -54,17 +54,17 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationWithTwoItemsWithDependency()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
             var block1 = new ModelBlock();
-            var port1 = new Port();
+            var port1 = new ModelPort();
             block1.Inputs.Add(port1);
 
             var block2 = new ModelBlock();
-            var port2 = new Port();
+            var port2 = new ModelPort();
             block2.Outputs.Add(port2);
             compositeType.Blocks.Add(block1);
             compositeType.Blocks.Add(block2);
-            compositeType.Wires.Add(new Wire(port2, port1));
+            compositeType.Wires.Add(new ModelWire(port2, port1));
 
             var blockOrder = new DataFlowLogic(compositeType);
 
@@ -77,19 +77,19 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationWithFourItems()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
 
             var block1 = new ModelBlock();
             var block2 = new ModelBlock();
             var block3 = new ModelBlock();
             var block4 = new ModelBlock();
 
-            var port1 = new Port();
-            var port2 = new Port();
-            var port3 = new Port();
-            var port4 = new Port();
-            var port5 = new Port();
-            var port6 = new Port();
+            var port1 = new ModelPort();
+            var port2 = new ModelPort();
+            var port3 = new ModelPort();
+            var port4 = new ModelPort();
+            var port5 = new ModelPort();
+            var port6 = new ModelPort();
 
             block3.Outputs.Add(port1);
             block4.Outputs.Add(port2);
@@ -102,9 +102,9 @@ namespace ModellMeister.Tests
             compositeType.Blocks.Add(block2);
             compositeType.Blocks.Add(block3);
             compositeType.Blocks.Add(block4);
-            compositeType.Wires.Add(new Wire(port1, port3));
-            compositeType.Wires.Add(new Wire(port2, port4));
-            compositeType.Wires.Add(new Wire(port5, port6));           
+            compositeType.Wires.Add(new ModelWire(port1, port3));
+            compositeType.Wires.Add(new ModelWire(port2, port4));
+            compositeType.Wires.Add(new ModelWire(port5, port6));           
 
             var blockOrder = new DataFlowLogic(compositeType);
             var list = blockOrder.GetBlocksByDataFlow().ToList();
@@ -119,15 +119,15 @@ namespace ModellMeister.Tests
         [Test]
         public void TestBlockOrderEstimationCircular()
         {
-            var compositeType = new CompositeType();
+            var compositeType = new ModelCompositeType();
 
             var block1 = new ModelBlock();
             var block2 = new ModelBlock();
 
-            var port1 = new Port();
-            var port2 = new Port();
-            var port3 = new Port();
-            var port4 = new Port();
+            var port1 = new ModelPort();
+            var port2 = new ModelPort();
+            var port3 = new ModelPort();
+            var port4 = new ModelPort();
 
             block1.Inputs.Add(port1);
             block1.Outputs.Add(port2);
@@ -136,8 +136,8 @@ namespace ModellMeister.Tests
 
             compositeType.Blocks.Add(block1);
             compositeType.Blocks.Add(block2);
-            compositeType.Wires.Add(new Wire(port2, port3));
-            compositeType.Wires.Add(new Wire(port4, port1));
+            compositeType.Wires.Add(new ModelWire(port2, port3));
+            compositeType.Wires.Add(new ModelWire(port4, port1));
 
             var blockOrder = new DataFlowLogic(compositeType);
             Assert.Throws<InvalidOperationException>(() => blockOrder.GetBlocksByDataFlow().ToList());

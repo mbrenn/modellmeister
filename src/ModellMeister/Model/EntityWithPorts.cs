@@ -11,14 +11,14 @@ namespace ModellMeister.Model
     /// </summary>
     public class EntityWithPorts : Entity
     {
-        private List<Port> inputs = new List<Port>();
+        private List<ModelPort> inputs = new List<ModelPort>();
 
-        private List<Port> outputs = new List<Port>();
+        private List<ModelPort> outputs = new List<ModelPort>();
 
         /// <summary>
         /// Gets the input ports
         /// </summary>
-        public List<Port> Inputs
+        public List<ModelPort> Inputs
         {
             get { return this.inputs; }
         }
@@ -26,7 +26,7 @@ namespace ModellMeister.Model
         /// <summary>
         /// Gets the output ports
         /// </summary>
-        public List<Port> Outputs
+        public List<ModelPort> Outputs
         {
             get { return this.outputs; }
         }

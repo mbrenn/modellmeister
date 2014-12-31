@@ -9,7 +9,7 @@ namespace ModellMeister.Model
     /// <summary>
     /// Defines a single port
     /// </summary>
-    public class Port : Entity
+    public class ModelPort : Entity
     {
         /// <summary>
         /// Gets or sets the data type
@@ -24,9 +24,9 @@ namespace ModellMeister.Model
         /// Clones the port
         /// </summary>
         /// <returns></returns>
-        public Port Clone()
+        public ModelPort Clone()
         {
-            var newPort = new Port();
+            var newPort = new ModelPort();
             newPort.Name = this.Name;
             newPort.DataType = this.DataType;
             return newPort;

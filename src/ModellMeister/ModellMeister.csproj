@@ -55,11 +55,11 @@
     <Compile Include="Model\EntityWithPorts.cs" />
     <Compile Include="Model\ModelBlock.cs" />
     <Compile Include="Model\ModelNativeType.cs" />
-    <Compile Include="Model\Port.cs" />
+    <Compile Include="Model\ModelPort.cs" />
     <Compile Include="Model\PropertyType.cs" />
     <Compile Include="Model\ModelType.cs" />
-    <Compile Include="Model\CompositeType.cs" />
-    <Compile Include="Model\Wire.cs" />
+    <Compile Include="Model\ModelCompositeType.cs" />
+    <Compile Include="Model\ModelWire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\Simulation.cs" />
     <Compile Include="Runner\SimulationSettings.cs" />
