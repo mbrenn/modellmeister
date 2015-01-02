@@ -1,0 +1,24 @@
+﻿<Window x:Class="mbgi_gui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Model Based Source Generator" Height="400" Width="700"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="25*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <TextBox Grid.Column="0" Grid.Row="0" Margin="5"></TextBox>
+        <Button Content="Execute" Grid.Row="1" Margin="5" Padding="3"/>
+        <Button Content="Generate Source" Grid.Row="1" Margin="5" Padding="3"/>
+        <TextBox Grid.Column="1" Grid.Row="0" Margin="5"></TextBox>
+        <Button Content="Simulate Source" Grid.Row="1" Grid.Column="1" Margin="5" Padding="3"/>
+        <TextBox x:Name="txtLog" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"  Margin="5" IsReadOnly="True" AcceptsReturn="True"></TextBox>
+    </Grid>
+</Window>
