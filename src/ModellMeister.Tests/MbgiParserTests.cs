@@ -139,5 +139,42 @@ namespace ModellMeister.Tests
             Assert.That(currentWire.InputOfWire, Is.EqualTo(firstSummer.Outputs[0]));
             Assert.That(currentWire.OutputOfWire, Is.EqualTo(secondSummer.Inputs[0]));
         }
+
+        [Test]
+        public void TestDefaultValue()
+        {
+            var loadedFile = File.ReadAllText("../../../../examples/mbgi/defaultvalue.mbgi");
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromText(loadedFile);
+
+            var constantType = globalScope.Types.Where(x => x.Name == "Constant").FirstOrDefault();
+            Assert.That(constantType, Is.Not.Null);
+
+            var inputPort = constantType.Inputs.First();
+            Assert.That(constantType, Is.Not.Null);
+
+            Assert.That(inputPort.DataType, Is.EqualTo(DataType.Double));
+            Assert.That(inputPort.DefaultValue, Is.EqualTo(1));
+
+
+            var c1 = globalScope.Blocks.Where(x => x.Name == "C1").FirstOrDefault();
+            Assert.That(c1, Is.Not.Null);
+
+            inputPort = c1.Inputs.First();
+            Assert.That(c1, Is.Not.Null);
+
+            Assert.That(inputPort.DataType, Is.EqualTo(DataType.Double));
+            Assert.That(inputPort.DefaultValue, Is.EqualTo(1));
+
+            var c2 = globalScope.Blocks.Where(x => x.Name == "C2").FirstOrDefault();
+            Assert.That(c2, Is.Not.Null);
+
+            inputPort = c2.Inputs.First();
+            Assert.That(c2, Is.Not.Null);
+
+            Assert.That(inputPort.DataType, Is.EqualTo(DataType.Double));
+            Assert.That(inputPort.DefaultValue, Is.EqualTo(3.0));
+        }
     }
 }

@@ -19,6 +19,15 @@ namespace ModellMeister.Model
             get;
             set;
         }
+        
+        /// <summary>
+        /// Gets or sets the default value
+        /// </summary>
+        public object DefaultValue
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Clones the port
@@ -29,6 +38,7 @@ namespace ModellMeister.Model
             var newPort = new ModelPort();
             newPort.Name = this.Name;
             newPort.DataType = this.DataType;
+            newPort.DefaultValue = this.DefaultValue;
             return newPort;
         }
     }

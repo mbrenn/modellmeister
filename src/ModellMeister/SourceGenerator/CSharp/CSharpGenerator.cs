@@ -4,6 +4,7 @@ using ModellMeister.Model;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -212,6 +213,33 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldExpression,
                         "Init"));
 
+                // Goes through the ports and adds the initialization, if the 
+                // default value of the port is different to the one of the type
+                foreach (var blockPort in block.Inputs.Union(block.Outputs))
+                {
+                    var typePort = 
+                        block.Type.Inputs
+                            .Union(block.Type.Outputs)
+                            .Where(x => x.Name == blockPort.Name)
+                            .FirstOrDefault();
+                    if ( typePort == null )
+                    {
+                        throw new InvalidOperationException("Some mismatch in ports");
+                    }
+
+                    if (blockPort.DefaultValue != typePort.DefaultValue)
+                    {
+                        // Ok, we need to create an assignment
+                        initMethodStatements.Add(
+                            new CodeAssignStatement(
+                                new CodePropertyReferenceExpression(
+                                    fieldExpression,
+                                    blockPort.Name),
+                                new CodePrimitiveExpression(
+                                    ConvertToDotNetValue(blockPort.DataType, blockPort.DefaultValue))));
+                    }
+                }
+
                 // Adds some statements to the execution method
                 // First, populate the input values
                 foreach (var tuple in flowLogic.GetInputWiresForBlock(block))
@@ -298,37 +326,54 @@ namespace ModellMeister.SourceGenerator.CSharp
         private void CreatePorts(EntityWithPorts type, CodeTypeDeclaration csharpType)
         {
             // Creates the properties for the input and output ports
-            foreach (var inputPort in type.Inputs.Union(type.Outputs))
+            foreach (var inputPort in type.Inputs)
             {
-                var fieldName = "_" + inputPort.Name;
-                var fieldType = new CodeTypeReference(ConvertToDotNetType(inputPort.DataType));
-
-                var field = new CodeMemberField();
-                field.Name = fieldName;
-                field.Type = fieldType;
-                field.Attributes = MemberAttributes.Private | MemberAttributes.Final;
-                csharpType.Members.Add(field);
-
-                var property = new CodeMemberProperty();
-                property.Name = inputPort.Name;
-                property.Type = fieldType;
-                property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                property.HasGet = true;
-                property.HasSet = true;
-                property.GetStatements.Add(
-                    new CodeMethodReturnStatement(
-                        new CodeFieldReferenceExpression(
-                            new CodeThisReferenceExpression(),
-                            fieldName)));
-                property.SetStatements.Add(
-                    new CodeAssignStatement(
-                        new CodeFieldReferenceExpression(
-                            new CodeThisReferenceExpression(),
-                            fieldName),
-                        new CodePropertySetValueReferenceExpression()));
-
-                csharpType.Members.Add(property);
+                this.CreatePort(csharpType, inputPort, true);
             }
+
+            foreach (var inputPort in type.Outputs)
+            {
+                this.CreatePort(csharpType, inputPort, false);
+            }
+        }
+
+        private void CreatePort(CodeTypeDeclaration csharpType, ModelPort port, bool isInputPort)
+        {
+            var fieldName = "_" + port.Name;
+            var fieldType = new CodeTypeReference(ConvertToDotNetType(port.DataType));
+
+            var field = new CodeMemberField();
+            field.Name = fieldName;
+            field.Type = fieldType;
+            field.Attributes = MemberAttributes.Private | MemberAttributes.Final;
+            if (port.DefaultValue != null)
+            {
+                field.InitExpression =
+                    new CodePrimitiveExpression(
+                        ConvertToDotNetValue(port.DataType, port.DefaultValue));
+            }
+
+            csharpType.Members.Add(field);
+
+            var property = new CodeMemberProperty();
+            property.Name = port.Name;
+            property.Type = fieldType;
+            property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            property.HasGet = true;
+            property.HasSet = true;
+            property.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(),
+                        fieldName)));
+            property.SetStatements.Add(
+                new CodeAssignStatement(
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(),
+                        fieldName),
+                    new CodePropertySetValueReferenceExpression()));
+
+            csharpType.Members.Add(property);
         }
 
         private string ConvertToDotNetType(DataType dataType)
@@ -342,7 +387,23 @@ namespace ModellMeister.SourceGenerator.CSharp
                 case DataType.String:
                     return "System.String";
                 default:
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Unknown Type: " + dataType.ToString());
+            }
+        }
+
+
+        private object ConvertToDotNetValue(DataType dataType, object value)
+        {
+            switch (dataType)
+            {
+                case DataType.Double:
+                    return Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                case DataType.Integer:
+                    return Convert.ToInt32(value, CultureInfo.InvariantCulture);
+                case DataType.String:
+                    return Convert.ToString(value, CultureInfo.InvariantCulture);
+                default: 
+                    throw new InvalidOperationException("Unknown Type: " + dataType.ToString());
             }
         }
     }

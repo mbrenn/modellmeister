@@ -8,6 +8,7 @@ Write-Output "Creates the C# files"
 ..\bin\mbgi2cs.exe ..\examples\mbgi\fourblocks.mbgi ..\examples\cs\fourblocks.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\compositeblock.mbgi ..\examples\cs\compositeblock.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\autogenerationblock.mbgi ..\examples\cs\autogenerationblock.cs
+..\bin\mbgi2cs.exe ..\examples\mbgi\defaultvalue.mbgi ..\examples\cs\defaultvalue.cs
 
 Push-Location ..\examples\cs\
 
@@ -24,10 +25,12 @@ Write-Output "- compositeblock"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\compositeblock.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll compositeblock.cs Implementation.cs
 Write-Output "- autogenerationblock"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\autogenerationblock.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll autogenerationblock.cs Implementation_AutoGeneration.cs
+Write-Output "- defaultvalue"
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\defaultvalue.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll defaultvalue.cs defaultvalue_Code.cs
  
 Pop-Location
 
-..\bin\mbsim.exe ..\examples\bin\autogenerationblock.dll
+..\bin\mbsim.exe ..\examples\bin\defaultvalue.dll
 
 # [System.Console]::ReadKey()
  

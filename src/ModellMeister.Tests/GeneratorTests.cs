@@ -58,5 +58,17 @@ namespace ModellMeister.Tests
             var content = File.ReadAllText("../../../../examples/cs/autogenerationblock.cs");
             Assert.That(content.Length, Is.GreaterThan(0));
         }
+
+        [Test]
+        public void TestGeneratorDefaultValue()
+        {
+            var converter = new Mbgi2CsConverter();
+            converter.ConvertFile(
+                "../../../../examples/mbgi/defaultvalue.mbgi",
+                "../../../../examples/cs/defaultvalue.cs");
+
+            var content = File.ReadAllText("../../../../examples/cs/defaultvalue.cs");
+            Assert.That(content.Length, Is.GreaterThan(0));
+        }
     }
 }

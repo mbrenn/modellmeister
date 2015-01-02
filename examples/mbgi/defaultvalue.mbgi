@@ -1,0 +1,29 @@
+#
+# Defines the types
+T Sine
+TO Output : Double  # One output
+
+T Constant
+TI Value : Double defaultvalue 1
+TO Output : Double
+
+T Adder
+TI Summand1 : Double
+TI Summand2 : Double
+TO Sum : Double
+
+T CSVWriter
+TI Input : Double
+
+B C1 : Constant
+
+B C2 : Constant
+BI Value defaultvalue 3
+
+B Add : Adder
+
+B Writer : CSVWriter
+
+W C1.Output Add.Summand1
+W C2.Output Add.Summand2
+W Add.Sum Writer.Input

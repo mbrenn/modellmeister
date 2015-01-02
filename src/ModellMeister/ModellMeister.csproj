@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileParser\MbgiConversion.cs" />
     <Compile Include="FileParser\LineParser.cs" />
     <Compile Include="FileParser\MbgiFileParser.cs" />
     <Compile Include="FileParser\ParsedLine.cs" />
