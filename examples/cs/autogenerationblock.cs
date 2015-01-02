@@ -73,6 +73,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Output {
             get {
                 return this._Output;
@@ -101,6 +102,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Input {
             get {
                 return this._Input;
@@ -110,6 +112,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Output {
             get {
                 return this._Output;
@@ -136,6 +139,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Input {
             get {
                 return this._Input;

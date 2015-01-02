@@ -33,6 +33,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Summand1 {
             get {
                 return this._Summand1;
@@ -42,6 +43,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Summand2 {
             get {
                 return this._Summand2;
@@ -51,6 +53,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Sum {
             get {
                 return this._Sum;

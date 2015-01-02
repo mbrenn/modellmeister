@@ -103,6 +103,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Output {
             get {
                 return this._Output;
@@ -129,6 +130,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Output {
             get {
                 return this._Output;
@@ -159,6 +161,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Summand1 {
             get {
                 return this._Summand1;
@@ -168,6 +171,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Summand2 {
             get {
                 return this._Summand2;
@@ -177,6 +181,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Sum {
             get {
                 return this._Sum;
@@ -203,6 +208,7 @@ namespace ModelBased {
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Input {
             get {
                 return this._Input;
@@ -235,6 +241,7 @@ namespace ModelBased {
         
         private Adder _Summer2;
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double OuterSummand1 {
             get {
                 return this._OuterSummand1;
@@ -244,6 +251,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double OuterSummand2 {
             get {
                 return this._OuterSummand2;
@@ -253,6 +261,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double OuterSummand3 {
             get {
                 return this._OuterSummand3;
@@ -262,6 +271,7 @@ namespace ModelBased {
             }
         }
         
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double OuterSum {
             get {
                 return this._OuterSum;

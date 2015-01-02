@@ -1,6 +1,7 @@
 ﻿using Microsoft.CSharp;
 using ModellMeister.Logic;
 using ModellMeister.Model;
+using ModellMeister.Runtime;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -222,7 +223,7 @@ namespace ModellMeister.SourceGenerator.CSharp
                             .Union(block.Type.Outputs)
                             .Where(x => x.Name == blockPort.Name)
                             .FirstOrDefault();
-                    if ( typePort == null )
+                    if (typePort == null)
                     {
                         throw new InvalidOperationException("Some mismatch in ports");
                     }
@@ -328,16 +329,16 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Creates the properties for the input and output ports
             foreach (var inputPort in type.Inputs)
             {
-                this.CreatePort(csharpType, inputPort, true);
+                this.CreatePort(csharpType, inputPort, PortType.Input);
             }
 
             foreach (var inputPort in type.Outputs)
             {
-                this.CreatePort(csharpType, inputPort, false);
+                this.CreatePort(csharpType, inputPort, PortType.Input);
             }
         }
 
-        private void CreatePort(CodeTypeDeclaration csharpType, ModelPort port, bool isInputPort)
+        private void CreatePort(CodeTypeDeclaration csharpType, ModelPort port, PortType portType)
         {
             var fieldName = "_" + port.Name;
             var fieldType = new CodeTypeReference(ConvertToDotNetType(port.DataType));
@@ -373,6 +374,14 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldName),
                     new CodePropertySetValueReferenceExpression()));
 
+            // Creates the attribute for the property
+            // [Port(PortType.Input)]
+            property.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    "ModellMeister.Runtime.Port",
+                    new CodeAttributeArgument(
+                        new CodeFieldReferenceExpression(
+                            new CodeSnippetExpression(typeof(PortType).FullName), portType.ToString()))));
             csharpType.Members.Add(property);
         }
 
