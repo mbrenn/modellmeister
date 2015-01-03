@@ -60,14 +60,9 @@ namespace mbgi_gui
 
             try
             {
-                var workspacePath = this.txtWorkspacePath.Text;
-                Environment.CurrentDirectory = workspacePath;
-                if (!Directory.Exists(workspacePath))
-                {
-                    Directory.CreateDirectory(workspacePath);
-                }
+                var workspacePath = this.CreateAndGetWorkspace();
 
-                StringBuilder builder;
+                StringBuilder generatedSource;
 
                 // Gets the source code
                 using (var sourceReader = new StringReader(this.txtMBGISource.Text))
@@ -77,7 +72,7 @@ namespace mbgi_gui
                         var converter = new Mbgi2CsConverter();
                         converter.ConvertStreams(sourceReader, sourcewriter);
 
-                        builder = sourcewriter.GetStringBuilder();
+                        generatedSource = sourcewriter.GetStringBuilder();
                     }
                 }
 
@@ -91,7 +86,7 @@ namespace mbgi_gui
 
                 File.WriteAllText(csMbgiPath, this.txtMBGISource.Text);
                 File.WriteAllText(csUserPath, this.txtUserCs.Text);
-                File.WriteAllText(csPath, builder.ToString());
+                File.WriteAllText(csPath, generatedSource.ToString());
 
                 this.AddMessage("C#-file Generated: " + csPath);
                 this.AddMessage("MBGI-file Generated: " + csMbgiPath);
@@ -111,57 +106,8 @@ namespace mbgi_gui
 
                 if (compileResult.Errors.Count == 0)
                 {
-                    var setup = new AppDomainSetup()
-                    {
-                        ApplicationBase = workspacePath,
-                        PrivateBinPath = workspacePath,
-                        ConfigurationFile = null
-                    };
-
-                    var appDomain = AppDomain.CreateDomain("Runner", null, setup);
-                    var type = (Simulation)appDomain.CreateInstanceAndUnwrap(
-                        "ModellMeister",
-                        "ModellMeister.Runner.Simulation");
-
-                    type.Settings = new SimulationSettings()
-                    {
-                        SimulationTime = TimeSpan.FromSeconds(10),
-                        TimeInterval = TimeSpan.FromSeconds(0.1)
-                    };
-
-                    try
-                    {
-                        this.AddMessage("Running simulation");
-
-                        var result = type.LoadAndStartFromLibrary("modelbased.dll");
-                        
-                        var resultBuilder = new StringBuilder();
-                        resultBuilder.AppendLine("First 10 results");
-                        foreach (var line in result.Take(10))
-                        {
-                            var komma = string.Empty;
-                            foreach (var v in line)
-                            {
-                                resultBuilder.Append(komma);
-                                resultBuilder.Append(v.ToString());
-                                komma = ", ";
-                            }
-
-                            resultBuilder.AppendLine();
-                        }
-
-                        File.WriteAllText(resultPath, resultBuilder.ToString());
-
-                        var resultWindow = new ResultWindow();
-                        resultWindow.Results = result;
-                        resultWindow.ShowDialog();
-                    }
-                    catch (Exception exc)
-                    {
-                        this.AddMessage("Unhandled exception: " + exc.ToString());
-                    }
-
-                    AppDomain.Unload(appDomain);
+                    this.AddMessage("Running simulation");
+                    RunSimulationInAppDomain(workspacePath);
                 }
                 else
                 {
@@ -175,6 +121,53 @@ namespace mbgi_gui
             {
                 this.AddMessage(exc.ToString());
             }
+        }
+
+        private void RunSimulationInAppDomain(string workspacePath)
+        {
+            var setup = new AppDomainSetup()
+            {
+                ApplicationBase = workspacePath,
+                PrivateBinPath = workspacePath,
+                ConfigurationFile = null
+            };
+
+            var appDomain = AppDomain.CreateDomain("Runner", null, setup);
+            var type = (Simulation)appDomain.CreateInstanceAndUnwrap(
+                "ModellMeister",
+                "ModellMeister.Runner.Simulation");
+
+            type.Settings = new SimulationSettings()
+            {
+                SimulationTime = TimeSpan.FromSeconds(10),
+                TimeInterval = TimeSpan.FromSeconds(0.1)
+            };
+
+            try
+            {
+                var simulationResult = type.LoadAndStartFromLibrarySync("modelbased.dll");
+
+                var resultWindow = new ResultWindow();
+                resultWindow.Results = simulationResult.Result;
+                resultWindow.ShowDialog();
+            }
+            catch (Exception exc)
+            {
+                this.AddMessage("Unhandled exception: " + exc.ToString());
+            }
+
+            AppDomain.Unload(appDomain);
+        }
+
+        private string CreateAndGetWorkspace()
+        {
+            var workspacePath = this.txtWorkspacePath.Text;
+            Environment.CurrentDirectory = workspacePath;
+            if (!Directory.Exists(workspacePath))
+            {
+                Directory.CreateDirectory(workspacePath);
+            }
+            return workspacePath;
         }
 
         private void btnSimulateSource_Click(object sender, RoutedEventArgs e)

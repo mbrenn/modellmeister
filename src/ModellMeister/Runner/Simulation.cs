@@ -40,11 +40,21 @@ namespace ModellMeister.Runner
         /// Loads the library and starts it
         /// </summary>
         /// <param name="pathToLibrary">Library to be started</param>
-        public IList<object[]> LoadAndStartFromLibrary(
+        public async Task<SimulationResult> LoadAndStartFromLibrary(
             string pathToLibrary)
         {
             this.LoadFromLibrary(pathToLibrary);
-            return this.StartSimulation();
+            return await this.StartSimulation();
+        }
+
+        /// <summary>
+        /// Loads the library and starts it
+        /// </summary>
+        /// <param name="pathToLibrary">Library to be started</param>
+        public SimulationResult LoadAndStartFromLibrarySync(
+            string pathToLibrary)
+        {
+            return this.LoadAndStartFromLibrary(pathToLibrary).Result;
         }
 
         /// <summary>
@@ -94,36 +104,42 @@ namespace ModellMeister.Runner
         /// <summary>
         /// Starts the simulation
         /// </summary>
-        public IList<object[]> StartSimulation()
+        public async Task<SimulationResult> StartSimulation()
         {
-            this.results.Clear();
-
-            if (this.Settings.TimeInterval.TotalSeconds <= 0)
+            return await Task.Run(() =>
             {
-                throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
-            }
+                this.results.Clear();
 
-            if (this.modelType == null)
-            {
-                throw new InvalidOperationException("No model loaded");
-            }
+                if (this.Settings.TimeInterval.TotalSeconds <= 0)
+                {
+                    throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
+                }
 
-            this.modelType.Init();
+                if (this.modelType == null)
+                {
+                    throw new InvalidOperationException("No model loaded");
+                }
 
-            var step = new StepInfo();
-            step.TimeInterval = this.Settings.TimeInterval;
-            step.Debug = this;
+                this.modelType.Init();
 
-            for (var currentTime = 0.0;
-                currentTime < this.Settings.SimulationTime.TotalSeconds;
-                currentTime += this.Settings.TimeInterval.TotalSeconds)
-            {
-                step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
-                
-                this.modelType.Execute(step);
-            }
+                var step = new StepInfo();
+                step.TimeInterval = this.Settings.TimeInterval;
+                step.Debug = this;
 
-            return this.results;
+                for (var currentTime = 0.0;
+                        currentTime < this.Settings.SimulationTime.TotalSeconds;
+                        currentTime += this.Settings.TimeInterval.TotalSeconds)
+                {
+                    step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
+
+                    this.modelType.Execute(step);
+                }
+
+                return new SimulationResult()
+                {
+                    Result = this.results
+                };
+            });
         }
 
         public void AddResult(object[] values)
