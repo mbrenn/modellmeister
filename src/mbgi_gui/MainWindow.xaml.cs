@@ -32,12 +32,13 @@ namespace mbgi_gui
         {
             InitializeComponent();
 
-            this.AddLog("Model Based Source Generator and Executor is started");
+            this.AddMessage("Model Based Source Generator and Executor is started");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.txtWorkspacePath.Text = WorkspaceLogic.WorkspacePath;
+            this.txtNameOfFiles.Text = currentFilename;
 
             var workspacePath = this.txtWorkspacePath.Text;
             var csMbgiPath = Path.Combine(workspacePath, currentFilename + ".mbgi");
@@ -52,15 +53,10 @@ namespace mbgi_gui
                 this.txtUserCs.Text = File.ReadAllText(csUserPath);
             }
         }
-
-        public void AddLog(string line)
+        
+        private async void btnGenerateSource_Click(object sender, RoutedEventArgs e)
         {
-            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + line + "\r\n" + this.txtLog.Text;
-        }
-
-        private void btnGenerateSource_Click(object sender, RoutedEventArgs e)
-        {
-            var logMessage = new StringBuilder();
+            currentFilename = this.txtNameOfFiles.Text;
 
             try
             {
@@ -72,6 +68,7 @@ namespace mbgi_gui
                 }
 
                 StringBuilder builder;
+
                 // Gets the source code
                 using (var sourceReader = new StringReader(this.txtMBGISource.Text))
                 {
@@ -96,54 +93,21 @@ namespace mbgi_gui
                 File.WriteAllText(csUserPath, this.txtUserCs.Text);
                 File.WriteAllText(csPath, builder.ToString());
 
-                logMessage.AppendLine("C#-file Generated: " + csPath);
-                logMessage.AppendLine("MBGI-file Generated: " + csMbgiPath);
+                this.AddMessage("C#-file Generated: " + csPath);
+                this.AddMessage("MBGI-file Generated: " + csMbgiPath);
 
                 if (File.Exists(csUserPath))
                 {
                     csList.Add(csUserPath);
-                    logMessage.AppendLine("User-defined file found for: " + csUserPath);
+                    this.AddMessage("User-defined file found for: " + csUserPath);
                 }
                 else
                 {
-                    logMessage.AppendLine("No user-defined file found for: " + csUserPath);
+                    this.AddMessage("No user-defined file found for: " + csUserPath);
                 }
 
-                // Start the compilation
-                var compiler = new CSharpCodeProvider();
-                var parameters = new CompilerParameters();
-                parameters.GenerateInMemory = false;
-                parameters.OutputAssembly = dllPath;
-                parameters.IncludeDebugInformation = true;
-                parameters.CompilerOptions = "/nologo /target:library";
-                parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.ReferencedAssemblies.Add("System.Runtime.dll");
-                parameters.ReferencedAssemblies.Add("System.Diagnostics.Debug.dll");
-                parameters.ReferencedAssemblies.Add("ModellMeister.Runtime.dll");
-
-                // Copies the ModellMeister.Runtime.dll to path
-                File.Copy(
-                    Path.Combine(
-                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                        "ModellMeister.Runtime.dll"),
-                    Path.Combine(workspacePath, "ModellMeister.Runtime.dll"),
-                    true);
-                File.Copy(
-                    Path.Combine(
-                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                        "ModellMeister.dll"),
-                    Path.Combine(workspacePath, "ModellMeister.dll"),
-                    true);
-
-                var compileResult = compiler.CompileAssemblyFromFile(parameters, csList.ToArray());
-
-                if (compileResult.Errors.Cast<CompilerError>().Any(x => x.ErrorNumber=="CS0042"))
-                {
-                    // When the .pdb files are loaded by Visual Studio, we cannot generate Debuginfo
-                    // http://msdn.microsoft.com/de-de/library/82h240ac(v=vs.90).aspx
-                    parameters.IncludeDebugInformation = false;
-                    compileResult = compiler.CompileAssemblyFromFile(parameters, csList.ToArray());
-                }
+                var dllCompiler = new Mb2DllCompiler();
+                var compileResult = await dllCompiler.CompileSourceCode(workspacePath, csList, dllPath);
 
                 if (compileResult.Errors.Count == 0)
                 {
@@ -167,6 +131,8 @@ namespace mbgi_gui
 
                     try
                     {
+                        this.AddMessage("Running simulation");
+
                         var result = type.LoadAndStartFromLibrary("modelbased.dll");
                         
                         var resultBuilder = new StringBuilder();
@@ -192,7 +158,7 @@ namespace mbgi_gui
                     }
                     catch (Exception exc)
                     {
-                        logMessage.AppendLine("Unhandled exception: " + exc.ToString());
+                        this.AddMessage("Unhandled exception: " + exc.ToString());
                     }
 
                     AppDomain.Unload(appDomain);
@@ -201,22 +167,28 @@ namespace mbgi_gui
                 {
                     foreach (var error in compileResult.Errors)
                     {
-                        logMessage.AppendLine("Compile Error: " + error.ToString());
+                        this.AddMessage("Compile Error: " + error.ToString());
                     }
                 }
             }
             catch (Exception exc)
             {
-                logMessage.AppendLine(exc.ToString());
-            }
-            finally
-            {
-                this.txtLog.Text = logMessage.ToString();
+                this.AddMessage(exc.ToString());
             }
         }
 
         private void btnSimulateSource_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        public void ClearMessages()
+        {
+            this.txtLog.Text = string.Empty;
+        }
+
+        public void AddMessage(string message)
+        {
+            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
         }
     }
 }
