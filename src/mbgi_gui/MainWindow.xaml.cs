@@ -184,8 +184,11 @@ namespace mbgi_gui
                             resultBuilder.AppendLine();
                         }
 
-                        MessageBox.Show(resultBuilder.ToString());
                         File.WriteAllText(resultPath, resultBuilder.ToString());
+
+                        var resultWindow = new ResultWindow();
+                        resultWindow.Results = result;
+                        resultWindow.ShowDialog();
                     }
                     catch (Exception exc)
                     {
