@@ -12,18 +12,26 @@ namespace ModellMeister.Runner
     /// <summary>
     /// Executes the simulation
     /// </summary>
-    public class Simulation
+    public class Simulation : MarshalByRefObject
     {
         /// <summary>
         /// Stores the modeltype
         /// </summary>
         private IModelType modelType;
 
-        private SimulationSettings settings;
+        public SimulationSettings Settings
+        {
+            get;
+            set;
+        }
+
+        public Simulation()
+        {            
+        }
 
         public Simulation(SimulationSettings settings)
         {
-            this.settings = settings;
+            this.Settings = settings;
         }
 
         /// <summary>
@@ -86,7 +94,7 @@ namespace ModellMeister.Runner
         /// </summary>
         public void StartSimulation()
         {
-            if (this.settings.TimeInterval.TotalSeconds <= 0)
+            if (this.Settings.TimeInterval.TotalSeconds <= 0)
             {
                 throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
             }
@@ -99,11 +107,11 @@ namespace ModellMeister.Runner
             this.modelType.Init();
 
             var step = new StepInfo();
-            step.TimeInterval = this.settings.TimeInterval;
+            step.TimeInterval = this.Settings.TimeInterval;
 
             for (var currentTime = 0.0;
-                currentTime < this.settings.SimulationTime.TotalSeconds;
-                currentTime += this.settings.TimeInterval.TotalSeconds)
+                currentTime < this.Settings.SimulationTime.TotalSeconds;
+                currentTime += this.Settings.TimeInterval.TotalSeconds)
             {
                 step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
                 

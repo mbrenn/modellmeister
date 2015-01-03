@@ -25,12 +25,17 @@ namespace ModellMeister
             {
                 using (var writer = new StreamWriter(pathTargetFile))
                 {
-                    this.ConvertFile(reader, writer);
+                    this.ConvertStreams(reader, writer);
                 }
             }
         }
 
-        public void ConvertFile(TextReader reader, TextWriter writer)
+        /// <summary>
+        /// Converts the file by text reader and writer
+        /// </summary>
+        /// <param name="reader">Reader which will contain the MBGI Code</param>
+        /// <param name="writer">Writer which will contain the C# code</param>
+        public void ConvertStreams(TextReader reader, TextWriter writer)
         {
             Console.WriteLine("Parsing MBGI File");
             var parser = new MbgiFileParser();

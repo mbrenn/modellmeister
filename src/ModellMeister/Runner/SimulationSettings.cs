@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModellMeister.Runner
 {
+    [Serializable]
     public class SimulationSettings
     {
         public TimeSpan SimulationTime
