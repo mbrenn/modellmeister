@@ -89,6 +89,7 @@ namespace mbgi_gui
                 var csMbgiPath = Path.Combine(workspacePath, currentFilename + ".mbgi");
                 var dllPath = Path.Combine(workspacePath, currentFilename + ".dll");
                 var csUserPath = Path.Combine(workspacePath, currentFilename + ".user.cs");
+                var resultPath = Path.Combine(workspacePath, currentFilename + ".result.txt");
                 csList.Add(csPath);
 
                 File.WriteAllText(csMbgiPath, this.txtMBGISource.Text);
@@ -135,6 +136,15 @@ namespace mbgi_gui
                     true);
 
                 var compileResult = compiler.CompileAssemblyFromFile(parameters, csList.ToArray());
+
+                if (compileResult.Errors.Cast<CompilerError>().Any(x => x.ErrorNumber=="CS0042"))
+                {
+                    // When the .pdb files are loaded by Visual Studio, we cannot generate Debuginfo
+                    // http://msdn.microsoft.com/de-de/library/82h240ac(v=vs.90).aspx
+                    parameters.IncludeDebugInformation = false;
+                    compileResult = compiler.CompileAssemblyFromFile(parameters, csList.ToArray());
+                }
+
                 if (compileResult.Errors.Count == 0)
                 {
                     var setup = new AppDomainSetup()
@@ -157,7 +167,25 @@ namespace mbgi_gui
 
                     try
                     {
-                        type.LoadAndStartFromLibrary("modelbased.dll");
+                        var result = type.LoadAndStartFromLibrary("modelbased.dll");
+                        
+                        var resultBuilder = new StringBuilder();
+                        resultBuilder.AppendLine("First 10 results");
+                        foreach (var line in result.Take(10))
+                        {
+                            var komma = string.Empty;
+                            foreach (var v in line)
+                            {
+                                resultBuilder.Append(komma);
+                                resultBuilder.Append(v.ToString());
+                                komma = ", ";
+                            }
+
+                            resultBuilder.AppendLine();
+                        }
+
+                        MessageBox.Show(resultBuilder.ToString());
+                        File.WriteAllText(resultPath, resultBuilder.ToString());
                     }
                     catch (Exception exc)
                     {

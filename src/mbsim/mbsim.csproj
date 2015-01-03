@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModellMeister.Runtime\ModellMeister.Runtime.csproj">
+      <Project>{c3425e68-9814-4cef-9060-d53feb953919}</Project>
+      <Name>ModellMeister.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ModellMeister\ModellMeister.csproj">
       <Project>{1e6407e2-e1dc-40ed-a202-5a9ba519d353}</Project>
       <Name>ModellMeister</Name>

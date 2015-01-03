@@ -25,5 +25,11 @@ namespace ModellMeister.Runtime
             get;
             set;
         }
+
+        public IDebugEnvironment Debug
+        {
+            get;
+            set;
+        }
     }
 }

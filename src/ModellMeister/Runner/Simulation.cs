@@ -12,12 +12,14 @@ namespace ModellMeister.Runner
     /// <summary>
     /// Executes the simulation
     /// </summary>
-    public class Simulation : MarshalByRefObject
+    public class Simulation : MarshalByRefObject, IDebugEnvironment
     {
         /// <summary>
         /// Stores the modeltype
         /// </summary>
         private IModelType modelType;
+
+        private List<object[]> results = new List<object[]>();
 
         public SimulationSettings Settings
         {
@@ -38,11 +40,11 @@ namespace ModellMeister.Runner
         /// Loads the library and starts it
         /// </summary>
         /// <param name="pathToLibrary">Library to be started</param>
-        public void LoadAndStartFromLibrary(
+        public IList<object[]> LoadAndStartFromLibrary(
             string pathToLibrary)
         {
             this.LoadFromLibrary(pathToLibrary);
-            this.StartSimulation();
+            return this.StartSimulation();
         }
 
         /// <summary>
@@ -92,8 +94,10 @@ namespace ModellMeister.Runner
         /// <summary>
         /// Starts the simulation
         /// </summary>
-        public void StartSimulation()
+        public IList<object[]> StartSimulation()
         {
+            this.results.Clear();
+
             if (this.Settings.TimeInterval.TotalSeconds <= 0)
             {
                 throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
@@ -108,6 +112,7 @@ namespace ModellMeister.Runner
 
             var step = new StepInfo();
             step.TimeInterval = this.Settings.TimeInterval;
+            step.Debug = this;
 
             for (var currentTime = 0.0;
                 currentTime < this.Settings.SimulationTime.TotalSeconds;
@@ -117,6 +122,13 @@ namespace ModellMeister.Runner
                 
                 this.modelType.Execute(step);
             }
+
+            return this.results;
+        }
+
+        public void AddResult(object[] values)
+        {
+            this.results.Add(values);
         }
     }
 }
