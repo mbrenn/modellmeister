@@ -2,10 +2,8 @@
 {
     public partial class Constant
     {
-        private System.Random random = new System.Random();
-
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
-        {            
+        {
             this.Output = this.Value;
         }
     }

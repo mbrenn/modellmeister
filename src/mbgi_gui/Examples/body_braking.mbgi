@@ -14,11 +14,11 @@ TI Input3 : Double
 
 # Defines the deceleration of the vehicle
 B Acceleration : Constant
-BI Value defaultvalue -2
+BI Value defaultvalue -2 # Deceleration of 2 m/s²
 
 # Integrates the deceleration and calculates vehicle speed
 B a2v : Integrator
-BI Offset defaultvalue 10
+BI Offset defaultvalue 10 # Starting speed of 10 m/s
 W Acceleration.Output a2v.Input
 
 # Integrates the vehicles speed and calculates the position of the vehicle

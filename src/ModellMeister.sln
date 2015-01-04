@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B8C0C657-6FDF-4C25-AEBB-B276E743AB88}"
 	ProjectSection(SolutionItems) = preProject
 		post_build.ps1 = post_build.ps1
+		prepare_bundle.ps1 = prepare_bundle.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{73E6F42A-6655-49DF-929C-62798A962B66}"
