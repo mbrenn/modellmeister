@@ -13,7 +13,6 @@
     {
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
-            System.Diagnostics.Debug.WriteLine(this.Input);
             info.Debug.AddResult(new object[]{this.Input});
         }
     }

@@ -40,6 +40,24 @@ namespace mbgi_gui.Logic
                     CsFile = LoadFromResource("mbgi_gui.Examples.example2.user.txt")
                 });
 
+            examples.Add(
+                new ExampleItem()
+                {
+                    Name = "Body Acceleration",
+                    Description = "Accelerates a body",
+                    MbgiFile = LoadFromResource("mbgi_gui.Examples.body_acceleration.mbgi"),
+                    CsFile = LoadFromResource("mbgi_gui.Examples.body_acceleration.user.txt")
+                });
+
+            examples.Add(
+                new ExampleItem()
+                {
+                    Name = "Body Braking",
+                    Description = "Accelerates a body, like a vehicle, down to standstill",
+                    MbgiFile = LoadFromResource("mbgi_gui.Examples.body_braking.mbgi"),
+                    CsFile = LoadFromResource("mbgi_gui.Examples.body_braking.user.txt")
+                });
+
             return examples;
         }
 
@@ -48,9 +66,9 @@ namespace mbgi_gui.Logic
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = filename;
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd();
                 }

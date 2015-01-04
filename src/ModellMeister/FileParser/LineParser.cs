@@ -181,6 +181,7 @@ namespace ModellMeister.FileParser
             {
                 throw new InvalidOperationException("Unknown property type '" + key + "'");
             }
+
             return foundPropertyType;
         }
 

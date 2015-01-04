@@ -129,6 +129,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Examples\example2.mbgi" />
+    <EmbeddedResource Include="Examples\body_acceleration.mbgi" />
+    <EmbeddedResource Include="Examples\body_braking.mbgi" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -157,6 +159,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Examples\example1.user.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Examples\body_acceleration.user.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Examples\body_braking.user.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

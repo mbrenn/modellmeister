@@ -1,0 +1,30 @@
+﻿T Constant
+TI Value : Double
+TO Output : Double
+
+T Integrator
+TI Offset : Double
+TI Input : Double
+TO Output : Double
+
+T Report
+TI Input1 : Double
+TI Input2 : Double
+TI Input3 : Double
+
+B Acceleration : Constant
+BI Value defaultvalue -2
+
+B a2v : Integrator
+BI Offset defaultvalue 10
+
+B v2p : Integrator
+BI Offset defaultvalue 0
+
+B Report : Report
+
+W Acceleration.Output a2v.Input
+W a2v.Output v2p.Input
+W Acceleration.Output Report.Input1
+W a2v.Output Report.Input2
+W v2p.Output Report.Input3

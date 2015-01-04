@@ -209,10 +209,6 @@ namespace ModellMeister.SourceGenerator.CSharp
                         fieldExpression,
                         new CodeObjectCreateExpression(
                             fieldType)));
-                initMethodStatements.Add(
-                    new CodeMethodInvokeExpression(
-                        fieldExpression,
-                        "Init"));
 
                 // Goes through the ports and adds the initialization, if the 
                 // default value of the port is different to the one of the type
@@ -240,6 +236,12 @@ namespace ModellMeister.SourceGenerator.CSharp
                                     ConvertToDotNetValue(blockPort.DataType, blockPort.DefaultValue))));
                     }
                 }
+
+                // Invokes the init Method of the block
+                initMethodStatements.Add(
+                    new CodeMethodInvokeExpression(
+                        fieldExpression,
+                        "Init"));
 
                 // Adds some statements to the execution method
                 // First, populate the input values
