@@ -1,0 +1,20 @@
+﻿namespace ModelBased
+{
+    public partial class RandomType
+    {
+        private System.Random random = new System.Random();
+
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        {            
+            this.Output = this.random.NextDouble();
+        }
+    }
+    public partial class ToConsoleType
+    {
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        {
+            System.Diagnostics.Debug.WriteLine(this.Input);
+            info.Debug.AddResult(new object[]{this.Input});
+        }
+    }
+}

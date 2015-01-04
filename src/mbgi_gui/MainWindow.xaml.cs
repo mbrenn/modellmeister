@@ -44,33 +44,36 @@ namespace mbgi_gui
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.LoadContent();
+            this.LoadContent(true);
         }
 
-        private void LoadContent()
+        private void LoadContent(bool loadFromFile)
         {
             this.txtWorkspacePath.Text = "Workspace: \r\n" + this.modelFileModel.WorkspacePath;
             this.txtNameOfFiles.Text = "Workspace: \r\n" + this.modelFileModel.Filename;
 
-            var workspacePath = this.modelFileModel.WorkspacePath;
-            var csMbgiPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".mbgi");
-            if (File.Exists(csMbgiPath))
+            if (loadFromFile)
             {
-                this.txtMBGISource.Text = File.ReadAllText(csMbgiPath);
-            }
-            else
-            {
-                this.txtMBGISource.Text = string.Empty;
-            }
+                var workspacePath = this.modelFileModel.WorkspacePath;
+                var csMbgiPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".mbgi");
+                if (File.Exists(csMbgiPath))
+                {
+                    this.txtMBGISource.Text = File.ReadAllText(csMbgiPath);
+                }
+                else
+                {
+                    this.txtMBGISource.Text = string.Empty;
+                }
 
-            var csUserPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".user.cs");
-            if (File.Exists(csUserPath))
-            {
-                this.txtUserCs.Text = File.ReadAllText(csUserPath);
-            }
-            else
-            {
-                this.txtUserCs.Text = string.Empty;
+                var csUserPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".user.cs");
+                if (File.Exists(csUserPath))
+                {
+                    this.txtUserCs.Text = File.ReadAllText(csUserPath);
+                }
+                else
+                {
+                    this.txtUserCs.Text = string.Empty;
+                }
             }
         }
 
@@ -138,7 +141,6 @@ namespace mbgi_gui
             try
             {
                 var workspacePath = this.CreateAndGetWorkspace();
-
                 StringBuilder generatedSource;
 
                 // Gets the source code
@@ -207,7 +209,7 @@ namespace mbgi_gui
             dlg.Model = this.modelFileModel;
             if (dlg.ShowDialog() == true)
             {
-                this.LoadContent();
+                this.LoadContent(true);
             }
         }
 
@@ -223,13 +225,29 @@ namespace mbgi_gui
                 this.modelFileModel.WorkspacePath = Path.GetDirectoryName(dlg.FileName);
                 this.modelFileModel.Filename = Path.GetFileNameWithoutExtension(dlg.FileName);
 
-                this.LoadContent();
+                this.LoadContent(true);
             }
         }
 
         private void btnLoadExamples_Click(object sender, RoutedEventArgs e)
         {
+            var exampleDlg = new ExampleDialog();
+            exampleDlg.Owner = this;
 
+            if (exampleDlg.ShowDialog() == true)
+            {
+                var selectedExample = exampleDlg.SelectedExample;
+                if (selectedExample != null)
+                {
+                    // Load...
+                    this.txtMBGISource.Text = selectedExample.MbgiFile;
+                    this.txtUserCs.Text = selectedExample.CsFile;
+                    this.modelFileModel.WorkspacePath = WorkspaceLogic.WorkspacePath;
+                    this.modelFileModel.Filename = selectedExample.Name;
+
+                    this.LoadContent(false);
+                }
+            }
         }
     }
 }

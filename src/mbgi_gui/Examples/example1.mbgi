@@ -1,0 +1,7 @@
+﻿B Random
+BO Output : Double
+
+B ToConsole
+BI Input : Double
+
+W Random.Output ToConsole.Input

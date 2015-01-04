@@ -1,0 +1,18 @@
+﻿T Random
+TO Output : Double
+
+T Increment
+TI Input : Double
+TO Output : Double
+
+T ToConsole
+TI Input : Double
+
+B rnd : Random
+B inc1st : Increment
+B inc2nd : Increment
+B tc : ToConsole
+
+W rnd.Output inc1st.Input
+W inc1st.Output inc2nd.Input
+W inc2nd.Output tc.Input

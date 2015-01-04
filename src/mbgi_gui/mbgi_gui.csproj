@@ -72,6 +72,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ExampleDialog.xaml.cs">
+      <DependentUpon>ExampleDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\ExampleItem.cs" />
+    <Compile Include="Logic\Examples.cs" />
     <Compile Include="Models\NewFileModel.cs" />
     <Compile Include="NewDialog.xaml.cs">
       <DependentUpon>NewDialog.xaml</DependentUpon>
@@ -79,6 +84,10 @@
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="ExampleDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,6 +128,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Examples\example2.mbgi" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -138,6 +148,15 @@
       <Project>{1e6407e2-e1dc-40ed-a202-5a9ba519d353}</Project>
       <Name>ModellMeister</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Examples\example2.user.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Examples\example1.mbgi" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Examples\example1.user.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
