@@ -1,4 +1,5 @@
 ﻿using mbgi_gui.Logic;
+using mbgi_gui.Models;
 using Microsoft.CSharp;
 using ModellMeister;
 using ModellMeister.Runner;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -26,37 +28,112 @@ namespace mbgi_gui
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string currentFilename = "modelbased";
+        private NewFileModel modelFileModel;
 
         public MainWindow()
         {
             InitializeComponent();
 
             this.AddMessage("Model Based Source Generator and Executor is started");
+            this.modelFileModel = new NewFileModel()
+            {
+                WorkspacePath = WorkspaceLogic.WorkspacePath,
+                Filename = "modelbased"
+            };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.txtWorkspacePath.Text = WorkspaceLogic.WorkspacePath;
-            this.txtNameOfFiles.Text = currentFilename;
+            this.LoadContent();
+        }
 
-            var workspacePath = this.txtWorkspacePath.Text;
-            var csMbgiPath = Path.Combine(workspacePath, currentFilename + ".mbgi");
+        private void LoadContent()
+        {
+            this.txtWorkspacePath.Text = "Workspace: \r\n" + this.modelFileModel.WorkspacePath;
+            this.txtNameOfFiles.Text = "Workspace: \r\n" + this.modelFileModel.Filename;
+
+            var workspacePath = this.modelFileModel.WorkspacePath;
+            var csMbgiPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".mbgi");
             if (File.Exists(csMbgiPath))
             {
                 this.txtMBGISource.Text = File.ReadAllText(csMbgiPath);
             }
+            else
+            {
+                this.txtMBGISource.Text = string.Empty;
+            }
 
-            var csUserPath = Path.Combine(workspacePath, currentFilename + ".user.cs");
+            var csUserPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".user.cs");
             if (File.Exists(csUserPath))
             {
                 this.txtUserCs.Text = File.ReadAllText(csUserPath);
             }
+            else
+            {
+                this.txtUserCs.Text = string.Empty;
+            }
         }
-        
-        private async void btnGenerateSource_Click(object sender, RoutedEventArgs e)
+
+        private void RunSimulationInAppDomain(string workspacePath, string dllName)
         {
-            currentFilename = this.txtNameOfFiles.Text;
+            var setup = new AppDomainSetup()
+            {
+                ApplicationBase = workspacePath,
+                PrivateBinPath = workspacePath,
+                ConfigurationFile = null
+            };
+
+            var appDomain = AppDomain.CreateDomain("Runner", null, setup);
+            var type = (Simulation)appDomain.CreateInstanceAndUnwrap(
+                "ModellMeister",
+                "ModellMeister.Runner.Simulation");
+
+            type.Settings = new SimulationSettings()
+            {
+                SimulationTime = TimeSpan.FromSeconds(10),
+                TimeInterval = TimeSpan.FromSeconds(0.1)
+            };
+
+            try
+            {
+                var simulationResult = type.LoadAndStartFromLibrarySync(dllName);
+
+                var resultWindow = new ResultWindow();
+                resultWindow.Results = simulationResult.Result;
+                resultWindow.ShowDialog();
+            }
+            catch (Exception exc)
+            {
+                this.AddMessage("Unhandled exception: " + exc.ToString());
+            }
+
+            AppDomain.Unload(appDomain);
+        }
+
+        private string CreateAndGetWorkspace()
+        {
+            var workspacePath = this.modelFileModel.WorkspacePath;
+            Environment.CurrentDirectory = workspacePath;
+            if (!Directory.Exists(workspacePath))
+            {
+                Directory.CreateDirectory(workspacePath);
+            }
+            return workspacePath;
+        }
+
+        public void ClearMessages()
+        {
+            this.txtLog.Text = string.Empty;
+        }
+
+        public void AddMessage(string message)
+        {
+            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
+        }
+
+        private async void btnRunSimulation_Click(object sender, RoutedEventArgs e)
+        {
+            var currentFilename = this.modelFileModel.Filename;
 
             try
             {
@@ -107,7 +184,7 @@ namespace mbgi_gui
                 if (compileResult.Errors.Count == 0)
                 {
                     this.AddMessage("Running simulation");
-                    RunSimulationInAppDomain(workspacePath);
+                    this.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
                 }
                 else
                 {
@@ -123,65 +200,36 @@ namespace mbgi_gui
             }
         }
 
-        private void RunSimulationInAppDomain(string workspacePath)
+        private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            var setup = new AppDomainSetup()
+            var dlg = new NewDialog();
+            dlg.Owner = this;
+            dlg.Model = this.modelFileModel;
+            if (dlg.ShowDialog() == true)
             {
-                ApplicationBase = workspacePath,
-                PrivateBinPath = workspacePath,
-                ConfigurationFile = null
-            };
-
-            var appDomain = AppDomain.CreateDomain("Runner", null, setup);
-            var type = (Simulation)appDomain.CreateInstanceAndUnwrap(
-                "ModellMeister",
-                "ModellMeister.Runner.Simulation");
-
-            type.Settings = new SimulationSettings()
-            {
-                SimulationTime = TimeSpan.FromSeconds(10),
-                TimeInterval = TimeSpan.FromSeconds(0.1)
-            };
-
-            try
-            {
-                var simulationResult = type.LoadAndStartFromLibrarySync("modelbased.dll");
-
-                var resultWindow = new ResultWindow();
-                resultWindow.Results = simulationResult.Result;
-                resultWindow.ShowDialog();
+                this.LoadContent();
             }
-            catch (Exception exc)
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.RestoreDirectory = true;
+            dlg.Filter = "MBGI-File|*.mbgi";
+            dlg.InitialDirectory = this.modelFileModel.WorkspacePath;
+
+            if (dlg.ShowDialog() == true)
             {
-                this.AddMessage("Unhandled exception: " + exc.ToString());
+                this.modelFileModel.WorkspacePath = Path.GetDirectoryName(dlg.FileName);
+                this.modelFileModel.Filename = Path.GetFileNameWithoutExtension(dlg.FileName);
+
+                this.LoadContent();
             }
-
-            AppDomain.Unload(appDomain);
         }
 
-        private string CreateAndGetWorkspace()
+        private void btnLoadExamples_Click(object sender, RoutedEventArgs e)
         {
-            var workspacePath = this.txtWorkspacePath.Text;
-            Environment.CurrentDirectory = workspacePath;
-            if (!Directory.Exists(workspacePath))
-            {
-                Directory.CreateDirectory(workspacePath);
-            }
-            return workspacePath;
-        }
 
-        private void btnSimulateSource_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        public void ClearMessages()
-        {
-            this.txtLog.Text = string.Empty;
-        }
-
-        public void AddMessage(string message)
-        {
-            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
         }
     }
 }
