@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using ModellMeister.Logic;
+using OxyPlot;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
@@ -21,18 +22,24 @@ namespace mbgi_gui
     /// </summary>
     public partial class ResultWindow : Window
     {
-        public IList<object[]> Results
+        public ReportLogic Results
         {
             set
             {
                 var model = new PlotModel();
-                var n = 0;
-                var series = new OxyPlot.Series.LineSeries();
-                model.Series.Add(series);
-                foreach (var l in value)
+
+                foreach (var series in value.LineSeries)
                 {
-                    series.Points.Add(new DataPoint(n, (double)(l[0])));
-                    n++;
+                    var oxySeries = new OxyPlot.Series.LineSeries();
+
+                    var n = 0;
+                    foreach (var v in series.Values)
+                    {
+                        oxySeries.Points.Add(new DataPoint(n, v));
+                        n++;
+                    }
+
+                    model.Series.Add(oxySeries);
                 }
 
                 this.View.Model = model;

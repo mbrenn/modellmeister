@@ -49,6 +49,8 @@
     <Compile Include="FileParser\MbgiFileParser.cs" />
     <Compile Include="FileParser\ParsedLine.cs" />
     <Compile Include="Logic\DataFlowLogic.cs" />
+    <Compile Include="Logic\ReportLogic.cs" />
+    <Compile Include="Logic\Report\LineSeries.cs" />
     <Compile Include="Mb2DllCompiler.cs" />
     <Compile Include="Mbgi2CsConverter.cs" />
     <Compile Include="Model\DataType.cs" />

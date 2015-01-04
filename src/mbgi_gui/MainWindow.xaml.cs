@@ -2,6 +2,7 @@
 using mbgi_gui.Models;
 using Microsoft.CSharp;
 using ModellMeister;
+using ModellMeister.Logic;
 using ModellMeister.Runner;
 using System;
 using System.CodeDom.Compiler;
@@ -100,9 +101,10 @@ namespace mbgi_gui
             try
             {
                 var simulationResult = type.LoadAndStartFromLibrarySync(dllName);
-
+                
                 var resultWindow = new ResultWindow();
-                resultWindow.Results = simulationResult.Result;
+                
+                resultWindow.Results = new ReportLogic(simulationResult);
                 resultWindow.ShowDialog();
             }
             catch (Exception exc)
