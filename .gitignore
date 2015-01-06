@@ -160,3 +160,4 @@ $RECYCLE.BIN/
 
 examples/bin/*.dll
 examples/bin/*.exe
+dist/*.zip
