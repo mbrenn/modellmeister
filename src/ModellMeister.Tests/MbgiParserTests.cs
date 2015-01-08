@@ -176,5 +176,38 @@ namespace ModellMeister.Tests
             Assert.That(inputPort.DataType, Is.EqualTo(DataType.Double));
             Assert.That(inputPort.DefaultValue, Is.EqualTo(3.0));
         }
+
+        [Test]
+        public void TestNoNameSpace()
+        {
+            var loadedFile = "T MyNameSpace";
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromText(loadedFile);
+            Assert.That(globalScope.NameSpace, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void TestNameSpace()
+        {
+            var loadedFile = "N MyNameSpace";
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromText(loadedFile);
+            Assert.That(globalScope.NameSpace, Is.EqualTo("MyNameSpace"));
+        }
+
+        [Test]
+        public void TestNameSpaceDefinedTwice()
+        {
+            var loadedFile = "N MyNameSpace\r\nN OtherNameSpace";
+
+            var parser = new MbgiFileParser();
+            Assert.Throws<InvalidOperationException>(
+                () =>
+                {
+                    var globalScope = parser.ParseFileFromText(loadedFile);
+                });
+        }
     }
 }

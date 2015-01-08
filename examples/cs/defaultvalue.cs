@@ -62,8 +62,8 @@ namespace ModelBased {
             this._C1 = new Constant();
             this._C1.Init();
             this._C2 = new Constant();
-            this._C2.Init();
             this._C2.Value = 3D;
+            this._C2.Init();
             this._Add = new Adder();
             this._Add.Init();
             this._Writer = new CSVWriter();

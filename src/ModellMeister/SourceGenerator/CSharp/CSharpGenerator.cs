@@ -33,8 +33,14 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="writer">Writer to be used</param>
         public void CreateSource(ModelCompositeType model, TextWriter writer)
         {
+            var nameSpace = model.NameSpace;
+            if (string.IsNullOrEmpty(nameSpace))
+            {
+                nameSpace = "ModelBased";
+            }
+
             this.compileUnit = new CodeCompileUnit();
-            this.nameSpace = new CodeNamespace("ModelBased");
+            this.nameSpace = new CodeNamespace(nameSpace);
             this.compileUnit.Namespaces.Add(this.nameSpace);
 
             var sharpProvider = new CSharpCodeProvider();

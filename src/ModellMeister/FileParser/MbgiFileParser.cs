@@ -104,6 +104,10 @@ namespace ModellMeister.FileParser
                 {
                     this.ReadCompositeWire(line);
                 }
+                else if (line.LineType == EntityType.NameSpace)
+                {
+                    this.ReadNameSpace(line);
+                }
                 else
                 {
                     throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
@@ -111,6 +115,20 @@ namespace ModellMeister.FileParser
             }
 
             return this.root;
+        }
+
+        /// <summary>
+        /// Reads the namespace
+        /// </summary>
+        /// <param name="line">Line to be parsed</param>
+        private void ReadNameSpace(ParsedLine line)
+        {
+            if (!string.IsNullOrEmpty(this.root.NameSpace))
+            {
+                throw new InvalidOperationException("NameSpace is already set");
+            }
+
+            this.root.NameSpace = line.Name;
         }
 
         private void ReadType(ParsedLine line)

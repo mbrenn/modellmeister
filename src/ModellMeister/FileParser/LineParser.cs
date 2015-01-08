@@ -55,6 +55,7 @@ namespace ModellMeister.FileParser
             modelTypes["CB"] = EntityType.CompositeBlock;
             modelTypes["CW"] = EntityType.CompositeWire;
             modelTypes["S"] = EntityType.Setting;
+            modelTypes["N"] = EntityType.NameSpace;
             modelTypes["T"] = EntityType.Type;
             modelTypes["TI"] = EntityType.TypeInput;
             modelTypes["TO"] = EntityType.TypeOutput;
@@ -166,6 +167,7 @@ namespace ModellMeister.FileParser
                     parsedLine.Parameters[foundPropertyType] = value;
                 }
             }
+
             return parsedLine;
         }
 
