@@ -1,0 +1,13 @@
+
+N BurnSystems.ModelBased.Test
+
+T  Adder
+TI Summand1		: Double
+TI Summand2		: Double
+TO Sum			: Double
+
+B FirstSummer : Adder
+
+B SecondSummer : Adder
+
+W FirstSummer.Sum SecondSummer.Summand1
