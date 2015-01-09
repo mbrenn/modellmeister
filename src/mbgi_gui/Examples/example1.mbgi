@@ -1,7 +1,8 @@
-﻿B Random
-BO Output : Double
+﻿B Random              # Creates the block "Random" 
+BO Output : Double    # Which has the output "Output"
 
 B ToConsole
 BI Input : Double
 
-W Random.Output ToConsole.Input
+# Wires the output of the random Block to the Console
+W Random.Output ToConsole.Input		

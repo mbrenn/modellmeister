@@ -7,6 +7,7 @@ using ModellMeister.Runner;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -250,6 +251,12 @@ namespace mbgi_gui
                     this.LoadContent(false);
                 }
             }
+        }
+
+        private void btnOpenWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            var workSpacePath = this.CreateAndGetWorkspace();
+            Process.Start(workSpacePath);
         }
     }
 }

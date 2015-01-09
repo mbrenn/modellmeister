@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MBGI-Files", "MBGI-Files", 
 		..\examples\mbgi\fourblocks.mbgi = ..\examples\mbgi\fourblocks.mbgi
 		..\examples\mbgi\onlytype.mbgi = ..\examples\mbgi\onlytype.mbgi
 		..\examples\mbgi\twoblocks.mbgi = ..\examples\mbgi\twoblocks.mbgi
+		..\examples\mbgi\twoblockswithnamespace.mbgi = ..\examples\mbgi\twoblockswithnamespace.mbgi
 		..\examples\mbgi\twotypes.mbgi = ..\examples\mbgi\twotypes.mbgi
 	EndProjectSection
 EndProject
@@ -53,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CS-Files", "CS-Files", "{19
 		..\examples\cs\Implementation.cs = ..\examples\cs\Implementation.cs
 		..\examples\cs\onlytype.cs = ..\examples\cs\onlytype.cs
 		..\examples\cs\twoblocks.cs = ..\examples\cs\twoblocks.cs
+		..\examples\cs\twoblockswithnamespace.cs = ..\examples\cs\twoblockswithnamespace.cs
 		..\examples\cs\twotypes.cs = ..\examples\cs\twotypes.cs
 	EndProjectSection
 EndProject
