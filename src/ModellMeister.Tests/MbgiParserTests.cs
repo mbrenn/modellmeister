@@ -41,6 +41,7 @@ namespace ModellMeister.Tests
         [Test]
         public void TestTwoFile()
         {
+            throw new NotImplementedException("Break the test");
             var loadedFile = File.ReadAllText("../../../../examples/mbgi/twotypes.mbgi");
 
             var parser = new MbgiFileParser();
