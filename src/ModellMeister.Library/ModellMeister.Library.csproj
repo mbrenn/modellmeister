@@ -40,15 +40,22 @@
     <None Include="Statistics.mbgi" />
     <None Include="Logic.mbgi" />
     <None Include="Helper.mbgi" />
-    <None Include="DataFlow.mbgi" />
+    <None Include="ControlFlow.mbgi" />
     <None Include="Comparison.mbgi" />
     <None Include="Algebra.mbgi" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algebra.cs" />
+    <Compile Include="Algebra.user.cs" />
     <Compile Include="Analysis.cs" />
+    <Compile Include="Statistics.user.cs" />
     <Compile Include="Comparison.cs" />
-    <Compile Include="DataFlow.cs" />
+    <Compile Include="Analysis.user.cs" />
+    <Compile Include="Helper.User.cs" />
+    <Compile Include="Logic.User.cs" />
+    <Compile Include="ControlFlow.user.cs" />
+    <Compile Include="Comparison.user.cs" />
+    <Compile Include="ControlFlow.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

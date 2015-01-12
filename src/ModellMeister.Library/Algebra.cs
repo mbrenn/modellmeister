@@ -23,18 +23,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Addition : ModellMeister.Runtime.IModelType {
         
-        private bool _Summand1;
+        private double _Summand1;
         
-        private bool _Summand2;
+        private double _Summand2;
         
-        private bool _Sum;
+        private double _Sum;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Summand1 {
+        public double Summand1 {
             get {
                 return this._Summand1;
             }
@@ -44,7 +44,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Summand2 {
+        public double Summand2 {
             get {
                 return this._Summand2;
             }
@@ -54,7 +54,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Sum {
+        public double Sum {
             get {
                 return this._Sum;
             }
@@ -74,18 +74,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Subtraction : ModellMeister.Runtime.IModelType {
         
-        private bool _Minuend;
+        private double _Minuend;
         
-        private bool _Subtrahend;
+        private double _Subtrahend;
         
-        private bool _Difference;
+        private double _Difference;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Minuend {
+        public double Minuend {
             get {
                 return this._Minuend;
             }
@@ -95,7 +95,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Subtrahend {
+        public double Subtrahend {
             get {
                 return this._Subtrahend;
             }
@@ -105,7 +105,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Difference {
+        public double Difference {
             get {
                 return this._Difference;
             }
@@ -125,18 +125,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Multiplication : ModellMeister.Runtime.IModelType {
         
-        private bool _Factor1;
+        private double _Factor1;
         
-        private bool _Factor2;
+        private double _Factor2;
         
-        private bool _Product;
+        private double _Product;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Factor1 {
+        public double Factor1 {
             get {
                 return this._Factor1;
             }
@@ -146,7 +146,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Factor2 {
+        public double Factor2 {
             get {
                 return this._Factor2;
             }
@@ -156,7 +156,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Product {
+        public double Product {
             get {
                 return this._Product;
             }
@@ -176,18 +176,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Division : ModellMeister.Runtime.IModelType {
         
-        private bool _Divident;
+        private double _Divident;
         
-        private bool _Divisor;
+        private double _Divisor;
         
-        private bool _Quotient;
+        private double _Quotient;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Divident {
+        public double Divident {
             get {
                 return this._Divident;
             }
@@ -197,7 +197,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Divisor {
+        public double Divisor {
             get {
                 return this._Divisor;
             }
@@ -207,7 +207,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Quotient {
+        public double Quotient {
             get {
                 return this._Quotient;
             }
@@ -227,16 +227,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Square : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -246,7 +246,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -266,16 +266,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class SquareRoot : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -285,7 +285,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -305,16 +305,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Sine : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -324,7 +324,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -344,16 +344,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Cosine : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -363,7 +363,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -383,16 +383,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Tangens : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -402,7 +402,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -422,18 +422,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Exponentation : ModellMeister.Runtime.IModelType {
         
-        private bool _Base;
+        private double _Base;
         
-        private bool _Exponent;
+        private double _Exponent;
         
-        private bool _Power;
+        private double _Power;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Base {
+        public double Base {
             get {
                 return this._Base;
             }
@@ -443,7 +443,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Exponent {
+        public double Exponent {
             get {
                 return this._Exponent;
             }
@@ -453,7 +453,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Power {
+        public double Power {
             get {
                 return this._Power;
             }
@@ -473,16 +473,16 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Reciprocal : ModellMeister.Runtime.IModelType {
         
-        private bool _Input;
+        private double _Input;
         
-        private bool _Output;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Input {
+        public double Input {
             get {
                 return this._Input;
             }
@@ -492,7 +492,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Output {
+        public double Output {
             get {
                 return this._Output;
             }
@@ -512,18 +512,18 @@ namespace ModellMeister.Library.Algebra {
     
     public partial class Logarithm : ModellMeister.Runtime.IModelType {
         
-        private bool _Antilogarithm;
+        private double _Antilogarithm;
         
-        private bool _Base;
+        private double _Base;
         
-        private bool _Result;
+        private double _Output;
         
         partial void DoInit();
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Antilogarithm {
+        public double Antilogarithm {
             get {
                 return this._Antilogarithm;
             }
@@ -533,7 +533,7 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Base {
+        public double Base {
             get {
                 return this._Base;
             }
@@ -543,12 +543,12 @@ namespace ModellMeister.Library.Algebra {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
-        public bool Result {
+        public double Output {
             get {
-                return this._Result;
+                return this._Output;
             }
             set {
-                this._Result = value;
+                this._Output = value;
             }
         }
         

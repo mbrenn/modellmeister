@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModellMeister.Library.DataFlow {
+namespace ModellMeister.Library.ControlFlow {
     
     
     [ModellMeister.Runtime.RootModelAttribute()]
