@@ -67,6 +67,7 @@ namespace ModellMeister.FileParser
             dataTypes["Double"] = DataType.Double;
             dataTypes["Integer"] = DataType.Integer;
             dataTypes["String"] = DataType.String;
+            dataTypes["Boolean"] = DataType.Boolean;
         }
 
 

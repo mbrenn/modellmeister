@@ -1,0 +1,9 @@
+﻿N ModellMeister.Library.Statistics
+
+T Average
+TI Input : Double
+TO Output : Double
+
+T Variance
+TI Input : Double
+TO Output : Double

@@ -1,0 +1,7 @@
+﻿N ModellMeister.Library.DataFlow
+
+T Switch
+TI Condition : Boolean
+TI TrueValue : Double
+TI FalseValue : Double
+TO Output : Double

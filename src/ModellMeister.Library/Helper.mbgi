@@ -1,0 +1,7 @@
+﻿N ModellMeister.Library.Helper
+
+T CurrentTime
+TO Output : Double
+
+T ExecutionAbort
+TI Condition : Boolean

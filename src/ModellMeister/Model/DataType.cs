@@ -13,6 +13,7 @@ namespace ModellMeister.Model
     {
         Double,
         Integer,
-        String
+        String,
+        Boolean
     }
 }

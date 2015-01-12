@@ -64,6 +64,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Runtime", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mbgi_gui", "mbgi_gui\mbgi_gui.csproj", "{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Library", "ModellMeister.Library\ModellMeister.Library.csproj", "{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C5EEB41D-DD47-4EE9-87DF-78F62203604D} = {C5EEB41D-DD47-4EE9-87DF-78F62203604D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +99,10 @@ Global
 		{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +116,6 @@ Global
 		{C02B41E5-0A7C-48B9-B828-DD06D39D0BB9} = {B8C0C657-6FDF-4C25-AEBB-B276E743AB88}
 		{C3425E68-9814-4CEF-9060-D53FEB953919} = {D2C2071D-10E1-4B7E-BBB0-6570FECF5500}
 		{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B} = {B8C0C657-6FDF-4C25-AEBB-B276E743AB88}
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B} = {D2C2071D-10E1-4B7E-BBB0-6570FECF5500}
 	EndGlobalSection
 EndGlobal

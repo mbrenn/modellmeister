@@ -1,0 +1,20 @@
+﻿N ModellMeister.Library.Logic
+
+T And
+TI Input1 : Boolean
+TI Input2 : Boolean
+TO Output : Boolean
+
+T Not
+TI Input : Boolean
+TO Output : Boolean
+
+T Or
+TI Input1 : Boolean
+TI Input2 : Boolean
+TO Output : Boolean
+
+T Xor
+TI Input1 : Boolean
+TI Input2 : Boolean
+TO Output : Boolean

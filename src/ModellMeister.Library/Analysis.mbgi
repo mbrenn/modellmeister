@@ -1,0 +1,9 @@
+﻿N ModellMeister.Library.Analysis
+
+T Integral
+TI Input : Double
+TO Output : Double
+
+T Derivative
+TI Input : Double
+TO Output : Double

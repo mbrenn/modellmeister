@@ -403,6 +403,8 @@ namespace ModellMeister.SourceGenerator.CSharp
                     return "System.Int32";
                 case DataType.String:
                     return "System.String";
+                case DataType.Boolean:
+                    return "System.Boolean";
                 default:
                     throw new InvalidOperationException("Unknown Type: " + dataType.ToString());
             }

@@ -382,7 +382,7 @@ namespace ModellMeister.FileParser
 
             if (line.GetProperty(PropertyType.OfType) == null)
             {
-                throw new InvalidOperationException("No type for the block is given");
+                throw new InvalidOperationException("No type for the port is given: " + port.Name);
             }
 
             port.DataType = LineParser.ConvertToDataType(line.GetProperty(PropertyType.OfType));

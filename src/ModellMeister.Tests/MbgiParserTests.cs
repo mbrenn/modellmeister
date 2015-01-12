@@ -198,6 +198,26 @@ namespace ModellMeister.Tests
         }
 
         [Test]
+        public void TestBoolean()
+        {
+            var loadedFile = @"
+T And
+TI Input1 : Boolean
+TI Input2 : Boolean
+TO Output : Boolean";
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromText(loadedFile);
+            var foundType = globalScope.Types.Where(x => x.Name == "And").FirstOrDefault();
+            Assert.That(foundType , Is.Not.Null);
+
+            var foundInput = foundType.Inputs.Where(x => x.Name == "Input1").FirstOrDefault();
+            Assert.That(foundInput, Is.Not.Null);
+
+            Assert.That(foundInput.DataType, Is.EqualTo(DataType.Boolean));
+        }
+
+        [Test]
         public void TestNameSpaceDefinedTwice()
         {
             var loadedFile = "N MyNameSpace\r\nN OtherNameSpace";

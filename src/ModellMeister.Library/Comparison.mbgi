@@ -1,0 +1,31 @@
+﻿N ModellMeister.Library.Comparison
+
+T Equal
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean
+
+T NotEqual
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean
+
+T GreaterThan
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean
+
+T SmallerThan
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean
+
+T GreaterOrEqualThan
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean
+
+T SmallerOrEqualThan
+TI Input1 : Double
+TI Input2 : Double
+TO Result : Boolean

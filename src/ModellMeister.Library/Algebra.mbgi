@@ -1,0 +1,55 @@
+﻿N ModellMeister.Library.Algebra
+
+T Addition
+TI Summand1 : Boolean
+TI Summand2 : Boolean
+TO Sum : Boolean
+
+T Subtraction
+TI Minuend : Boolean
+TI Subtrahend : Boolean
+TO Difference : Boolean
+
+T Multiplication
+TI Factor1 : Boolean
+TI Factor2 : Boolean
+TO Product : Boolean
+
+T Division
+TI Divident : Boolean
+TI Divisor : Boolean
+TO Quotient : Boolean
+
+T Square
+TI Input : Boolean
+TO Output : Boolean
+
+T SquareRoot
+TI Input : Boolean
+TO Output : Boolean
+
+T Sine
+TI Input : Boolean
+TO Output : Boolean
+
+T Cosine
+TI Input : Boolean
+TO Output : Boolean
+
+T Tangens
+TI Input : Boolean
+TO Output : Boolean
+
+T Exponentation
+TI Base : Boolean
+TI Exponent : Boolean
+TO Power : Boolean
+
+T Reciprocal
+TI Input : Boolean
+TO Output : Boolean
+
+T Logarithm
+TI Antilogarithm : Boolean
+TI Base : Boolean
+TO Result : Boolean
