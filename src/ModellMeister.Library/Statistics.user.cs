@@ -33,7 +33,6 @@ namespace ModellMeister.Library.Statistics
         {
             // Uses 
             // http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Incremental_algorithm
-
             this.samples++;
             var delta = this.Input - this.mean;
             this.mean += delta / this.samples;
