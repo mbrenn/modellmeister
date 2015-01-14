@@ -39,11 +39,9 @@ namespace ModellMeister.SourceGenerator.CSharp
                 nameSpace = "ModelBased";
             }
 
-            this.compileUnit = new CodeCompileUnit();
-            this.nameSpace = new CodeNamespace(nameSpace);
-            this.compileUnit.Namespaces.Add(this.nameSpace);
-
             var sharpProvider = new CSharpCodeProvider();
+
+            this.compileUnit = new CodeCompileUnit();
 
             // Creates the models for each type
             var typeDeclaration = this.CreateClassForType(model);
@@ -64,8 +62,15 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// </summary>
         /// <param name="nameSpace">Namespace, where properties will be added</param>
         /// <param name="type">The type to be added</param>
-        private CodeTypeDeclaration CreateClassForType(EntityWithPorts type)
+        private CodeTypeDeclaration CreateClassForType(ModelType type)
         {
+            if (this.nameSpace == null ||
+                type.NameSpace != this.nameSpace.Name)
+            {
+                this.nameSpace = new CodeNamespace(type.NameSpace);
+                this.compileUnit.Namespaces.Add(this.nameSpace);
+            }
+
             return this.CreateClassForEntityWithPorts(type);
         }
 
@@ -83,54 +88,13 @@ namespace ModellMeister.SourceGenerator.CSharp
             csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
 
             this.typeMapping[type] = csharpType;
-
             this.CreatePorts(type, csharpType);
 
             this.nameSpace.Types.Add(csharpType);
 
             if (type.GetType() == typeof(ModelNativeType))
             {
-                // Returns an empty execution method
-                var executeMethod = new CodeMemberMethod();
-                executeMethod.Name = "Execute";
-                executeMethod.Parameters.Add(
-                    new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
-                executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                executeMethod.Statements.Add(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        "DoExecute",
-                        new CodeArgumentReferenceExpression("info")));
-
-                csharpType.Members.Add(executeMethod);
-
-                // Returns an empty init method
-                var initMethod = new CodeMemberMethod();
-                initMethod.Name = "Init";
-                initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                initMethod.Statements.Add(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        "DoInit"));
-
-                csharpType.Members.Add(initMethod);
-
-                // Returns an partial declaration for the init method
-                // Partial methods are not supported by CodeDom...
-                // This will be called by the Init Method
-                var initImplMethod = new CodeMemberField();
-                initImplMethod.Name = "DoInit()";
-                initImplMethod.Type = new CodeTypeReference("partial void");
-                initImplMethod.Attributes = MemberAttributes.Final;
-
-                csharpType.Members.Add(initImplMethod);
-
-                var execImplMethod = new CodeMemberField();
-                execImplMethod.Name = "DoExecute(ModellMeister.Runtime.StepInfo info)";
-                execImplMethod.Type = new CodeTypeReference("partial void");
-                execImplMethod.Attributes = MemberAttributes.Final;
-
-                csharpType.Members.Add(execImplMethod);
+                this.FillClassForNativeType(csharpType);
             }
             else if (type.GetType() == typeof(ModelCompositeType))
             {
@@ -138,6 +102,51 @@ namespace ModellMeister.SourceGenerator.CSharp
             }
 
             return csharpType;
+        }
+
+        private void FillClassForNativeType(CodeTypeDeclaration csharpType)
+        {
+            // Returns an empty execution method
+            var executeMethod = new CodeMemberMethod();
+            executeMethod.Name = "Execute";
+            executeMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
+            executeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            executeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    "DoExecute",
+                    new CodeArgumentReferenceExpression("info")));
+
+            csharpType.Members.Add(executeMethod);
+
+            // Returns an empty init method
+            var initMethod = new CodeMemberMethod();
+            initMethod.Name = "Init";
+            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            initMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    "DoInit"));
+
+            csharpType.Members.Add(initMethod);
+
+            // Returns an partial declaration for the init method
+            // Partial methods are not supported by CodeDom...
+            // This will be called by the Init Method
+            var initImplMethod = new CodeMemberField();
+            initImplMethod.Name = "DoInit()";
+            initImplMethod.Type = new CodeTypeReference("partial void");
+            initImplMethod.Attributes = MemberAttributes.Final;
+
+            csharpType.Members.Add(initImplMethod);
+
+            var execImplMethod = new CodeMemberField();
+            execImplMethod.Name = "DoExecute(ModellMeister.Runtime.StepInfo info)";
+            execImplMethod.Type = new CodeTypeReference("partial void");
+            execImplMethod.Attributes = MemberAttributes.Final;
+
+            csharpType.Members.Add(execImplMethod);
         }
 
         /// <summary>

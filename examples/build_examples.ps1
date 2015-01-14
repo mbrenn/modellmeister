@@ -10,6 +10,7 @@ Write-Output "Creates the C# files"
 ..\bin\mbgi2cs.exe ..\examples\mbgi\compositeblock.mbgi ..\examples\cs\compositeblock.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\autogenerationblock.mbgi ..\examples\cs\autogenerationblock.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\defaultvalue.mbgi ..\examples\cs\defaultvalue.cs
+..\bin\mbgi2cs.exe ..\examples\mbgi\twonamespaces.mbgi ..\examples\cs\twonamespaces.cs
 
 Push-Location ..\examples\cs\
 
@@ -24,6 +25,8 @@ Write-Output "- twoblocks with namespace"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twoblocks.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twoblockswithnamespace.cs
 Write-Output "- fourblocks"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\fourblocks.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll fourblocks.cs Implementation.cs
+Write-Output "- twonamespaces"
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twonamespaces.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twonamespaces.cs
 Write-Output "- compositeblock"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\compositeblock.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll compositeblock.cs Implementation.cs
 Write-Output "- autogenerationblock"

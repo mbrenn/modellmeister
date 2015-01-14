@@ -1,0 +1,17 @@
+
+N OneNamespace
+T  Adder
+TI Summand1		: Double
+TI Summand2		: Double
+TO Sum			: Double
+
+N TwoNamespaces
+T  Multiplier
+TI Factor1		: Double
+TI Factor2		: Double
+TO Product		: Double
+
+T  OtherMultiplier
+TI Factor1		: Double
+TI Factor2		: Double
+TO Product		: Double

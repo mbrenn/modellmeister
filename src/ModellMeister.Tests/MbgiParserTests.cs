@@ -184,7 +184,7 @@ namespace ModellMeister.Tests
 
             var parser = new MbgiFileParser();
             var globalScope = parser.ParseFileFromText(loadedFile);
-            Assert.That(globalScope.NameSpace, Is.EqualTo(string.Empty));
+            Assert.That(globalScope.NameSpace, Is.EqualTo("ModelBased"));
         }
 
         [Test]
@@ -220,14 +220,23 @@ TO Output : Boolean";
         [Test]
         public void TestNameSpaceDefinedTwice()
         {
-            var loadedFile = "N MyNameSpace\r\nN OtherNameSpace";
+            var loadedFile = @"
+N MyNameSpace
+T And
+N OtherNameSpace
+T Or";
 
             var parser = new MbgiFileParser();
-            Assert.Throws<InvalidOperationException>(
-                () =>
-                {
-                    var globalScope = parser.ParseFileFromText(loadedFile);
-                });
+            var globalScope = parser.ParseFileFromText(loadedFile);
+
+            var andFound = globalScope.Types.Where(x => x.Name == "And").FirstOrDefault();
+            var orFound = globalScope.Types.Where(x => x.Name == "Or").FirstOrDefault();
+
+            Assert.That(andFound, Is.Not.Null);
+            Assert.That(orFound, Is.Not.Null);
+
+            Assert.That(andFound.NameSpace, Is.EqualTo("MyNameSpace"));
+            Assert.That(orFound.NameSpace, Is.EqualTo("OtherNameSpace"));
         }
     }
 }

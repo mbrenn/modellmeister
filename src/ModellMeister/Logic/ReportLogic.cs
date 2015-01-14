@@ -41,9 +41,9 @@ namespace ModellMeister.Logic
         /// </summary>
         /// <param name="result">Result to be parsed</param>
         private void ParseSimulationResult(SimulationResult result)
-        {
+        {            
             // Retrieves the number of results
-            var numberOfSeries = result.Result.Max(x => x.Length);
+            var numberOfSeries = result.Result.Count == 0 ? 0 : result.Result.Max(x => x.Length);
             for (var n = 0; n < numberOfSeries; n++)
             {
                 this.lineSeries.Add(new LineSeries());
