@@ -10,6 +10,7 @@ Write-Output "Creates the C# files"
 ..\bin\mbgi2cs.exe ..\examples\mbgi\compositeblock.mbgi ..\examples\cs\compositeblock.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\autogenerationblock.mbgi ..\examples\cs\autogenerationblock.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\defaultvalue.mbgi ..\examples\cs\defaultvalue.cs
+..\bin\mbgi2cs.exe ..\examples\mbgi\import.mbgi ..\examples\cs\import.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\twonamespaces.mbgi ..\examples\cs\twonamespaces.cs
 
 Push-Location ..\examples\cs\
@@ -19,6 +20,8 @@ Write-Output "- onlytype"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\onlytype.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll onlytype.cs
 Write-Output "- twotypes"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twotypes.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twotypes.cs
+Write-Output "- import"
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\import.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll import.cs
 Write-Output "- twoblocks"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\twoblocks.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll twoblocks.cs
 Write-Output "- twoblocks with namespace"

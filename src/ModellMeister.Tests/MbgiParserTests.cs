@@ -238,5 +238,19 @@ T Or";
             Assert.That(andFound.NameSpace, Is.EqualTo("MyNameSpace"));
             Assert.That(orFound.NameSpace, Is.EqualTo("OtherNameSpace"));
         }
+
+        [Test]
+        public void TestImport()
+        {
+            var pathOfFile = @"../../../../examples/mbgi/import.mbgi";
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromFile(pathOfFile);
+            var foundAdderType = globalScope.Types.Where(x => x.Name == "Adder").FirstOrDefault();
+            Assert.That(foundAdderType, Is.Not.Null);
+
+            var foundMultiplierType = globalScope.Types.Where(x => x.Name == "Multiplier").FirstOrDefault();
+            Assert.That(foundMultiplierType, Is.Not.Null);
+        }
     }
 }

@@ -24,6 +24,8 @@ namespace ModellMeister.Model
         CompositeTypeOutput,
         CompositeBlock,
         CompositeWire,
-        NameSpace
+        NameSpace,
+
+        CommandImportFile
     }
 }

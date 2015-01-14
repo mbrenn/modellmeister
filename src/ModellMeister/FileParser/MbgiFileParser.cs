@@ -46,10 +46,32 @@ namespace ModellMeister.FileParser
         /// </summary>
         private bool alreadyUsed = false;
 
-        public ModelCompositeType ParseFileFromText(string loadedFile)
+        /// <summary>
+        /// Stores the path of the file, which is currently loaded into
+        /// the context. 
+        /// </summary>
+        private string pathOfContext;
+
+        public ModelCompositeType ParseFileFromText(string fileContent)
         {
-            var reader = new StringReader(loadedFile);
-            return this.ParseFile(reader);
+            var reader = new StringReader(fileContent);
+            return this.ParseFileFromReader(reader);
+        }
+
+        public ModelCompositeType ParseFileFromFile(string loadedFile)
+        {
+            var fullPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, loadedFile));
+            this.pathOfContext = Path.GetDirectoryName(fullPath);
+
+            if (!File.Exists(fullPath))
+            {
+                throw new InvalidOperationException("File not found: " + fullPath);
+            }
+
+            using (var reader = new StreamReader(fullPath))
+            {
+                return this.ParseFileFromReader(reader);
+            }
         }
 
         /// <summary>
@@ -57,7 +79,13 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="reader">The reader to be used</param>
         /// <returns>The created environment containing the complete information</returns>
-        public ModelCompositeType ParseFile(TextReader reader)
+        public ModelCompositeType ParseFileFromReader(string pathOfContext, TextReader reader)
+        {
+            this.pathOfContext = pathOfContext;
+            return this.ParseFileFromReader(reader);
+        }
+
+        private ModelCompositeType ParseFileFromReader(TextReader reader)
         {
             if (this.alreadyUsed)
             {
@@ -75,65 +103,98 @@ namespace ModellMeister.FileParser
             var lineParser = new LineParser();
             foreach (var line in lineParser.ParseFile(reader))
             {
-                if (line.LineType == Model.EntityType.Type)
-                {
-                    this.ReadType(line);
-                }
-                else if (line.LineType == EntityType.TypeInput)
-                {
-                    this.ReadTypeInput(line);
-                }
-                else if (line.LineType == EntityType.TypeOutput)
-                {
-                    this.ReadTypeOutput(line);
-                }
-                else if (line.LineType == EntityType.Block)
-                {
-                    this.ReadBlock(line);
-                }
-                else if (line.LineType == EntityType.BlockInput)
-                {
-                    this.ReadBlockInput(line);
-                }
-                else if (line.LineType == EntityType.BlockOutput)
-                {
-                    this.ReadBlockOutput(line);
-                }
-                else if (line.LineType == EntityType.Wire)
-                {
-                    this.ReadWire(line);
-                }
-                else if (line.LineType == EntityType.CompositeType)
-                {
-                    this.ReadCompositeType(line);
-                }
-                else if (line.LineType == EntityType.CompositeBlock)
-                {
-                    this.ReadCompositeBlock(line);
-                }
-                else if (line.LineType == EntityType.CompositeTypeInput)
-                {
-                    this.ReadCompositeTypeInput(line);
-                }
-                else if (line.LineType == EntityType.CompositeTypeOutput)
-                {
-                    this.ReadCompositeTypeOutput(line);
-                }
-                else if (line.LineType == EntityType.CompositeWire)
-                {
-                    this.ReadCompositeWire(line);
-                }
-                else if (line.LineType == EntityType.NameSpace)
-                {
-                    this.ReadNameSpace(line);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
-                }
+                this.ParseLine(line);
             }
 
             return this.root;
+        }
+
+        private void ParseLine(ParsedLine line)
+        {
+            if (line.LineType == Model.EntityType.Type)
+            {
+                this.ReadType(line);
+            }
+            else if (line.LineType == EntityType.TypeInput)
+            {
+                this.ReadTypeInput(line);
+            }
+            else if (line.LineType == EntityType.TypeOutput)
+            {
+                this.ReadTypeOutput(line);
+            }
+            else if (line.LineType == EntityType.Block)
+            {
+                this.ReadBlock(line);
+            }
+            else if (line.LineType == EntityType.BlockInput)
+            {
+                this.ReadBlockInput(line);
+            }
+            else if (line.LineType == EntityType.BlockOutput)
+            {
+                this.ReadBlockOutput(line);
+            }
+            else if (line.LineType == EntityType.Wire)
+            {
+                this.ReadWire(line);
+            }
+            else if (line.LineType == EntityType.CompositeType)
+            {
+                this.ReadCompositeType(line);
+            }
+            else if (line.LineType == EntityType.CompositeBlock)
+            {
+                this.ReadCompositeBlock(line);
+            }
+            else if (line.LineType == EntityType.CompositeTypeInput)
+            {
+                this.ReadCompositeTypeInput(line);
+            }
+            else if (line.LineType == EntityType.CompositeTypeOutput)
+            {
+                this.ReadCompositeTypeOutput(line);
+            }
+            else if (line.LineType == EntityType.CompositeWire)
+            {
+                this.ReadCompositeWire(line);
+            }
+            else if (line.LineType == EntityType.NameSpace)
+            {
+                this.ReadNameSpace(line);
+            }
+            else if (line.LineType == EntityType.CommandImportFile)
+            {
+                this.ReadCommandImportFile(line);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
+            }
+        }
+
+        private void ReadCommandImportFile(ParsedLine line)
+        {
+            var oldContext = this.pathOfContext;
+
+            var fullPath = Path.GetFullPath(Path.Combine(this.pathOfContext, line.Arguments[0]));
+            this.pathOfContext = Path.GetDirectoryName(fullPath);
+
+            if (!File.Exists(fullPath))
+            {
+                throw new InvalidOperationException("File not found: " + fullPath);
+            }
+
+            using (var reader = new StreamReader(fullPath))
+            {
+                var lineParser = new LineParser();
+                foreach (var innerLine in lineParser.ParseFile(reader))
+                {
+                    this.ParseLine(innerLine);
+                }
+            }
+
+            this.pathOfContext = oldContext;
         }
 
         /// <summary>

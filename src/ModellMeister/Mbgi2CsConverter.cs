@@ -25,7 +25,10 @@ namespace ModellMeister
             {
                 using (var writer = new StreamWriter(pathTargetFile))
                 {
-                    this.ConvertStreams(reader, writer);
+                    this.ConvertStreams(
+                        Path.GetDirectoryName(pathSourceFile),
+                        reader,
+                        writer);
                 }
             }
         }
@@ -35,11 +38,11 @@ namespace ModellMeister
         /// </summary>
         /// <param name="reader">Reader which will contain the MBGI Code</param>
         /// <param name="writer">Writer which will contain the C# code</param>
-        public void ConvertStreams(TextReader reader, TextWriter writer)
+        public void ConvertStreams(string pathOfContext, TextReader reader, TextWriter writer)
         {
             Console.WriteLine("Parsing MBGI File");
             var parser = new MbgiFileParser();
-            var model = parser.ParseFile(reader);
+            var model = parser.ParseFileFromReader(pathOfContext, reader);
 
             Console.WriteLine("Writing C#-Code");
             var generator = new CSharpGenerator();

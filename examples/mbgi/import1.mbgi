@@ -1,0 +1,5 @@
+
+T  Multiplier
+TI Factor1		: Double
+TI Factor2		: Double
+TO Product		: Double

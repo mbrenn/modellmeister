@@ -152,7 +152,7 @@ namespace mbgi_gui
                     using (var sourcewriter = new StringWriter())
                     {
                         var converter = new Mbgi2CsConverter();
-                        converter.ConvertStreams(sourceReader, sourcewriter);
+                        converter.ConvertStreams(workspacePath, sourceReader, sourcewriter);
 
                         generatedSource = sourcewriter.GetStringBuilder();
                     }

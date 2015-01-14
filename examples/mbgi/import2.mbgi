@@ -1,0 +1,5 @@
+
+T  Adder
+TI Summand1		: Double
+TI Summand2		: Double
+TO Sum			: Double

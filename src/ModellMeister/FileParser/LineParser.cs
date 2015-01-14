@@ -60,6 +60,7 @@ namespace ModellMeister.FileParser
             modelTypes["TI"] = EntityType.TypeInput;
             modelTypes["TO"] = EntityType.TypeOutput;
             modelTypes["W"] = EntityType.Wire;
+            modelTypes["!I"] = EntityType.CommandImportFile;
 
             propertyTypes[":"] = PropertyType.OfType;
             propertyTypes["defaultvalue"] = PropertyType.DefaultValue;
@@ -144,7 +145,8 @@ namespace ModellMeister.FileParser
 
             // Sets the other variables
             if (parsedLine.LineType == EntityType.Wire
-                || parsedLine.LineType == EntityType.CompositeWire)
+                || parsedLine.LineType == EntityType.CompositeWire
+                || parsedLine.LineType == EntityType.CommandImportFile)
             {
                 for (var n = 1; n < parts.Count; n++)
                 {
