@@ -37,6 +37,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="Analysis.mbgi" />
     <None Include="pre_build.ps1" />
+    <None Include="all.mbgi" />
     <None Include="Statistics.mbgi" />
     <None Include="Logic.mbgi" />
     <None Include="Helper.mbgi" />
@@ -45,21 +46,15 @@
     <None Include="Algebra.mbgi" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algebra.cs" />
     <Compile Include="Algebra.user.cs" />
-    <Compile Include="Analysis.cs" />
+    <Compile Include="all.cs" />
     <Compile Include="Statistics.user.cs" />
-    <Compile Include="Comparison.cs" />
     <Compile Include="Analysis.user.cs" />
     <Compile Include="Helper.User.cs" />
     <Compile Include="Logic.User.cs" />
     <Compile Include="ControlFlow.user.cs" />
     <Compile Include="Comparison.user.cs" />
-    <Compile Include="ControlFlow.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="Logic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Statistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModellMeister.Runtime\ModellMeister.Runtime.csproj">
