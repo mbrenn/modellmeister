@@ -1,4 +1,5 @@
-﻿using ModellMeister.FileParser;
+﻿using BurnSystems.Logger;
+using ModellMeister.FileParser;
 using ModellMeister.SourceGenerator.CSharp;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace ModellMeister
     /// </summary>
     public class Mbgi2CsConverter
     {
+        private static ClassLogger logger = new ClassLogger(typeof(Mbgi2CsConverter));
+
         public void ConvertFile(string pathSourceFile, string pathTargetFile)
         {
             if (!File.Exists(pathSourceFile))
@@ -40,11 +43,11 @@ namespace ModellMeister
         /// <param name="writer">Writer which will contain the C# code</param>
         public void ConvertStreams(string pathOfContext, TextReader reader, TextWriter writer)
         {
-            Console.WriteLine("Parsing MBGI File");
+            logger.Notify("Parsing MBGI File");
             var parser = new MbgiFileParser();
             var model = parser.ParseFileFromReader(pathOfContext, reader);
 
-            Console.WriteLine("Writing C#-Code");
+            logger.Notify("Writing C#-Code");
             var generator = new CSharpGenerator();
             generator.CreateSource(model, writer);
         }

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BurnSystems.Logger">
+      <HintPath>..\packages\BurnSystems.Logger.1.0.2.0\lib\net45\BurnSystems.Logger.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Experimental.Collections">
       <HintPath>..\packages\Microsoft.Experimental.Collections.1.0.3-alpha\lib\portable-net45+win8+wp8\Microsoft.Experimental.Collections.dll</HintPath>
     </Reference>

@@ -1,4 +1,5 @@
-﻿using ModellMeister.Model;
+﻿using BurnSystems.Logger;
+using ModellMeister.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,11 @@ namespace ModellMeister.FileParser
 {
     public class MbgiFileParser
     {
+        /// <summary>
+        /// Stores the logger
+        /// </summary>
+        private static ClassLogger logger = new ClassLogger(typeof(MbgiFileParser));
+
         /// <summary>
         /// Defines the current parsing scope
         /// </summary>
@@ -217,7 +223,7 @@ namespace ModellMeister.FileParser
 
             this.root.Types.Add(this.currentNativeType);
 
-            Console.WriteLine("Type is created: " + this.currentNativeType.Name);
+            logger.Verbose("Type is created: " + this.currentNativeType.Name);
         }
 
         private void ReadBlock(ParsedLine line)
@@ -250,7 +256,7 @@ namespace ModellMeister.FileParser
             var port = CreatePort(line);
             this.currentNativeType.Inputs.Add(port);
 
-            Console.WriteLine("- Input is created: " + port.Name);
+            logger.Verbose("- Input is created: " + port.Name);
         }
 
         private void ReadTypeOutput(ParsedLine line)
@@ -263,7 +269,7 @@ namespace ModellMeister.FileParser
             var port = CreatePort(line);
             this.currentNativeType.Outputs.Add(port);
 
-            Console.WriteLine("- Output is created: " + port.Name);
+            logger.Verbose("- Output is created: " + port.Name);
         }
 
         private void ReadBlockInput(ParsedLine line)
@@ -281,7 +287,7 @@ namespace ModellMeister.FileParser
                 this.currentBlock.Inputs.Add(port);
                 this.currentBlock.Type.Inputs.Add(port);
 
-                Console.WriteLine("- Input is created: " + port.Name);
+                logger.Verbose("- Input is created: " + port.Name);
             }
             else
             {
@@ -305,7 +311,7 @@ namespace ModellMeister.FileParser
                 this.currentBlock.Outputs.Add(port);
                 this.currentBlock.Type.Outputs.Add(port);
 
-                Console.WriteLine("- Output is created: " + port.Name);
+                logger.Verbose("- Output is created: " + port.Name);
             }
             else
             {
@@ -346,7 +352,7 @@ namespace ModellMeister.FileParser
             var port = CreatePort(line);
             this.currentCompositeType.Inputs.Add(port);
 
-            Console.WriteLine("- Input for composite Block is created: " + port.Name);
+            logger.Verbose("- Input for composite Block is created: " + port.Name);
         }
 
         private void ReadCompositeTypeOutput(ParsedLine line)
@@ -359,7 +365,7 @@ namespace ModellMeister.FileParser
             var port = CreatePort(line);
             this.currentCompositeType.Inputs.Add(port);
 
-            Console.WriteLine("- Output for composite Block is created: " + port.Name);
+            logger.Verbose("- Output for composite Block is created: " + port.Name);
         }
 
         private void ReadCompositeWire(ParsedLine line)
@@ -404,7 +410,7 @@ namespace ModellMeister.FileParser
             currentBlock.Type = blockType;
             this.PopulateBlock(currentBlock);
 
-            Console.WriteLine("Block is created: " + currentBlock.Name);
+            logger.Verbose("Block is created: " + currentBlock.Name);
             compositeBlock.Blocks.Add(currentBlock);
             return currentBlock;
         }
@@ -414,7 +420,7 @@ namespace ModellMeister.FileParser
             var wire = new ModelWire();
             compositeType.Wires.Add(wire);
 
-            Console.WriteLine("Wire is created between "
+            logger.Verbose("Wire is created between "
                 + line.Arguments[0]
                 + " and "
                 + line.Arguments[1]);
@@ -494,7 +500,7 @@ namespace ModellMeister.FileParser
                 defaultValue,
                 foundPort.DataType);
 
-            Console.WriteLine("- Port is updated: " + foundPort.Name);
+            logger.Verbose("- Port is updated: " + foundPort.Name);
         }
 
         /// <summary>

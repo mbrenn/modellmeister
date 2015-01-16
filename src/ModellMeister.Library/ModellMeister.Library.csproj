@@ -66,6 +66,9 @@
   <PropertyGroup>
     <PreBuildEvent>powershell $(ProjectDir)\pre_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)</PreBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>powershell $(SolutionDir)\post_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
