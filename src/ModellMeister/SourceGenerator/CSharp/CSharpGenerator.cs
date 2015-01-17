@@ -1,4 +1,5 @@
 ﻿using Microsoft.CSharp;
+using ModellMeister.FileParser;
 using ModellMeister.Logic;
 using ModellMeister.Model;
 using ModellMeister.Runtime;
@@ -161,7 +162,11 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Creates the types within the composite type
             foreach (var type in compositeType.Types)
             {
-                this.CreateClassForType(type);
+                if (type.IsInLibrary)
+                {
+                    // Skip the ones, that are loaded by the library
+                    this.CreateClassForType(type);
+                }
             }
 
             // Returns an empty init method
@@ -248,7 +253,9 @@ namespace ModellMeister.SourceGenerator.CSharp
                                     fieldExpression,
                                     blockPort.Name),
                                 new CodePrimitiveExpression(
-                                    ConvertToDotNetValue(blockPort.DataType, blockPort.DefaultValue))));
+                                    Conversion.ConvertToDotNetValue(
+                                        blockPort.DataType, 
+                                        blockPort.DefaultValue))));
                     }
                 }
 
@@ -358,7 +365,7 @@ namespace ModellMeister.SourceGenerator.CSharp
         private void CreatePort(CodeTypeDeclaration csharpType, ModelPort port, PortType portType)
         {
             var fieldName = "_" + port.Name;
-            var fieldType = new CodeTypeReference(ConvertToDotNetType(port.DataType));
+            var fieldType = new CodeTypeReference(Conversion.ConvertToDotNetType(port.DataType));
 
             var field = new CodeMemberField();
             field.Name = fieldName;
@@ -368,7 +375,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             {
                 field.InitExpression =
                     new CodePrimitiveExpression(
-                        ConvertToDotNetValue(port.DataType, port.DefaultValue));
+                        Conversion.ConvertToDotNetValue(port.DataType, port.DefaultValue));
             }
 
             csharpType.Members.Add(field);
@@ -400,39 +407,6 @@ namespace ModellMeister.SourceGenerator.CSharp
                         new CodeFieldReferenceExpression(
                             new CodeSnippetExpression(typeof(PortType).FullName), portType.ToString()))));
             csharpType.Members.Add(property);
-        }
-
-        private string ConvertToDotNetType(DataType dataType)
-        {
-            switch (dataType)
-            {
-                case DataType.Double:
-                    return "System.Double";
-                case DataType.Integer:
-                    return "System.Int32";
-                case DataType.String:
-                    return "System.String";
-                case DataType.Boolean:
-                    return "System.Boolean";
-                default:
-                    throw new InvalidOperationException("Unknown Type: " + dataType.ToString());
-            }
-        }
-
-
-        private object ConvertToDotNetValue(DataType dataType, object value)
-        {
-            switch (dataType)
-            {
-                case DataType.Double:
-                    return Convert.ToDouble(value, CultureInfo.InvariantCulture);
-                case DataType.Integer:
-                    return Convert.ToInt32(value, CultureInfo.InvariantCulture);
-                case DataType.String:
-                    return Convert.ToString(value, CultureInfo.InvariantCulture);
-                default: 
-                    throw new InvalidOperationException("Unknown Type: " + dataType.ToString());
-            }
         }
     }
 }

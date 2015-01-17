@@ -26,6 +26,7 @@ namespace ModellMeister.Model
         CompositeWire,
         NameSpace,
 
-        CommandImportFile
+        CommandImportFile,
+        CommandLoadLibrary
     }
 }

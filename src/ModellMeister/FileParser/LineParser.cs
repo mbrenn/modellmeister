@@ -61,6 +61,7 @@ namespace ModellMeister.FileParser
             modelTypes["TO"] = EntityType.TypeOutput;
             modelTypes["W"] = EntityType.Wire;
             modelTypes["!I"] = EntityType.CommandImportFile;
+            modelTypes["!L"] = EntityType.CommandLoadLibrary;
 
             propertyTypes[":"] = PropertyType.OfType;
             propertyTypes["defaultvalue"] = PropertyType.DefaultValue;

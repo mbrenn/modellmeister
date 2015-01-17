@@ -1,9 +1,12 @@
 ﻿using BurnSystems.Logger;
+using ModellMeister.Logic;
 using ModellMeister.Model;
+using ModellMeister.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -173,6 +176,10 @@ namespace ModellMeister.FileParser
             {
                 this.ReadCommandImportFile(line);
             }
+            else if (line.LineType == EntityType.CommandLoadLibrary)
+            {
+                this.ReadCommandLoadLibrary(line);
+            }
             else
             {
                 throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
@@ -201,6 +208,52 @@ namespace ModellMeister.FileParser
             }
 
             this.pathOfContext = oldContext;
+        }
+
+        /// <summary>
+        /// Reads an assembly from the command line
+        /// </summary>
+        /// <param name="line">Line to be parsed</param>
+        private void ReadCommandLoadLibrary(ParsedLine line)
+        {
+            var fullPath = Path.GetFullPath(Path.Combine(this.pathOfContext, line.Arguments[0]));
+
+            if (!File.Exists(fullPath))
+            {
+                throw new InvalidOperationException("Library not found: " + fullPath);
+            }
+
+            var assembly = Assembly.ReflectionOnlyLoadFrom(fullPath);
+
+            // Now we get through the types and try to load them
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.GetInterfaces().Any(x => x == typeof(IModelType)))
+                {
+                    // We got it, load it
+                    var nativeType = new ModelNativeType();
+                    
+                    // Remove the prefix
+                    nativeType.Name = type.FullName;
+
+                    // Read the ports of the type
+                    foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                    {
+                        var portAttribute = 
+                            property.GetCustomAttribute(typeof(PortAttribute)) as PortAttribute;
+
+                        if (portAttribute != null)
+                        {
+                            var port = new ModelPort();
+                            port.Name = property.Name;
+                            
+                            portAttribute.PortType = PortType.Input;
+                        }
+                    }
+
+                    this.currentCompositeType.Types.Add(nativeType);
+                }
+            }
         }
 
         /// <summary>
@@ -476,7 +529,7 @@ namespace ModellMeister.FileParser
                 = line.GetProperty(PropertyType.DefaultValue);
             if (!string.IsNullOrEmpty(defaultValueAsString))
             {
-                port.DefaultValue = MbgiConversion.ToDataType(defaultValueAsString, port.DataType);
+                port.DefaultValue = Conversion.ToDataType(defaultValueAsString, port.DataType);
             }
 
             return port;
@@ -496,7 +549,7 @@ namespace ModellMeister.FileParser
                 throw new InvalidOperationException("No default Value is given");
             }
 
-            foundPort.DefaultValue = MbgiConversion.ToDataType(
+            foundPort.DefaultValue = Conversion.ToDataType(
                 defaultValue,
                 foundPort.DataType);
 

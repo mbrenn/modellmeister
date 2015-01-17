@@ -18,6 +18,16 @@ namespace ModellMeister.Model
         private string nameSpace = string.Empty;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the
+        /// type was loaded from a library, so it does not need to get recreated
+        /// </summary>
+        public bool IsInLibrary
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the namespace
         /// </summary>
         public string NameSpace
