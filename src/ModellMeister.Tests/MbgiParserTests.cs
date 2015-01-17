@@ -252,5 +252,14 @@ T Or";
             var foundMultiplierType = globalScope.Types.Where(x => x.Name == "Multiplier").FirstOrDefault();
             Assert.That(foundMultiplierType, Is.Not.Null);
         }
+
+        [Test]
+        public void TestImportLibrary()
+        {
+            var pathOfFile = @"../../../../examples/mbgi/importlibrary.mbgi";
+
+            var parser = new MbgiFileParser();
+            var globalScope = parser.ParseFileFromFile(pathOfFile);
+        }
     }
 }
