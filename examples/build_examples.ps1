@@ -2,6 +2,8 @@ $dotNetPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
 
 Write-Output "Creates the C# files"
 
+Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\mbgi\ModellMeister.Library.dll
+
 ..\bin\mbgi2cs.exe ..\examples\mbgi\onlytype.mbgi ..\examples\cs\onlytype.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\twotypes.mbgi ..\examples\cs\twotypes.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\twoblocks.mbgi ..\examples\cs\twoblocks.cs
@@ -39,6 +41,8 @@ Write-Output "- defaultvalue"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\defaultvalue.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll defaultvalue.cs defaultvalue_Code.cs
  
 Pop-Location
+
+Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\bin\ModellMeister.Library.dll
 
 ..\bin\mbsim.exe ..\examples\bin\defaultvalue.dll
 
