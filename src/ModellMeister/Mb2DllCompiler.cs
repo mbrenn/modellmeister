@@ -16,6 +16,11 @@ namespace ModellMeister
     public class Mb2DllCompiler
     {
         /// <summary>
+        /// Stores the list of assemblies
+        /// </summary>
+        private List<string> importedAssemblies = new List<string>();
+
+        /// <summary>
         /// Compiles the source code
         /// </summary>
         /// <param name="workspacePath">The path, where the binaries will be located</param>
@@ -39,6 +44,11 @@ namespace ModellMeister
             parameters.ReferencedAssemblies.Add("System.Diagnostics.Debug.dll");
             parameters.ReferencedAssemblies.Add("ModellMeister.Runtime.dll");
 
+            foreach (var assembly in this.importedAssemblies)
+            {
+                parameters.ReferencedAssemblies.Add(Path.GetFileName(assembly));
+            }
+
             CopyAssemblies(workspacePath);
 
             return await Task.Run(() =>
@@ -55,6 +65,18 @@ namespace ModellMeister
 
                     return compileResult;
                 });
+        }
+
+        /// <summary>
+        /// Adds the libraries 
+        /// </summary>
+        /// <param name="importedAssemblies"></param>
+        public void AddLibraries(List<string> importedAssemblies)
+        {
+            foreach (var item in importedAssemblies)
+            {
+                this.importedAssemblies.Add(item);
+            }
         }
 
         /// <summary>

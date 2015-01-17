@@ -17,6 +17,19 @@ namespace ModellMeister
     {
         private static ClassLogger logger = new ClassLogger(typeof(Mbgi2CsConverter));
 
+        /// <summary>
+        /// Stores the list of imported assemblies
+        /// </summary>
+        private List<string> importedAssemblies;
+
+        /// <summary>
+        /// Gets the list of imported assemblies
+        /// </summary>
+        public List<string> ImportedAssemblies
+        {
+            get { return this.importedAssemblies; }
+        }
+
         public void ConvertFile(string pathSourceFile, string pathTargetFile)
         {
             if (!File.Exists(pathSourceFile))
@@ -50,6 +63,8 @@ namespace ModellMeister
             logger.Notify("Writing C#-Code");
             var generator = new CSharpGenerator();
             generator.CreateSource(model, writer);
+
+            this.importedAssemblies = parser.ImportedAssemblies;
         }
     }
 }

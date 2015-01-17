@@ -166,6 +166,8 @@ namespace mbgi_gui
                 var workspacePath = this.CreateAndGetWorkspace();
                 StringBuilder generatedSource;
 
+                List<string> importedAssemblies;
+
                 // Gets the source code
                 using (var sourceReader = new StringReader(this.txtMBGISource.Text))
                 {
@@ -175,6 +177,8 @@ namespace mbgi_gui
                         converter.ConvertStreams(workspacePath, sourceReader, sourcewriter);
 
                         generatedSource = sourcewriter.GetStringBuilder();
+
+                        importedAssemblies = converter.ImportedAssemblies;
                     }
                 }
 
@@ -204,6 +208,7 @@ namespace mbgi_gui
                 }
 
                 var dllCompiler = new Mb2DllCompiler();
+                dllCompiler.AddLibraries(importedAssemblies);
                 var compileResult = await dllCompiler.CompileSourceCode(workspacePath, csList, dllPath);
 
                 if (compileResult.Errors.Count == 0)
