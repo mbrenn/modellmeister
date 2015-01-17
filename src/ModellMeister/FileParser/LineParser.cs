@@ -147,7 +147,8 @@ namespace ModellMeister.FileParser
             // Sets the other variables
             if (parsedLine.LineType == EntityType.Wire
                 || parsedLine.LineType == EntityType.CompositeWire
-                || parsedLine.LineType == EntityType.CommandImportFile)
+                || parsedLine.LineType == EntityType.CommandImportFile
+                || parsedLine.LineType == EntityType.CommandLoadLibrary)
             {
                 for (var n = 1; n < parts.Count; n++)
                 {
@@ -166,7 +167,7 @@ namespace ModellMeister.FileParser
 
                     var value = parts[n + 1];
 
-                    PropertyType foundPropertyType = ConvertToPropertyType(key);
+                    var foundPropertyType = ConvertToPropertyType(key);
 
                     parsedLine.Parameters[foundPropertyType] = value;
                 }

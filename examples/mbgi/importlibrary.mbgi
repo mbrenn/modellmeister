@@ -1,0 +1,6 @@
+!L ModellMeister.Library.dll
+
+B Adder1 : Library.Algebra.Addition
+B Adder2 : Library.Algebra.Addition
+
+W Adder1.Sum Adder2.Summand1

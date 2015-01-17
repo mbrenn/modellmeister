@@ -22,7 +22,10 @@ namespace ModellMeister
         /// <param name="pathCsFiles">The list of paths for C# files to be compiled</param>
         /// <param name="pathDll">The path, where final .dll will be located</param>
         /// <returns>The compiler results</returns>
-        public async Task<CompilerResults> CompileSourceCode(string workspacePath, List<string> pathCsFiles, string pathDll)
+        public async Task<CompilerResults> CompileSourceCode(
+            string workspacePath, 
+            List<string> pathCsFiles, 
+            string pathDll)
         {
             // Start the compilation
             var compiler = new CSharpCodeProvider();
@@ -36,19 +39,7 @@ namespace ModellMeister
             parameters.ReferencedAssemblies.Add("System.Diagnostics.Debug.dll");
             parameters.ReferencedAssemblies.Add("ModellMeister.Runtime.dll");
 
-            // Copies the ModellMeister.Runtime.dll to path
-            File.Copy(
-                Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                    "ModellMeister.Runtime.dll"),
-                Path.Combine(workspacePath, "ModellMeister.Runtime.dll"),
-                true);
-            File.Copy(
-                Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                    "ModellMeister.dll"),
-                Path.Combine(workspacePath, "ModellMeister.dll"),
-                true);
+            CopyAssemblies(workspacePath);
 
             return await Task.Run(() =>
                 {
@@ -64,6 +55,27 @@ namespace ModellMeister
 
                     return compileResult;
                 });
+        }
+
+        /// <summary>
+        /// Copies the assemblies to the workspace path
+        /// </summary>
+        /// <param name="workspacePath">Path, where workspace is located</param>
+        public static void CopyAssemblies(string workspacePath)
+        {
+            // Copies the ModellMeister.Runtime.dll to path
+            File.Copy(
+                Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                    "ModellMeister.Runtime.dll"),
+                Path.Combine(workspacePath, "ModellMeister.Runtime.dll"),
+                true);
+            File.Copy(
+                Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                    "ModellMeister.dll"),
+                Path.Combine(workspacePath, "ModellMeister.dll"),
+                true);
         }
     }
 }

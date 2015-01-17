@@ -1,4 +1,5 @@
-﻿using mbgi_gui.Logic;
+﻿using BurnSystems.Logger;
+using mbgi_gui.Logic;
 using mbgi_gui.Models;
 using Microsoft.CSharp;
 using ModellMeister;
@@ -30,6 +31,8 @@ namespace mbgi_gui
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static ClassLogger log = new ClassLogger(typeof(MainWindow));
+
         private NewFileModel modelFileModel;
 
         public MainWindow()
@@ -104,7 +107,6 @@ namespace mbgi_gui
                 var simulationResult = type.LoadAndStartFromLibrarySync(dllName);
                 
                 var resultWindow = new ResultWindow();
-                
                 resultWindow.Results = new ReportLogic(simulationResult);
                 resultWindow.ShowDialog();
             }
@@ -124,6 +126,24 @@ namespace mbgi_gui
             {
                 Directory.CreateDirectory(workspacePath);
             }
+
+            // Copies the library
+            try
+            {
+                File.Copy(
+                    Path.Combine(
+                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                        "ModellMeister.Library.dll"),
+                    Path.Combine(workspacePath, "ModellMeister.Library.dll"),
+                    true);
+
+                Mb2DllCompiler.CopyAssemblies(workspacePath);
+            }
+            catch
+            {
+                log.Message("Could not copy ModellMeister.Library, but we still continue");
+            }
+
             return workspacePath;
         }
 

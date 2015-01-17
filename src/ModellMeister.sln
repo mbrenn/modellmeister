@@ -40,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MBGI-Files", "MBGI-Files", 
 		..\examples\mbgi\import.mbgi = ..\examples\mbgi\import.mbgi
 		..\examples\mbgi\import1.mbgi = ..\examples\mbgi\import1.mbgi
 		..\examples\mbgi\import2.mbgi = ..\examples\mbgi\import2.mbgi
+		..\examples\mbgi\importlibrary.mbgi = ..\examples\mbgi\importlibrary.mbgi
 		..\examples\mbgi\onlytype.mbgi = ..\examples\mbgi\onlytype.mbgi
 		..\examples\mbgi\twoblocks.mbgi = ..\examples\mbgi\twoblocks.mbgi
 		..\examples\mbgi\twoblockswithnamespace.mbgi = ..\examples\mbgi\twoblockswithnamespace.mbgi

@@ -12,6 +12,7 @@ Write-Output "Creates the C# files"
 ..\bin\mbgi2cs.exe ..\examples\mbgi\defaultvalue.mbgi ..\examples\cs\defaultvalue.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\import.mbgi ..\examples\cs\import.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\twonamespaces.mbgi ..\examples\cs\twonamespaces.cs
+..\bin\mbgi2cs.exe ..\examples\mbgi\importlibrary.mbgi ..\examples\cs\importlibrary.cs
 
 Push-Location ..\examples\cs\
 

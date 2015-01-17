@@ -162,10 +162,14 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Creates the types within the composite type
             foreach (var type in compositeType.Types)
             {
-                if (type.IsInLibrary)
+                if (!type.IsInLibrary)
                 {
                     // Skip the ones, that are loaded by the library
                     this.CreateClassForType(type);
+                }
+                else
+                {
+                    
                 }
             }
 
