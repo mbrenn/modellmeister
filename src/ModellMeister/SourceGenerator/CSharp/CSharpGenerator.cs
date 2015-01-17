@@ -21,10 +21,10 @@ namespace ModellMeister.SourceGenerator.CSharp
         private CodeNamespace nameSpace;
 
         /// <summary>
-        /// Stores the type mapping
+        /// Stores the type mapping. The 
         /// </summary>
-        private Dictionary<EntityWithPorts, CodeTypeDeclaration> typeMapping =
-            new Dictionary<EntityWithPorts, CodeTypeDeclaration>();
+        private Dictionary<EntityWithPorts, string> typeMapping =
+            new Dictionary<EntityWithPorts, string>();
 
         /// <summary>
         /// Creates the source code for a specific scope by
@@ -82,27 +82,36 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="type">Entity type with ports</param>
         /// <returns></returns>
         private CodeTypeDeclaration CreateClassForEntityWithPorts(EntityWithPorts type)
-        {            
-            var csharpType = new CodeTypeDeclaration(type.Name);
-            csharpType.Attributes = MemberAttributes.Public;
-            csharpType.IsPartial = true;
-            csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
-
-            this.typeMapping[type] = csharpType;
-            this.CreatePorts(type, csharpType);
-
-            this.nameSpace.Types.Add(csharpType);
-
-            if (type.GetType() == typeof(ModelNativeType))
+        {
+            if (type.GetType() == typeof(ModelLibraryType))
             {
-                this.FillClassForNativeType(csharpType);
+                var libraryType = type as ModelLibraryType;
+                this.typeMapping[type] = libraryType.DotNetType.FullName;
+                return null;
             }
-            else if (type.GetType() == typeof(ModelCompositeType))
+            else
             {
-                this.FillClassForCompositeType(type as ModelCompositeType, csharpType);
-            }
+                var csharpType = new CodeTypeDeclaration(type.Name);
+                csharpType.Attributes = MemberAttributes.Public;
+                csharpType.IsPartial = true;
+                csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
 
-            return csharpType;
+                this.typeMapping[type] = type.Name;
+                this.CreatePorts(type, csharpType);
+
+                this.nameSpace.Types.Add(csharpType);
+
+                if (type.GetType() == typeof(ModelNativeType))
+                {
+                    this.FillClassForNativeType(csharpType);
+                }
+                else if (type.GetType() == typeof(ModelCompositeType))
+                {
+                    this.FillClassForCompositeType(type as ModelCompositeType, csharpType);
+                }
+
+                return csharpType;
+            }
         }
 
         private void FillClassForNativeType(CodeTypeDeclaration csharpType)
@@ -162,15 +171,8 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Creates the types within the composite type
             foreach (var type in compositeType.Types)
             {
-                if (!type.IsInLibrary)
-                {
-                    // Skip the ones, that are loaded by the library
-                    this.CreateClassForType(type);
-                }
-                else
-                {
-                    
-                }
+                // Skip the ones, that are loaded by the library
+                this.CreateClassForType(type);
             }
 
             // Returns an empty init method
@@ -195,7 +197,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             {
                 // Creates the block properties themselves
                 var dotNetTypeOfBlock = this.typeMapping[block.Type];
-                var fieldType = new CodeTypeReference(dotNetTypeOfBlock.Name);
+                var fieldType = new CodeTypeReference(dotNetTypeOfBlock);
                 var fieldName = "_" + block.Name;
 
                 var blockField = new CodeMemberField();
