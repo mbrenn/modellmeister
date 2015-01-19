@@ -58,6 +58,15 @@ namespace mbgi_gui.Logic
                     CsFile = LoadFromResource("mbgi_gui.Examples.body_braking.user.txt")
                 });
 
+            examples.Add(
+                new ExampleItem()
+                {
+                    Name = "Source Examples",
+                    Description = "Shows how to connect sources from a library to a lineplot",
+                    MbgiFile = LoadFromResource("mbgi_gui.Examples.examplesources.mbgi"),
+                    CsFile = string.Empty
+                });
+
             return examples;
         }
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ModellMeister.Library.Statistics {
+namespace ModellMeister.Library.Sink {
     
     
     [ModellMeister.Runtime.RootModelAttribute()]
@@ -1341,6 +1341,303 @@ namespace ModellMeister.Library.Statistics {
             }
             set {
                 this._Output = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
+}
+namespace ModellMeister.Library.Source {
+    
+    
+    public partial class Constant : ModellMeister.Runtime.IModelType {
+        
+        private double _Input;
+        
+        private double _Output;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input {
+            get {
+                return this._Input;
+            }
+            set {
+                this._Input = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
+    
+    public partial class Sine : ModellMeister.Runtime.IModelType {
+        
+        private double _Frequency;
+        
+        private double _Phase;
+        
+        private double _Output;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Frequency {
+            get {
+                return this._Frequency;
+            }
+            set {
+                this._Frequency = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Phase {
+            get {
+                return this._Phase;
+            }
+            set {
+                this._Phase = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
+    
+    public partial class Triangle : ModellMeister.Runtime.IModelType {
+        
+        private double _Frequency;
+        
+        private double _Phase;
+        
+        private double _Output;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Frequency {
+            get {
+                return this._Frequency;
+            }
+            set {
+                this._Frequency = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Phase {
+            get {
+                return this._Phase;
+            }
+            set {
+                this._Phase = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
+    
+    public partial class Sawtooth : ModellMeister.Runtime.IModelType {
+        
+        private double _Frequency;
+        
+        private double _Phase;
+        
+        private double _Output;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Frequency {
+            get {
+                return this._Frequency;
+            }
+            set {
+                this._Frequency = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Phase {
+            get {
+                return this._Phase;
+            }
+            set {
+                this._Phase = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
+}
+namespace ModellMeister.Library.Sink {
+    
+    
+    public partial class LinePlot : ModellMeister.Runtime.IModelType {
+        
+        private int _ChannelCount;
+        
+        private double _Channel1;
+        
+        private double _Channel2;
+        
+        private double _Channel3;
+        
+        private double _Channel4;
+        
+        private double _Channel5;
+        
+        private double _Channel6;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public int ChannelCount {
+            get {
+                return this._ChannelCount;
+            }
+            set {
+                this._ChannelCount = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel1 {
+            get {
+                return this._Channel1;
+            }
+            set {
+                this._Channel1 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel2 {
+            get {
+                return this._Channel2;
+            }
+            set {
+                this._Channel2 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel3 {
+            get {
+                return this._Channel3;
+            }
+            set {
+                this._Channel3 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel4 {
+            get {
+                return this._Channel4;
+            }
+            set {
+                this._Channel4 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel5 {
+            get {
+                return this._Channel5;
+            }
+            set {
+                this._Channel5 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Channel6 {
+            get {
+                return this._Channel6;
+            }
+            set {
+                this._Channel6 = value;
             }
         }
         

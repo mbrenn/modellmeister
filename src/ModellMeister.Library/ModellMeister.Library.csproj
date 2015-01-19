@@ -35,6 +35,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="Sink.mbgi" />
+    <None Include="Source.mbgi" />
     <None Include="Analysis.mbgi" />
     <None Include="pre_build.ps1" />
     <None Include="all.mbgi" />
@@ -48,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Algebra.user.cs" />
     <Compile Include="all.cs" />
+    <Compile Include="Source.user.cs" />
+    <Compile Include="Sink.user.cs" />
     <Compile Include="Statistics.user.cs" />
     <Compile Include="Analysis.user.cs" />
     <Compile Include="Helper.User.cs" />

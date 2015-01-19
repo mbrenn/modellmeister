@@ -86,17 +86,24 @@ namespace ModellMeister
         public static void CopyAssemblies(string workspacePath)
         {
             // Copies the ModellMeister.Runtime.dll to path
+            CopyFileIntoWorkspace(workspacePath, "modellmeister.dll");
+            CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.dll");
+            CopyFileIntoWorkspace(workspacePath, "modellmeister.pdb");
+            CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.pdb");
+        }
+
+        /// <summary>
+        /// Copies the file into the workspace
+        /// </summary>
+        /// <param name="workspacePath">Path of the workspace</param>
+        /// <param name="fileName">Filename to be copied</param>
+        public static void CopyFileIntoWorkspace(string workspacePath, string fileName)
+        {
             File.Copy(
                 Path.Combine(
                     Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                    "ModellMeister.Runtime.dll"),
-                Path.Combine(workspacePath, "ModellMeister.Runtime.dll"),
-                true);
-            File.Copy(
-                Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                    "ModellMeister.dll"),
-                Path.Combine(workspacePath, "ModellMeister.dll"),
+                    fileName),
+                Path.Combine(workspacePath, fileName),
                 true);
         }
     }

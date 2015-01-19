@@ -1,0 +1,10 @@
+﻿N ModellMeister.Library.Sink
+
+T LinePlot
+TI ChannelCount : Integer
+TI Channel1 : Double
+TI Channel2 : Double
+TI Channel3 : Double
+TI Channel4 : Double
+TI Channel5 : Double
+TI Channel6 : Double

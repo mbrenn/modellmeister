@@ -1,0 +1,20 @@
+﻿N ModellMeister.Library.Source
+
+T Constant
+TI Input : Double
+TO Output : Double
+
+T Sine
+TI Frequency : Double
+TI Phase : Double
+TO Output : Double
+
+T Triangle
+TI Frequency : Double
+TI Phase : Double
+TO Output : Double
+
+T Sawtooth
+TI Frequency : Double
+TI Phase : Double
+TO Output : Double

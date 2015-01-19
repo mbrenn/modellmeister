@@ -99,7 +99,7 @@ namespace mbgi_gui
             type.Settings = new SimulationSettings()
             {
                 SimulationTime = TimeSpan.FromSeconds(10),
-                TimeInterval = TimeSpan.FromSeconds(0.1)
+                TimeInterval = TimeSpan.FromSeconds(0.01)
             };
 
             try
@@ -130,13 +130,10 @@ namespace mbgi_gui
             // Copies the library
             try
             {
-                File.Copy(
-                    Path.Combine(
-                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                        "ModellMeister.Library.dll"),
-                    Path.Combine(workspacePath, "ModellMeister.Library.dll"),
-                    true);
-
+                Mb2DllCompiler.CopyFileIntoWorkspace
+                    (workspacePath, "ModellMeister.Library.dll");
+                Mb2DllCompiler.CopyFileIntoWorkspace
+                    (workspacePath, "ModellMeister.Library.pdb");
                 Mb2DllCompiler.CopyAssemblies(workspacePath);
             }
             catch

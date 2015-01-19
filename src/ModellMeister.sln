@@ -70,6 +70,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Runtime", "ModellMeister.Runtime\ModellMeister.Runtime.csproj", "{C3425E68-9814-4CEF-9060-D53FEB953919}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mbgi_gui", "mbgi_gui\mbgi_gui.csproj", "{F4A3C37A-95A7-45F5-AE85-EA7F70C6E09B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B} = {20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModellMeister.Library", "ModellMeister.Library\ModellMeister.Library.csproj", "{20268DB5-7C69-4B26-BDDD-7E7AF4B2464B}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -1,0 +1,21 @@
+﻿!L ModellMeister.Library.dll
+
+B Source1 : Library.Source.Triangle
+BI Frequency defaultvalue 0.5
+
+B Source2 : Library.Source.Sine
+BI Frequency defaultvalue 0.5
+
+B Source3 : Library.Source.Constant
+BI Input defaultvalue 0.75
+
+B Source4 : Library.Source.Sawtooth
+BI Frequency defaultvalue 0.5
+
+B LinePlotter : Library.Sink.LinePlot
+BI ChannelCount defaultvalue 4
+
+W Source1.Output LinePlotter.Channel1
+W Source2.Output LinePlotter.Channel2
+W Source3.Output LinePlotter.Channel3
+W Source4.Output LinePlotter.Channel4

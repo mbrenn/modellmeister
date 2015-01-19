@@ -135,6 +135,7 @@
     <EmbeddedResource Include="Examples\example2.mbgi" />
     <EmbeddedResource Include="Examples\body_acceleration.mbgi" />
     <EmbeddedResource Include="Examples\body_braking.mbgi" />
+    <EmbeddedResource Include="Examples\examplesources.mbgi" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
