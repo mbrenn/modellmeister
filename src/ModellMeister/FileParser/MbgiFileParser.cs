@@ -161,6 +161,10 @@ namespace ModellMeister.FileParser
             {
                 this.ReadWire(line);
             }
+            else if (line.LineType == EntityType.Feedback)
+            {
+                this.ReadFeedback(line);
+            }
             else if (line.LineType == EntityType.CompositeType)
             {
                 this.ReadCompositeType(line);
@@ -180,6 +184,10 @@ namespace ModellMeister.FileParser
             else if (line.LineType == EntityType.CompositeWire)
             {
                 this.ReadCompositeWire(line);
+            }
+            else if (line.LineType == EntityType.CompositeFeedback)
+            {
+                this.ReadCompositeFeedback(line);
             }
             else if (line.LineType == EntityType.NameSpace)
             {
@@ -339,7 +347,19 @@ namespace ModellMeister.FileParser
 
             this.currentScope = CurrentScope.Global;
             var compositeType = this.root;
-            this.ReadAndAddWire(line, compositeType);
+            this.ReadAndAddWire(line, compositeType, false);
+        }
+
+        private void ReadFeedback(ParsedLine line)
+        {
+            if (line.Arguments.Count != 2)
+            {
+                throw new InvalidOperationException("Line for Wire (F) does not have two attributes");
+            }
+
+            this.currentScope = CurrentScope.Global;
+            var compositeType = this.root;
+            this.ReadAndAddWire(line, compositeType, true);
         }
 
         private void ReadTypeInput(ParsedLine line)
@@ -470,7 +490,17 @@ namespace ModellMeister.FileParser
                 throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
             }
 
-            this.ReadAndAddWire(line, this.currentCompositeType);
+            this.ReadAndAddWire(line, this.currentCompositeType, false);
+        }
+
+        private void ReadCompositeFeedback(ParsedLine line)
+        {
+            if (this.currentScope != CurrentScope.InCompositeBlock)
+            {
+                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+            }
+
+            this.ReadAndAddWire(line, this.currentCompositeType, true);
         }
 
         /// <summary>
@@ -510,10 +540,17 @@ namespace ModellMeister.FileParser
             return currentBlock;
         }
 
-        private void ReadAndAddWire(ParsedLine line, ModelCompositeType compositeType)
+        private void ReadAndAddWire(ParsedLine line, ModelCompositeType compositeType, bool asFeedback)
         {
             var wire = new ModelWire();
-            compositeType.Wires.Add(wire);
+            if (asFeedback)
+            {
+                compositeType.FeedbackWires.Add(wire);
+            }
+            else
+            {
+                compositeType.Wires.Add(wire);
+            }
 
             logger.Verbose("Wire is created between "
                 + line.Arguments[0]

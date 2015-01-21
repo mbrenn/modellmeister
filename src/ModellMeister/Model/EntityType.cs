@@ -24,9 +24,13 @@ namespace ModellMeister.Model
         CompositeTypeOutput,
         CompositeBlock,
         CompositeWire,
+        CompositeFeedback,
         NameSpace,
+        Feedback,
 
         CommandImportFile,
-        CommandLoadLibrary
+        CommandLoadLibrary,
+
+
     }
 }

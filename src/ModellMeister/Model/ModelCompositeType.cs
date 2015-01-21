@@ -20,6 +20,8 @@ namespace ModellMeister.Model
 
         private List<ModelWire> wires = new List<ModelWire>();
 
+        private List<ModelWire> feedbackWires = new List<ModelWire>();
+
         /// <summary>
         /// Gets the types
         /// </summary>
@@ -42,6 +44,14 @@ namespace ModellMeister.Model
         public List<ModelWire> Wires
         {
             get { return this.wires; }
+        }
+
+        /// <summary>
+        /// Gets the types
+        /// </summary>
+        public List<ModelWire> FeedbackWires
+        {
+            get { return this.feedbackWires; }
         }
     }
 }

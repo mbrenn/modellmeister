@@ -54,12 +54,14 @@ namespace ModellMeister.FileParser
             modelTypes["CO"] = EntityType.CompositeTypeOutput;
             modelTypes["CB"] = EntityType.CompositeBlock;
             modelTypes["CW"] = EntityType.CompositeWire;
+            modelTypes["CF"] = EntityType.CompositeFeedback;
             modelTypes["S"] = EntityType.Setting;
             modelTypes["N"] = EntityType.NameSpace;
             modelTypes["T"] = EntityType.Type;
             modelTypes["TI"] = EntityType.TypeInput;
             modelTypes["TO"] = EntityType.TypeOutput;
             modelTypes["W"] = EntityType.Wire;
+            modelTypes["F"] = EntityType.Feedback;
             modelTypes["!I"] = EntityType.CommandImportFile;
             modelTypes["!L"] = EntityType.CommandLoadLibrary;
 
@@ -146,7 +148,9 @@ namespace ModellMeister.FileParser
 
             // Sets the other variables
             if (parsedLine.LineType == EntityType.Wire
+                || parsedLine.LineType == EntityType.Feedback
                 || parsedLine.LineType == EntityType.CompositeWire
+                || parsedLine.LineType == EntityType.CompositeFeedback
                 || parsedLine.LineType == EntityType.CommandImportFile
                 || parsedLine.LineType == EntityType.CommandLoadLibrary)
             {
