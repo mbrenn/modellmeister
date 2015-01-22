@@ -14,9 +14,20 @@ namespace ModelBased {
     [ModellMeister.Runtime.RootModelAttribute()]
     public partial class _ : ModellMeister.Runtime.IModelType {
         
+        private ModellMeister.Library.Source.Constant _Constant;
+        
         private ModellMeister.Library.Algebra.Addition _Adder1;
         
-        private ModellMeister.Library.Algebra.Addition _Adder2;
+        private CSVWriter _Writer;
+        
+        public ModellMeister.Library.Source.Constant Constant {
+            get {
+                return this._Constant;
+            }
+            set {
+                this._Constant = value;
+            }
+        }
         
         public ModellMeister.Library.Algebra.Addition Adder1 {
             get {
@@ -27,26 +38,33 @@ namespace ModelBased {
             }
         }
         
-        public ModellMeister.Library.Algebra.Addition Adder2 {
+        public CSVWriter Writer {
             get {
-                return this._Adder2;
+                return this._Writer;
             }
             set {
-                this._Adder2 = value;
+                this._Writer = value;
             }
         }
         
         public void Init() {
+            this._Constant = new ModellMeister.Library.Source.Constant();
+            this._Constant.Input = 1D;
+            this._Constant.Init();
             this._Adder1 = new ModellMeister.Library.Algebra.Addition();
+            this._Adder1.Summand2 = 0D;
             this._Adder1.Init();
-            this._Adder2 = new ModellMeister.Library.Algebra.Addition();
-            this._Adder2.Init();
+            this._Writer = new CSVWriter();
+            this._Writer.Init();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this._Constant.Execute(info);
+            this.Adder1.Summand1 = this.Constant.Output;
             this._Adder1.Execute(info);
-            this.Adder2.Summand1 = this.Adder1.Sum;
-            this._Adder2.Execute(info);
+            this.Adder1.Summand1 = this.Adder1.Sum;
+            this.Writer.Input = this.Adder1.Sum;
+            this._Writer.Execute(info);
         }
     }
 }
@@ -79,4 +97,34 @@ namespace ModellMeister.Library.Source {
 }
 namespace ModellMeister.Library.Sink {
     
+}
+namespace ModelBased {
+    
+    
+    public partial class CSVWriter : ModellMeister.Runtime.IModelType {
+        
+        private double _Input;
+        
+        partial void DoInit();
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input {
+            get {
+                return this._Input;
+            }
+            set {
+                this._Input = value;
+            }
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init() {
+            this.DoInit();
+        }
+    }
 }

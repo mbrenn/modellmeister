@@ -163,13 +163,30 @@ namespace ModellMeister.Logic
         }
 
         /// <summary>
-        /// Gets the input wires for a specific block
+        /// Gets the input wires for a specific block. 
+        /// The returned wires are connected to an input port of the block
         /// </summary>
         /// <param name="block">Block, whose wires are requested</param>
+        /// <param name="wireType">Only the EntityType.Wire and EntityType.Feedback is supported</param>
         /// <returns>A tuple containing the block and wires of the input</returns>
-        public IEnumerable<Tuple<EntityWithPorts, ModelWire>> GetInputWiresForBlock(EntityWithPorts block)
+        public IEnumerable<Tuple<EntityWithPorts, ModelWire>> GetInputWiresForBlock(EntityWithPorts block, EntityType wireType)
         {
-            foreach (var wire in compositeType.Wires)
+            List<ModelWire> wires;
+
+            if (wireType == EntityType.Feedback)
+            {
+                wires = compositeType.FeedbackWires;
+            }
+            else if (wireType == EntityType.Wire)
+            {
+                wires = compositeType.Wires;
+            }
+            else
+            {
+                throw new InvalidOperationException("Entitytype is not supported: " + wireType.ToString());
+            }
+
+            foreach (var wire in wires)
             {
                 var toModel = this.cachePortToBlock[wire.OutputOfWire];
                 if (toModel != block)

@@ -15,6 +15,7 @@ Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\mbgi\ModellMeister.Librar
 ..\bin\mbgi2cs.exe ..\examples\mbgi\import.mbgi ..\examples\cs\import.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\twonamespaces.mbgi ..\examples\cs\twonamespaces.cs
 ..\bin\mbgi2cs.exe ..\examples\mbgi\importlibrary.mbgi ..\examples\cs\importlibrary.cs
+..\bin\mbgi2cs.exe ..\examples\mbgi\feedback.mbgi ..\examples\cs\feedback.cs
 
 Push-Location ..\examples\cs\
 
@@ -39,12 +40,14 @@ Write-Output "- autogenerationblock"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\autogenerationblock.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll autogenerationblock.cs autogenerationblock_code.cs
 Write-Output "- defaultvalue"
 ."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\defaultvalue.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:System.Runtime.dll defaultvalue.cs defaultvalue_Code.cs
- 
+ Write-Output "- feedback"
+."$dotNetPath\csc.exe" /nologo /target:library /out:..\bin\feedback.dll /debug+ /r:../../bin/ModellMeister.Runtime.dll /r:../../bin/ModellMeister.Library.dll /r:System.Runtime.dll feedback.cs feedback_code.cs
+
 Pop-Location
 
 Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\bin\ModellMeister.Library.dll
 
-..\bin\mbsim.exe ..\examples\bin\defaultvalue.dll
+..\bin\mbsim.exe ..\examples\bin\feedback.dll
 
 # [System.Console]::ReadKey()
  

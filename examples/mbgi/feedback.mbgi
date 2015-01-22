@@ -1,0 +1,17 @@
+!L ModellMeister.Library.dll
+
+T CSVWriter
+TI Input : Double
+
+B Adder1 : Library.Algebra.Addition
+BI Summand2 defaultvalue 0
+
+B Constant : Library.Source.Constant
+BI Input defaultvalue 1
+
+# Instantiates the types and 
+B Writer : CSVWriter
+
+W Constant.Output Adder1.Summand1
+W Adder1.Sum Writer.Input
+F Adder1.Sum Adder1.Summand1

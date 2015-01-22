@@ -193,6 +193,8 @@ namespace ModellMeister.SourceGenerator.CSharp
 
             // Creates the block properties
             var flowLogic = new DataFlowLogic(compositeType);
+            var wirePopulater = new WirePopulator(compositeType, executeMethod, flowLogic);
+
             foreach (var block in flowLogic.GetBlocksByDataFlow())
             {
                 // Creates the block properties themselves
@@ -273,7 +275,63 @@ namespace ModellMeister.SourceGenerator.CSharp
 
                 // Adds some statements to the execution method
                 // First, populate the input values
-                foreach (var tuple in flowLogic.GetInputWiresForBlock(block))
+                wirePopulater.PopulateWireAssignmentOnInnerBlocks(
+                    block,
+                    EntityType.Wire);
+
+                // Second, Execute it
+                executeMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeMethodReferenceExpression(
+                            fieldExpression,
+                            "Execute"),
+                        new CodeArgumentReferenceExpression("info")));
+            } 
+
+            // After all the blocks are populated, we do the feedback rounds
+            foreach (var block in compositeType.Blocks)
+            {
+                wirePopulater.PopulateWireAssignmentOnInnerBlocks(
+                    block,
+                    EntityType.Feedback);
+            }
+            
+            wirePopulater.PopulateWireAssignmentOnOutputPorts();
+        }
+
+        private class WirePopulator
+        {
+            private ModelCompositeType compositeType;
+            private CodeMemberMethod executeMethod;
+            private DataFlowLogic flowLogic;
+
+            public WirePopulator(
+                ModelCompositeType compositeType,
+                CodeMemberMethod executeMethod,
+                DataFlowLogic flowLogic)
+            {
+                this.compositeType = compositeType;
+                this.executeMethod = executeMethod;
+                this.flowLogic = flowLogic;
+            }
+
+            /// <summary>
+            /// Populates all inner wires of a composite type. 
+            /// The wires will be ordered according to the dataflow
+            /// </summary>
+            /// <param name="compositeType">The composition type whose internal elements
+            /// will be popuplated</param>
+            /// <param name=""executeMethod>The method, which will receive the assign statements</param>
+            /// <param name="flowLogic">The flowlogic being used to define the correct order</param>
+            /// <param name="block">The block, whose inputs shall be satisfied</param>
+            /// <param name="wireType">The wiretype of this block. May be Wire or Feedback</param>
+            public void PopulateWireAssignmentOnInnerBlocks(
+                ModelBlock block,
+                EntityType wireType)
+            {
+                // Go through the inner blocks and set the the inputs for all the inner blocks
+                // which might be dependent 
+                foreach (var tuple in this.flowLogic.GetInputWiresForBlock(block, wireType))
                 {
                     var targetBlockExpression =
                             new CodeFieldReferenceExpression(
@@ -283,6 +341,50 @@ namespace ModellMeister.SourceGenerator.CSharp
                     var targetPortName =
                         new CodeFieldReferenceExpression(
                             targetBlockExpression,
+                            tuple.Item2.OutputOfWire.Name);
+
+                    CodeExpression sourceBlockExpression;
+
+                    if (tuple.Item1 != this.compositeType)
+                    {
+                        sourceBlockExpression =
+                            new CodeFieldReferenceExpression(
+                                new CodeThisReferenceExpression(),
+                                tuple.Item1.Name);
+                    }
+                    else
+                    {
+                        sourceBlockExpression = new CodeThisReferenceExpression();
+                    }
+
+                    var sourcePortName =
+                        new CodeFieldReferenceExpression(
+                            sourceBlockExpression,
+                            tuple.Item2.InputOfWire.Name);
+                    executeMethod.Statements.Add(new CodeAssignStatement(
+                        targetPortName,
+                        sourcePortName));
+                }
+            }
+
+            /// <summary>
+            /// Populates the output ports of the block by wires from internal elements
+            /// </summary>
+            /// <param name="compositeType">Composite element whose output ports
+            /// shall be populated</param>
+            /// <param name="executeMethod">The execution method which will receive
+            /// the statements</param>
+            /// <param name="flowLogic">The flow logic being used to derive the correct order
+            /// </param>
+            public void PopulateWireAssignmentOnOutputPorts()
+            {
+                // Now sets the output ports of the current block being populated
+                // This will connect the inner blocks with the output of this element
+                foreach (var tuple in this.flowLogic.GetInputWiresForBlock(this.compositeType, EntityType.Wire))
+                {
+                    var targetPortName =
+                        new CodeFieldReferenceExpression(
+                            new CodeThisReferenceExpression(),
                             tuple.Item2.OutputOfWire.Name);
 
                     CodeExpression sourceBlockExpression;
@@ -307,45 +409,6 @@ namespace ModellMeister.SourceGenerator.CSharp
                         targetPortName,
                         sourcePortName));
                 }
-
-                // Second, Execute it
-                executeMethod.Statements.Add(
-                    new CodeMethodInvokeExpression(
-                        new CodeMethodReferenceExpression(
-                            fieldExpression,
-                            "Execute"),
-                        new CodeArgumentReferenceExpression("info")));
-            }
-
-            // Populate the input of the wires
-            foreach (var tuple in flowLogic.GetInputWiresForBlock(compositeType))
-            {
-                var targetPortName =
-                    new CodeFieldReferenceExpression(
-                        new CodeThisReferenceExpression(),
-                        tuple.Item2.OutputOfWire.Name);
-
-                CodeExpression sourceBlockExpression;
-
-                if (tuple.Item1 != compositeType)
-                {
-                    sourceBlockExpression =
-                        new CodeFieldReferenceExpression(
-                            new CodeThisReferenceExpression(),
-                            tuple.Item1.Name);
-                }
-                else
-                {
-                    sourceBlockExpression = new CodeThisReferenceExpression();
-                }
-
-                var sourcePortName =
-                    new CodeFieldReferenceExpression(
-                        sourceBlockExpression,
-                        tuple.Item2.InputOfWire.Name);
-                executeMethod.Statements.Add(new CodeAssignStatement(
-                    targetPortName,
-                    sourcePortName));
             }
         }
 

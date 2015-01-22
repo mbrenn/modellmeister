@@ -340,6 +340,16 @@ namespace ModellMeister.FileParser
 
         private void ReadWire(ParsedLine line)
         {
+            this.ReadWire(line, false);
+        }
+
+        private void ReadFeedback(ParsedLine line)
+        {
+            this.ReadWire(line, true);
+        }
+
+        private void ReadWire(ParsedLine line, bool isFeedback)
+        {
             if (line.Arguments.Count != 2)
             {
                 throw new InvalidOperationException("Line for Wire (W) does not have two attributes");
@@ -347,19 +357,7 @@ namespace ModellMeister.FileParser
 
             this.currentScope = CurrentScope.Global;
             var compositeType = this.root;
-            this.ReadAndAddWire(line, compositeType, false);
-        }
-
-        private void ReadFeedback(ParsedLine line)
-        {
-            if (line.Arguments.Count != 2)
-            {
-                throw new InvalidOperationException("Line for Wire (F) does not have two attributes");
-            }
-
-            this.currentScope = CurrentScope.Global;
-            var compositeType = this.root;
-            this.ReadAndAddWire(line, compositeType, true);
+            this.ReadAndAddWire(line, compositeType, isFeedback);
         }
 
         private void ReadTypeInput(ParsedLine line)
@@ -485,22 +483,22 @@ namespace ModellMeister.FileParser
 
         private void ReadCompositeWire(ParsedLine line)
         {
-            if (this.currentScope != CurrentScope.InCompositeBlock)
-            {
-                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
-            }
-
-            this.ReadAndAddWire(line, this.currentCompositeType, false);
+            this.ReadCompositeWire(line, false);
         }
 
         private void ReadCompositeFeedback(ParsedLine line)
+        {
+            this.ReadCompositeWire(line, true);
+        }
+
+        private void ReadCompositeWire(ParsedLine line, bool isFeedback)
         {
             if (this.currentScope != CurrentScope.InCompositeBlock)
             {
                 throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
             }
 
-            this.ReadAndAddWire(line, this.currentCompositeType, true);
+            this.ReadAndAddWire(line, this.currentCompositeType, isFeedback);
         }
 
         /// <summary>
