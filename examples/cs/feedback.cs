@@ -62,9 +62,9 @@ namespace ModelBased {
             this._Constant.Execute(info);
             this.Adder1.Summand1 = this.Constant.Output;
             this._Adder1.Execute(info);
-            this.Adder1.Summand1 = this.Adder1.Sum;
             this.Writer.Input = this.Adder1.Sum;
             this._Writer.Execute(info);
+            this.Adder1.Summand2 = this.Adder1.Sum;
         }
     }
 }
