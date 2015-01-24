@@ -28,7 +28,7 @@ namespace mbsim
 
             var simulation = new Simulation(simulationSettings);
             simulation.LoadAndStartFromLibrary(
-                args[0]);
+                args[0]).Wait();
         }
     }
 }
