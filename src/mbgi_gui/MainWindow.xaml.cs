@@ -1,4 +1,5 @@
 ﻿using BurnSystems.Logger;
+using mbgi_gui.Dialogs;
 using mbgi_gui.Logic;
 using mbgi_gui.Models;
 using Microsoft.CSharp;

@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace mbgi_gui
+namespace mbgi_gui.Dialogs
 {
     /// <summary>
     /// Interaction logic for NewDialog.xaml

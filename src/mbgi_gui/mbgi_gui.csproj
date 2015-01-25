@@ -76,19 +76,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ExampleDialog.xaml.cs">
+    <Compile Include="Dialogs\ExampleDialog.xaml.cs">
       <DependentUpon>ExampleDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
     <Compile Include="Models\NewFileModel.cs" />
-    <Compile Include="NewDialog.xaml.cs">
+    <Compile Include="Dialogs\NewDialog.xaml.cs">
       <DependentUpon>NewDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="ExampleDialog.xaml">
+    <Page Include="Dialogs\ExampleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -105,7 +105,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewDialog.xaml">
+    <Page Include="Dialogs\NewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
