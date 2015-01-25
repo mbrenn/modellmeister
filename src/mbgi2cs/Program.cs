@@ -3,6 +3,7 @@ using CommandLine.Text;
 using ModellMeister;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,13 +25,26 @@ namespace mbgi2cs
                 var sourceFile = result.Value.InputFile;
                 var targetFile = result.Value.OutputFile;
 
-                Console.WriteLine("Source File: " + result.Value.InputFile);
-                Console.WriteLine("Target File: " + result.Value.OutputFile);
+                Console.WriteLine("Source File: " + sourceFile);
+                Console.WriteLine("Target File: " + targetFile);
 
                 Console.WriteLine();
-                Console.WriteLine("Start of the conversion");
+                Console.WriteLine("- Start of the conversion");
 
                 converter.ConvertFile(sourceFile, targetFile);
+
+                // Checks, if compilation is requested
+                if (!string.IsNullOrEmpty(result.Value.DoCompileDll))
+                {
+                    Console.WriteLine("- Start of the compilation");
+                    var compiler = new Mb2DllCompiler();
+                    var importedAssemblies = converter.ImportedAssemblies;
+                    compiler.AddLibraries(importedAssemblies);
+                    compiler.CompileSourceCode(
+                        Path.GetDirectoryName(targetFile),
+                        new string[] { targetFile },
+                        result.Value.DoCompileDll).Wait();
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\mbgi\ModellMeister.Librar
 ..\bin\mbgi2cs.exe -i ..\examples\mbgi\import.mbgi -o ..\examples\cs\import.cs
 ..\bin\mbgi2cs.exe -i ..\examples\mbgi\twonamespaces.mbgi -o ..\examples\cs\twonamespaces.cs
 ..\bin\mbgi2cs.exe -i ..\examples\mbgi\importlibrary.mbgi -o ..\examples\cs\importlibrary.cs
-..\bin\mbgi2cs.exe -i ..\examples\mbgi\feedback.mbgi -o ..\examples\cs\feedback.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\feedback.mbgi -o ..\examples\cs\feedback.cs --dll ..\examples\dll\autocompile.dll
 
 Push-Location ..\examples\cs\
 

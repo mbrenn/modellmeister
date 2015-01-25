@@ -10,7 +10,7 @@ namespace mbgi2cs
 {
     public class ProgramArguments
     {
-        [Option('i', "in", Required = true, HelpText=".mbgi-File to be parsed ")]
+        [Option('i', "in", Required = true, HelpText = ".mbgi-File to be parsed ")]
         public string InputFile
         {
             get;
@@ -24,10 +24,10 @@ namespace mbgi2cs
             set;
         }
 
-        [Option(longName: "dll", 
-            DefaultValue=false, 
-            HelpText="The resulting sourcefile is compiled to a dll.")]
-        public bool DoExportDll
+        [Option(longName: "dll",
+            DefaultValue = "",
+            HelpText = "The resulting sourcefile is compiled to a dll.")]
+        public string DoCompileDll
         {
             get;
             set;

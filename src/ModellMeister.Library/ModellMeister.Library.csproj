@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="post_project_build.ps1" />
     <None Include="Sink.mbgi" />
     <None Include="Source.mbgi" />
     <None Include="Analysis.mbgi" />
@@ -71,7 +72,8 @@
     <PreBuildEvent>powershell $(ProjectDir)\pre_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>powershell $(SolutionDir)\post_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)</PostBuildEvent>
+    <PostBuildEvent>powershell $(SolutionDir)\post_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)
+powershell $(ProjectDir)\post_project_build.ps1 $(ProjectDir) $(TargetDir) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

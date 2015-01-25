@@ -1,4 +1,5 @@
-﻿using Microsoft.CSharp;
+﻿using BurnSystems.Logger;
+using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace ModellMeister
     public class Mb2DllCompiler
     {
         /// <summary>
+        /// Defines the logger to be used
+        /// </summary>
+        private static ILog logger = new ClassLogger(typeof(Mb2DllCompiler));
+
+        /// <summary>
         /// Stores the list of assemblies
         /// </summary>
         private List<string> importedAssemblies = new List<string>();
@@ -29,7 +35,7 @@ namespace ModellMeister
         /// <returns>The compiler results</returns>
         public async Task<CompilerResults> CompileSourceCode(
             string workspacePath, 
-            List<string> pathCsFiles, 
+            IEnumerable<string> pathCsFiles, 
             string pathDll)
         {
             // Start the compilation
@@ -86,9 +92,9 @@ namespace ModellMeister
         public static void CopyAssemblies(string workspacePath)
         {
             // Copies the ModellMeister.Runtime.dll to path
-            CopyFileIntoWorkspace(workspacePath, "modellmeister.dll");
+            CopyFileIntoWorkspace(workspacePath, "ModellMeister.dll");
             CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.dll");
-            CopyFileIntoWorkspace(workspacePath, "modellmeister.pdb");
+            CopyFileIntoWorkspace(workspacePath, "ModellMeister.pdb");
             CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.pdb");
         }
 
@@ -99,12 +105,20 @@ namespace ModellMeister
         /// <param name="fileName">Filename to be copied</param>
         public static void CopyFileIntoWorkspace(string workspacePath, string fileName)
         {
-            File.Copy(
-                Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                    fileName),
-                Path.Combine(workspacePath, fileName),
-                true);
+            try
+            {
+
+                File.Copy(
+                    Path.Combine(
+                        Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                        fileName),
+                    Path.Combine(workspacePath, fileName),
+                    true);
+            }
+            catch (Exception exc)
+            {
+                logger.Fail("Could not copy file: " + fileName + ": " + exc.Message);
+            }
         }
     }
 }
