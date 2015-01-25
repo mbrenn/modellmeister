@@ -11,24 +11,21 @@ namespace mbsim
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("BurnSystems Model Simulator");
+            var result = CommandLine.Parser.Default.ParseArguments<ProgramArguments>(args);
 
-            if (args.Length != 1)
+            if (!result.Errors.Any())
             {
-                Console.WriteLine("Usage:");
-                Console.WriteLine("mbsim.exe model.dll");
-                Console.WriteLine();
-                Console.WriteLine("Loads the model in model.dll and executes it");
+                Console.WriteLine("BurnSystems Model Simulator");
+
+                // Simulationtime is 10 seconds
+                var simulationSettings = new SimulationSettings();
+                simulationSettings.SimulationTime = TimeSpan.FromSeconds(result.Value.SimulationTime);
+                simulationSettings.TimeInterval = TimeSpan.FromSeconds(result.Value.SimulationInterval);
+
+                var simulation = new Simulation(simulationSettings);
+                simulation.LoadAndStartFromLibrary(
+                    result.Value.File).Wait();
             }
-
-            // Simulationtime is 10 seconds
-            var simulationSettings = new SimulationSettings();
-            simulationSettings.SimulationTime= TimeSpan.FromSeconds(10);
-            simulationSettings.TimeInterval = TimeSpan.FromSeconds(0.1);
-
-            var simulation = new Simulation(simulationSettings);
-            simulation.LoadAndStartFromLibrary(
-                args[0]).Wait();
         }
     }
 }

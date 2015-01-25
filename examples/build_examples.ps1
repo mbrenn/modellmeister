@@ -47,7 +47,7 @@ Pop-Location
 
 Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\bin\ModellMeister.Library.dll
 
-..\bin\mbsim.exe ..\examples\bin\feedback.dll
+..\bin\mbsim.exe -f ..\examples\bin\feedback.dll
 
 # [System.Console]::ReadKey()
  
