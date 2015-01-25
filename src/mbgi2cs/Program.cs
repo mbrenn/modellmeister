@@ -1,4 +1,6 @@
-﻿using ModellMeister;
+﻿using CommandLine;
+using CommandLine.Text;
+using ModellMeister;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +13,25 @@ namespace mbgi2cs
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Model Based Generation Instruction File to C#-Converter");
-
-            var converter = new Mbgi2CsConverter();
-
-            if (args.Length != 2)
+            var arguments = new ProgramArguments();
+            var result = CommandLine.Parser.Default.ParseArguments<ProgramArguments>(args);
+            if (!result.Errors.Any())
             {
-                Console.WriteLine("Usage:");
-                Console.WriteLine("mbgi2cs.exe sourcefile.mbgi targetfile.cs");
+                Console.WriteLine("Model Based Generation Instruction File to C#-Converter");
+
+                var converter = new Mbgi2CsConverter();
+
+                var sourceFile = result.Value.InputFile;
+                var targetFile = result.Value.OutputFile;
+
+                Console.WriteLine("Source File: " + result.Value.InputFile);
+                Console.WriteLine("Target File: " + result.Value.OutputFile);
+
                 Console.WriteLine();
-                Console.WriteLine("Converts the sourcefile.mbgi to a C# file in targetfile.cs");
-                return;
+                Console.WriteLine("Start of the conversion");
+
+                converter.ConvertFile(sourceFile, targetFile);
             }
-
-            var sourceFile = args[0];
-            var targetFile = args[1];
-
-            Console.WriteLine("Source File: " + args[0]);
-            Console.WriteLine("Target File: " + args[1]);
-
-            Console.WriteLine();
-
-            Console.WriteLine("Start of the conversion");
-
-            converter.ConvertFile(sourceFile, targetFile);
         }
     }
 }

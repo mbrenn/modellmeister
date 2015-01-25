@@ -4,18 +4,18 @@ Write-Output "Creates the C# files"
 
 Copy-Item ..\bin\ModellMeister.Library.dll ..\examples\mbgi\ModellMeister.Library.dll
 
-..\bin\mbgi2cs.exe ..\examples\mbgi\onlytype.mbgi ..\examples\cs\onlytype.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\twotypes.mbgi ..\examples\cs\twotypes.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\twoblocks.mbgi ..\examples\cs\twoblocks.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\twoblockswithnamespace.mbgi ..\examples\cs\twoblockswithnamespace.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\fourblocks.mbgi ..\examples\cs\fourblocks.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\compositeblock.mbgi ..\examples\cs\compositeblock.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\autogenerationblock.mbgi ..\examples\cs\autogenerationblock.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\defaultvalue.mbgi ..\examples\cs\defaultvalue.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\import.mbgi ..\examples\cs\import.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\twonamespaces.mbgi ..\examples\cs\twonamespaces.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\importlibrary.mbgi ..\examples\cs\importlibrary.cs
-..\bin\mbgi2cs.exe ..\examples\mbgi\feedback.mbgi ..\examples\cs\feedback.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\onlytype.mbgi -o ..\examples\cs\onlytype.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\twotypes.mbgi -o ..\examples\cs\twotypes.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\twoblocks.mbgi -o ..\examples\cs\twoblocks.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\twoblockswithnamespace.mbgi -o ..\examples\cs\twoblockswithnamespace.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\fourblocks.mbgi -o ..\examples\cs\fourblocks.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\compositeblock.mbgi -o ..\examples\cs\compositeblock.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\autogenerationblock.mbgi -o ..\examples\cs\autogenerationblock.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\defaultvalue.mbgi -o ..\examples\cs\defaultvalue.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\import.mbgi -o ..\examples\cs\import.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\twonamespaces.mbgi -o ..\examples\cs\twonamespaces.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\importlibrary.mbgi -o ..\examples\cs\importlibrary.cs
+..\bin\mbgi2cs.exe -i ..\examples\mbgi\feedback.mbgi -o ..\examples\cs\feedback.cs
 
 Push-Location ..\examples\cs\
 
