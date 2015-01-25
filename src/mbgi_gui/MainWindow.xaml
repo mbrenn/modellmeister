@@ -17,13 +17,14 @@
         </Grid.ColumnDefinitions>
         <Ribbon Grid.ColumnSpan="2" ShowQuickAccessToolBarOnTop="False">
             <RibbonTab Header="Menu">
-                <RibbonGroup>
+                <RibbonGroup Header="File">
                     <RibbonButton Label="New..." x:Name="btnNew" Click="btnNew_Click" />
                     <RibbonButton Label="Load..." x:Name="btnLoad" Click="btnLoad_Click" ></RibbonButton>
                     <RibbonButton Label="Load Examples" x:Name="btnLoadExamples" Click="btnLoadExamples_Click"></RibbonButton>
                 </RibbonGroup>
-                <RibbonGroup>
-                    <RibbonButton Label="Run Simulation" x:Name="btnRunSimulation" Click="btnRunSimulation_Click"></RibbonButton>
+                <RibbonGroup Header="Simulation">
+                    <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>
+                    <RibbonButton Label="Run" x:Name="btnRunSimulation" Click="btnRunSimulation_Click"></RibbonButton>
                     <RibbonButton Label="Open Workspace" x:Name="btnOpenWorkspace" Click="btnOpenWorkspace_Click"></RibbonButton>
                 </RibbonGroup>
             </RibbonTab>

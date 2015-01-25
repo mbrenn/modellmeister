@@ -79,6 +79,9 @@
     <Compile Include="Dialogs\ExampleDialog.xaml.cs">
       <DependentUpon>ExampleDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\SimulationSettingsDlg.xaml.cs">
+      <DependentUpon>SimulationSettingsDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
     <Compile Include="Models\NewFileModel.cs" />
@@ -89,6 +92,10 @@
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\ExampleDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\SimulationSettingsDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

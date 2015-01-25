@@ -34,6 +34,8 @@ namespace mbgi_gui
     {
         private static ClassLogger log = new ClassLogger(typeof(MainWindow));
 
+        private SimulationSettings simulationSettings = new SimulationSettings();
+
         private NewFileModel modelFileModel;
 
         public MainWindow()
@@ -97,11 +99,7 @@ namespace mbgi_gui
                 "ModellMeister",
                 "ModellMeister.Runner.Simulation");
 
-            type.Settings = new SimulationSettings()
-            {
-                SimulationTime = TimeSpan.FromSeconds(10),
-                TimeInterval = TimeSpan.FromSeconds(0.01)
-            };
+            type.Settings = this.simulationSettings;
 
             try
             {
@@ -280,6 +278,16 @@ namespace mbgi_gui
         {
             var workSpacePath = this.CreateAndGetWorkspace();
             Process.Start(workSpacePath);
+        }
+
+        private void btnSimulationSetting_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SimulationSettingsDlg();
+            dlg.Owner = this;
+            dlg.DataContext = this.simulationSettings;
+            if (dlg.ShowDialog() == true)
+            {
+            }
         }
     }
 }
