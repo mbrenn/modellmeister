@@ -69,9 +69,11 @@
     <Compile Include="Model\ModelCompositeType.cs" />
     <Compile Include="Model\ModelWire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runner\StateAtTime.cs" />
     <Compile Include="Runner\Simulation.cs" />
     <Compile Include="Runner\SimulationResult.cs" />
     <Compile Include="Runner\SimulationSettings.cs" />
+    <Compile Include="Runner\StepInfoForSimulation.cs" />
     <Compile Include="SourceGenerator\CSharp\CSharpGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

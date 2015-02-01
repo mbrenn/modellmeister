@@ -43,7 +43,7 @@ namespace ModellMeister.Logic
         private void ParseSimulationResult(SimulationResult result)
         {            
             // Retrieves the number of results
-            var numberOfSeries = result.Result.Count == 0 ? 0 : result.Result.Max(x => x.Length);
+            var numberOfSeries = result.Result.Count == 0 ? 0 : result.Result.Max(x => x.Values.Length);
             for (var n = 0; n < numberOfSeries; n++)
             {
                 this.lineSeries.Add(new LineSeries());
@@ -55,10 +55,11 @@ namespace ModellMeister.Logic
             {
                 for (var n = 0; n < numberOfSeries; n++)
                 {
-                    if (n <= line.Length)
+                    if (n <= line.Values.Length)
                     {
                         // The current line has enough values
-                        this.lineSeries[n].Values.Add(Convert.ToDouble(result.Result[m][n]));
+                        this.lineSeries[n].Times.Add(line.AbsoluteTime.TotalSeconds);
+                        this.lineSeries[n].Values.Add(Convert.ToDouble(line.Values[n]));
                     }
                     else
                     {

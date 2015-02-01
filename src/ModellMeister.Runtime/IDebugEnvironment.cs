@@ -12,6 +12,6 @@ namespace ModellMeister.Runtime
         /// Adds some results to the debug interface, when available
         /// </summary>
         /// <param name="values">Value to be added</param>
-        void AddResult(object[] values);
+        void AddResult(StepInfo info, object[] values);
     }
 }

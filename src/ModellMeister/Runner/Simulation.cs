@@ -19,16 +19,22 @@ namespace ModellMeister.Runner
         /// </summary>
         private IModelType modelType;
 
-        private List<object[]> results = new List<object[]>();
-
+        /// <summary>
+        /// Gets or sets the settings
+        /// </summary>
         public SimulationSettings Settings
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Simulation. 
+        /// This constructor is necessary, since the simulation is started 
+        /// via remote constructor in other AppDomain.
+        /// </summary>
         public Simulation()
-        {            
+        {
         }
 
         public Simulation(SimulationSettings settings)
@@ -108,7 +114,7 @@ namespace ModellMeister.Runner
         {
             return await Task.Run(() =>
             {
-                this.results.Clear();
+                var results = new List<StateAtTime>();
 
                 if (this.Settings.TimeInterval.TotalSeconds <= 0)
                 {
@@ -122,7 +128,9 @@ namespace ModellMeister.Runner
 
                 this.modelType.Init();
 
-                var step = new StepInfo();
+                var result = new SimulationResult();
+
+                var step = new StepInfoForSimulation(this, result);
                 step.TimeInterval = this.Settings.TimeInterval;
                 step.Debug = this;
 
@@ -135,16 +143,19 @@ namespace ModellMeister.Runner
                     this.modelType.Execute(step);
                 }
 
-                return new SimulationResult()
-                {
-                    Result = this.results
-                };
+                return result;
             });
         }
 
-        public void AddResult(object[] values)
+        /// <summary>
+        /// Adds a point into the database
+        /// </summary>
+        /// <param name="absoluteTime">Absolute time to be added</param>
+        /// <param name="values">Values to be added</param>
+        public void AddResult(StepInfo info, object[] values)
         {
-            this.results.Add(values);
+            (info as StepInfoForSimulation).SimulationResult.Result.Add(
+                new StateAtTime(info.AbsoluteTime, values));
         }
     }
 }

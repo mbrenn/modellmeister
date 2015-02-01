@@ -9,10 +9,18 @@ namespace ModellMeister.Runner
     [Serializable]
     public class SimulationResult
     {
-        public IList<object[]> Result
+        /// <summary>
+        /// Gets or sets the results
+        /// </summary>
+        public IList<StateAtTime> Result
         {
             get;
             set;
+        }
+
+        public SimulationResult()
+        {
+            this.Result = new List<StateAtTime>();
         }
     }
 }

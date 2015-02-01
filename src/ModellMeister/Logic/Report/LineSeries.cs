@@ -20,6 +20,15 @@ namespace ModellMeister.Logic.Report
         /// <summary>
         /// Gets or sets the values of the 
         /// </summary>
+        public List<double> Times
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the values of the 
+        /// </summary>
         public List<double> Values
         {
             get;
@@ -29,6 +38,7 @@ namespace ModellMeister.Logic.Report
         public LineSeries()
         {
             this.Values = new List<double>();
+            this.Times = new List<double>();
         }
     }
 }

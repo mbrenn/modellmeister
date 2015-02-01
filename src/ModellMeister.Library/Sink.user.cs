@@ -8,7 +8,7 @@ namespace ModellMeister.Library.Sink
 {
     public partial class LinePlot
     {
-        public double GetChannelValue ( int channelNr )
+        public double GetChannelValue(int channelNr)
         {
             switch (channelNr)
             {
@@ -39,7 +39,7 @@ namespace ModellMeister.Library.Sink
                 result[n - 1] = this.GetChannelValue(n);
             }
 
-            info.Debug.AddResult(result);
+            info.Debug.AddResult(info, result);
         }
     }
 }
