@@ -1,4 +1,4 @@
-﻿using CommandLine;
+﻿using BurnSystems.CommandLine.ByAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +9,29 @@ namespace mbsim
 {
     public class ProgramArguments
     {
-        [Option('f', "file", Required = true, HelpText = "Path to dll being used as a model")]
+        [NamedArgument(LongName = "file", ShortName = 'f', IsRequired = true, HelpText = "Path to dll being used as a model")]
         public string File
         {
             get;
             set;
         }
 
-        [Option('t', 
-            "time", 
-            Required = true, 
-            HelpText = "Path to dll being used as a model", 
-            DefaultValue = 10.0)]
+        [NamedArgument(LongName = "time",
+            ShortName = 't',
+            IsRequired = true,
+            HelpText = "Path to dll being used as a model",
+            DefaultValue = "10.0")]
         public double SimulationTime
         {
             get;
             set;
         }
 
-        [Option('i', 
-            "interval", 
-            Required = true, 
-            HelpText = "Path to dll being used as a model", 
-            DefaultValue = 0.01)]
+        [NamedArgument(LongName = "interval",
+            ShortName = 'i',
+            IsRequired = true,
+            HelpText = "Path to dll being used as a model",
+            DefaultValue = "0.01")]
         public double SimulationInterval
         {
             get;

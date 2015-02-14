@@ -1,5 +1,4 @@
-﻿using CommandLine;
-using CommandLine.Text;
+﻿using BurnSystems.CommandLine;
 using ModellMeister;
 using System;
 using System.Collections.Generic;
@@ -15,15 +14,15 @@ namespace mbgi2cs
         static void Main(string[] args)
         {
             var arguments = new ProgramArguments();
-            var result = CommandLine.Parser.Default.ParseArguments<ProgramArguments>(args);
-            if (!result.Errors.Any())
+            var result = Parser.ParseIntoOrShowUsage<ProgramArguments>(args);
+            if (result != null)
             {
                 Console.WriteLine("Model Based Generation Instruction File to C#-Converter");
 
                 var converter = new Mbgi2CsConverter();
 
-                var sourceFile = result.Value.InputFile;
-                var targetFile = result.Value.OutputFile;
+                var sourceFile = result.InputFile;
+                var targetFile = result.OutputFile;
 
                 Console.WriteLine("Source File: " + sourceFile);
                 Console.WriteLine("Target File: " + targetFile);
@@ -34,7 +33,7 @@ namespace mbgi2cs
                 converter.ConvertFile(sourceFile, targetFile);
 
                 // Checks, if compilation is requested
-                if (!string.IsNullOrEmpty(result.Value.DoCompileDll))
+                if (!string.IsNullOrEmpty(result.DoCompileDll))
                 {
                     Console.WriteLine("- Start of the compilation");
                     var compiler = new Mb2DllCompiler();
@@ -43,7 +42,7 @@ namespace mbgi2cs
                     compiler.CompileSourceCode(
                         Path.GetDirectoryName(targetFile),
                         new string[] { targetFile },
-                        result.Value.DoCompileDll).Wait();
+                        result.DoCompileDll).Wait();
                 }
             }
         }
