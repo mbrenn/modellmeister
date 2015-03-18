@@ -20,7 +20,7 @@
     {
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
-            info.Debug.AddResult(new object[]{this.Input});
+            info.Debug.AddResult(info, new object[]{this.Input});
         }
     }
 }
