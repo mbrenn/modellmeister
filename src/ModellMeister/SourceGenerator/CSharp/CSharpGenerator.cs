@@ -92,11 +92,20 @@ namespace ModellMeister.SourceGenerator.CSharp
             else
             {
                 var csharpType = new CodeTypeDeclaration(type.Name);
+
+                if (this.nameSpace == null)
+                {
+                    this.typeMapping[type] = type.Name;
+                }
+                else
+                {
+                    this.typeMapping[type] = this.nameSpace.Name + "." + type.Name;
+                }
+
                 csharpType.Attributes = MemberAttributes.Public;
                 csharpType.IsPartial = true;
                 csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
 
-                this.typeMapping[type] = type.Name;
                 this.CreatePorts(type, csharpType);
 
                 this.nameSpace.Types.Add(csharpType);

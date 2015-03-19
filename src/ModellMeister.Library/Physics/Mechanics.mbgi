@@ -1,0 +1,18 @@
+﻿N ModellMeister.Library.Physics
+
+C Body1d
+CI Force : Double
+CI Weight : Double
+CI StartSpeed : Double
+CI StartPosition : Double
+CO Acceleration : Double
+CO Velocity : Double
+CO Position : Double
+
+CB Acc2Vel : Integral
+CB Vel2Pos : Integral
+
+CW Force Acc2Vel.Input
+CW Acc2Vel.Output Vel2Pos.Input
+CW Vel2Pos.Output Position
+CW Acc2Vel.Output Velocity

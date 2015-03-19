@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="Physics\Mechanics.mbgi" />
     <None Include="post_project_build.ps1" />
     <None Include="Sink.mbgi" />
     <None Include="Source.mbgi" />
