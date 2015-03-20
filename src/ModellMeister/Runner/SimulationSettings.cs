@@ -21,6 +21,16 @@ namespace ModellMeister.Runner
             set;
         }
 
+        /// <summary>
+        /// The simulation will be run with real time, not with
+        /// maximum speed. To be used for simulation with manipulation
+        /// </summary>
+        public bool Synchronous
+        {
+            get;
+            set;
+        }
+
         public double SimulationTimeS
         {
             get { return this.SimulationTime.TotalSeconds; }

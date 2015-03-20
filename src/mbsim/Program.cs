@@ -23,7 +23,11 @@ namespace mbsim
                 simulationSettings.SimulationTime = TimeSpan.FromSeconds(result.SimulationTime);
                 simulationSettings.TimeInterval = TimeSpan.FromSeconds(result.SimulationInterval);
 
-                var simulation = new Simulation(simulationSettings);
+                var client = new SimulationClient(simulationSettings);
+
+                var simulation = new SimulationServer();
+                simulation.Settings = simulationSettings;
+                simulation.Client = client;
                 simulation.LoadAndStartFromLibrary(
                     result.File).Wait();
             }

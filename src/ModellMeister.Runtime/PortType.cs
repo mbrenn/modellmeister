@@ -22,7 +22,7 @@ namespace ModellMeister.Runtime
         Output,
 
         /// <summary>
-        /// A property, which has a fixed value
+        /// A property, which has a fixed value during simulation
         /// </summary>
         Property
     }

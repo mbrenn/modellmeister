@@ -85,38 +85,6 @@ namespace mbgi_gui
             }
         }
 
-        private void RunSimulationInAppDomain(string workspacePath, string dllName)
-        {
-            var setup = new AppDomainSetup()
-            {
-                ApplicationBase = workspacePath,
-                PrivateBinPath = workspacePath,
-                ConfigurationFile = null
-            };
-
-            var appDomain = AppDomain.CreateDomain("Runner", null, setup);
-            var type = (Simulation)appDomain.CreateInstanceAndUnwrap(
-                "ModellMeister",
-                "ModellMeister.Runner.Simulation");
-
-            type.Settings = this.simulationSettings;
-
-            try
-            {
-                var simulationResult = type.LoadAndStartFromLibrarySync(dllName);
-                
-                var resultWindow = new ResultWindow();
-                resultWindow.Results = new ReportLogic(simulationResult);
-                resultWindow.ShowDialog();
-            }
-            catch (Exception exc)
-            {
-                this.AddMessage("Unhandled exception: " + exc.ToString());
-            }
-
-            AppDomain.Unload(appDomain);
-        }
-
         private string CreateAndGetWorkspace()
         {
             var workspacePath = this.modelFileModel.WorkspacePath;
@@ -210,7 +178,20 @@ namespace mbgi_gui
                 if (compileResult.Errors.Count == 0)
                 {
                     this.AddMessage("Running simulation");
-                    this.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
+
+                    try
+                    {
+                        var client = new SimulationClient(this.simulationSettings);
+                        client.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
+
+                        var resultWindow = new ResultWindow();
+                        resultWindow.Results = new ReportLogic(client.SimulationResult);
+                        resultWindow.ShowDialog();
+                    }
+                    catch (Exception exc)
+                    {
+                        this.AddMessage("Unhandled exception: " + exc.ToString());
+                    }
                 }
                 else
                 {

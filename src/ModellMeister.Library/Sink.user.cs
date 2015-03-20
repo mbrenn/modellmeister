@@ -39,7 +39,7 @@ namespace ModellMeister.Library.Sink
                 result[n - 1] = this.GetChannelValue(n);
             }
 
-            info.Debug.AddResult(info, result);
+            // info.Report.AddResult(info, result);
         }
     }
 }

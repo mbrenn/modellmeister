@@ -10,7 +10,7 @@ namespace ModellMeister.Runtime
     {
         // This is a positional argument
         public RootModelAttribute()
-        {            
+        {
         }
     }
 }

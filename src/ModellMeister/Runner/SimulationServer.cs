@@ -12,7 +12,7 @@ namespace ModellMeister.Runner
     /// <summary>
     /// Executes the simulation
     /// </summary>
-    public class Simulation : MarshalByRefObject, IDebugEnvironment
+    public class SimulationServer : MarshalByRefObject
     {
         /// <summary>
         /// Stores the modeltype
@@ -29,17 +29,21 @@ namespace ModellMeister.Runner
         }
 
         /// <summary>
+        /// Gets or sets the settings
+        /// </summary>
+        public SimulationClient Client
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the Simulation. 
         /// This constructor is necessary, since the simulation is started 
         /// via remote constructor in other AppDomain.
         /// </summary>
-        public Simulation()
+        public SimulationServer()
         {
-        }
-
-        public Simulation(SimulationSettings settings)
-        {
-            this.Settings = settings;
         }
 
         /// <summary>
@@ -49,6 +53,11 @@ namespace ModellMeister.Runner
         public async Task<SimulationResult> LoadAndStartFromLibrary(
             string pathToLibrary)
         {
+            if (this.Client == null)
+            {
+                throw new InvalidOperationException("this.Client is not set for server");
+            }
+
             this.LoadFromLibrary(pathToLibrary);
             return await this.StartSimulation();
         }
@@ -57,10 +66,10 @@ namespace ModellMeister.Runner
         /// Loads the library and starts it
         /// </summary>
         /// <param name="pathToLibrary">Library to be started</param>
-        public SimulationResult LoadAndStartFromLibrarySync(
+        public void LoadAndStartFromLibrarySync(
             string pathToLibrary)
         {
-            return this.LoadAndStartFromLibrary(pathToLibrary).Result;
+            this.LoadAndStartFromLibrary(pathToLibrary).Wait();
         }
 
         /// <summary>
@@ -112,6 +121,11 @@ namespace ModellMeister.Runner
         /// </summary>
         public async Task<SimulationResult> StartSimulation()
         {
+            if (this.Client == null)
+            {
+                throw new InvalidOperationException("this.Client is not set for server");
+            }
+
             return await Task.Run(() =>
             {
                 var results = new List<StateAtTime>();
@@ -130,9 +144,8 @@ namespace ModellMeister.Runner
 
                 var result = new SimulationResult();
 
-                var step = new StepInfoForSimulation(this, result);
+                var step = new StepInfoForSimulation(this);
                 step.TimeInterval = this.Settings.TimeInterval;
-                step.Debug = this;
 
                 for (var currentTime = 0.0;
                         currentTime < this.Settings.SimulationTime.TotalSeconds;
@@ -141,10 +154,21 @@ namespace ModellMeister.Runner
                     step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
 
                     this.modelType.Execute(step);
+
+                    this.Client.Step();
                 }
 
                 return result;
             });
+        }
+
+        /// <summary>
+        /// Adds a channel to the result
+        /// </summary>
+        /// <param name="channelInformation"></param>
+        public void AddChannel(Runtime.Reporting.ChannelInformation channelInformation)
+        {
+            this.Client.AddChannel(channelInformation);
         }
 
         /// <summary>
@@ -154,8 +178,7 @@ namespace ModellMeister.Runner
         /// <param name="values">Values to be added</param>
         public void AddResult(StepInfo info, object[] values)
         {
-            (info as StepInfoForSimulation).SimulationResult.Result.Add(
-                new StateAtTime(info.AbsoluteTime, values));
+            this.Client.AddResult(info, values);
         }
     }
 }

@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModellMeister.Runtime
+namespace ModellMeister.Runtime.Reporting
 {
-    public class StepInfo
+    public class ChannelInformation
     {
         /// <summary>
-        /// Gets or sets the absolute time since the start of the simulation
+        /// Gets or sets the index
         /// </summary>
-        public TimeSpan AbsoluteTime
+        public int Index
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the timeinterval for each simulation step
+        /// Gets or sets the name of the channel
         /// </summary>
-        public TimeSpan TimeInterval
+        public string Name
         {
             get;
             set;

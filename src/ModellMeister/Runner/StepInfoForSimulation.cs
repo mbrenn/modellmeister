@@ -9,22 +9,15 @@ namespace ModellMeister.Runner
 {
     public class StepInfoForSimulation : StepInfo
     {
-        public Simulation Simulation
+        public SimulationServer Simulation
         {
             get;
             set;
         }
 
-        public SimulationResult SimulationResult
-        {
-            get;
-            set;
-        }
-
-        public StepInfoForSimulation(Simulation simulation, SimulationResult result)
+        public StepInfoForSimulation(SimulationServer simulation)
         {
             this.Simulation = simulation;
-            this.SimulationResult = result;
         }
     }
 }

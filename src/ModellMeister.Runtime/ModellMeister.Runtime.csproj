@@ -37,10 +37,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDebugEnvironment.cs" />
     <Compile Include="IModelType.cs" />
     <Compile Include="PortAttribute.cs" />
     <Compile Include="PortType.cs" />
+    <Compile Include="Reporting\ChannelInformation.cs" />
     <Compile Include="RootModelAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepInfo.cs" />
