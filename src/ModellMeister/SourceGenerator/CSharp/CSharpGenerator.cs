@@ -104,7 +104,6 @@ namespace ModellMeister.SourceGenerator.CSharp
 
                 csharpType.Attributes = MemberAttributes.Public;
                 csharpType.IsPartial = true;
-                csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
 
                 this.CreatePorts(type, csharpType);
 
@@ -113,10 +112,12 @@ namespace ModellMeister.SourceGenerator.CSharp
                 if (type.GetType() == typeof(ModelNativeType))
                 {
                     this.FillClassForNativeType(csharpType);
+                    csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.IModelType"));
                 }
                 else if (type.GetType() == typeof(ModelCompositeType))
                 {
                     this.FillClassForCompositeType(type as ModelCompositeType, csharpType);
+                    csharpType.BaseTypes.Add(new CodeTypeReference("ModellMeister.Runtime.ICompositeModelType"));
                 }
 
                 return csharpType;

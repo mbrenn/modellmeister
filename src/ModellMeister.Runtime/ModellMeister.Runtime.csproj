@@ -37,6 +37,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICompositeModelType.cs" />
     <Compile Include="IModelType.cs" />
     <Compile Include="PortAttribute.cs" />
     <Compile Include="PortType.cs" />

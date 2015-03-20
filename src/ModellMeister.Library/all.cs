@@ -12,7 +12,7 @@ namespace ModellMeister.Library.Physics {
     
     
     [ModellMeister.Runtime.RootModelAttribute()]
-    public partial class _ : ModellMeister.Runtime.IModelType {
+    public partial class _ : ModellMeister.Runtime.ICompositeModelType {
         
         public object GetPortValue(string name) {
             throw new System.InvalidOperationException();
@@ -2070,7 +2070,7 @@ namespace ModellMeister.Library.Sink {
 namespace ModellMeister.Library.Physics {
     
     
-    public partial class Body1d : ModellMeister.Runtime.IModelType {
+    public partial class Body1d : ModellMeister.Runtime.ICompositeModelType {
         
         private double _Force;
         

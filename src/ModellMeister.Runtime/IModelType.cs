@@ -17,5 +17,12 @@ namespace ModellMeister.Runtime
         /// Executes the object
         /// </summary>
         void Execute(StepInfo info);
+
+        /// <summary>
+        /// Gets a certain port value
+        /// </summary>
+        /// <param name="name">Name of the port</param>
+        /// <returns>The given value</returns>
+        object GetPortValue(string name);
     }
 }
