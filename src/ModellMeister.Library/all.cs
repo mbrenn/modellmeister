@@ -14,10 +14,18 @@ namespace ModellMeister.Library.Physics {
     [ModellMeister.Runtime.RootModelAttribute()]
     public partial class _ : ModellMeister.Runtime.IModelType {
         
+        public object GetPortValue(string name) {
+            throw new System.InvalidOperationException();
+        }
+        
         public void Init() {
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
+        }
+        
+        public object GetBlock(string name) {
+            throw new System.InvalidOperationException();
         }
     }
 }
@@ -64,6 +72,19 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Sum = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Summand1")) {
+                return this.Summand1;
+            }
+            if ((name == "Summand2")) {
+                return this.Summand2;
+            }
+            if ((name == "Sum")) {
+                return this.Sum;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -117,6 +138,19 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Minuend")) {
+                return this.Minuend;
+            }
+            if ((name == "Subtrahend")) {
+                return this.Subtrahend;
+            }
+            if ((name == "Difference")) {
+                return this.Difference;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -166,6 +200,19 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Product = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Factor1")) {
+                return this.Factor1;
+            }
+            if ((name == "Factor2")) {
+                return this.Factor2;
+            }
+            if ((name == "Product")) {
+                return this.Product;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -219,6 +266,19 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Divident")) {
+                return this.Divident;
+            }
+            if ((name == "Divisor")) {
+                return this.Divisor;
+            }
+            if ((name == "Quotient")) {
+                return this.Quotient;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -256,6 +316,16 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -297,6 +367,16 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -334,6 +414,16 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -375,6 +465,16 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -412,6 +512,16 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -465,6 +575,19 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Base")) {
+                return this.Base;
+            }
+            if ((name == "Exponent")) {
+                return this.Exponent;
+            }
+            if ((name == "Power")) {
+                return this.Power;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -502,6 +625,16 @@ namespace ModellMeister.Library.Algebra {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -555,6 +688,19 @@ namespace ModellMeister.Library.Algebra {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Antilogarithm")) {
+                return this.Antilogarithm;
+            }
+            if ((name == "Base")) {
+                return this.Base;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -597,6 +743,16 @@ namespace ModellMeister.Library.Analysis {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -634,6 +790,16 @@ namespace ModellMeister.Library.Analysis {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -690,6 +856,19 @@ namespace ModellMeister.Library.Comparison {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -739,6 +918,19 @@ namespace ModellMeister.Library.Comparison {
             set {
                 this._Result = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -792,6 +984,19 @@ namespace ModellMeister.Library.Comparison {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -841,6 +1046,19 @@ namespace ModellMeister.Library.Comparison {
             set {
                 this._Result = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -894,6 +1112,19 @@ namespace ModellMeister.Library.Comparison {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -943,6 +1174,19 @@ namespace ModellMeister.Library.Comparison {
             set {
                 this._Result = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Result")) {
+                return this.Result;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1011,6 +1255,22 @@ namespace ModellMeister.Library.ControlFlow {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Condition")) {
+                return this.Condition;
+            }
+            if ((name == "TrueValue")) {
+                return this.TrueValue;
+            }
+            if ((name == "FalseValue")) {
+                return this.FalseValue;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1041,6 +1301,13 @@ namespace ModellMeister.Library.Helper {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1066,6 +1333,13 @@ namespace ModellMeister.Library.Helper {
             set {
                 this._Condition = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Condition")) {
+                return this.Condition;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1122,6 +1396,19 @@ namespace ModellMeister.Library.Logic {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1159,6 +1446,16 @@ namespace ModellMeister.Library.Logic {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1212,6 +1509,19 @@ namespace ModellMeister.Library.Logic {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1263,6 +1573,19 @@ namespace ModellMeister.Library.Logic {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1305,6 +1628,16 @@ namespace ModellMeister.Library.Statistics {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1342,6 +1675,16 @@ namespace ModellMeister.Library.Statistics {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1384,6 +1727,16 @@ namespace ModellMeister.Library.Source {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input")) {
+                return this.Input;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1437,6 +1790,19 @@ namespace ModellMeister.Library.Source {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Frequency")) {
+                return this.Frequency;
+            }
+            if ((name == "Phase")) {
+                return this.Phase;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1488,6 +1854,19 @@ namespace ModellMeister.Library.Source {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Frequency")) {
+                return this.Frequency;
+            }
+            if ((name == "Phase")) {
+                return this.Phase;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Execute(ModellMeister.Runtime.StepInfo info) {
             this.DoExecute(info);
         }
@@ -1537,6 +1916,19 @@ namespace ModellMeister.Library.Source {
             set {
                 this._Output = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Frequency")) {
+                return this.Frequency;
+            }
+            if ((name == "Phase")) {
+                return this.Phase;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1639,6 +2031,31 @@ namespace ModellMeister.Library.Sink {
             set {
                 this._Channel6 = value;
             }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "ChannelCount")) {
+                return this.ChannelCount;
+            }
+            if ((name == "Channel1")) {
+                return this.Channel1;
+            }
+            if ((name == "Channel2")) {
+                return this.Channel2;
+            }
+            if ((name == "Channel3")) {
+                return this.Channel3;
+            }
+            if ((name == "Channel4")) {
+                return this.Channel4;
+            }
+            if ((name == "Channel5")) {
+                return this.Channel5;
+            }
+            if ((name == "Channel6")) {
+                return this.Channel6;
+            }
+            throw new System.InvalidOperationException();
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1761,6 +2178,31 @@ namespace ModellMeister.Library.Physics {
             }
         }
         
+        public object GetPortValue(string name) {
+            if ((name == "Force")) {
+                return this.Force;
+            }
+            if ((name == "Weight")) {
+                return this.Weight;
+            }
+            if ((name == "StartSpeed")) {
+                return this.StartSpeed;
+            }
+            if ((name == "StartPosition")) {
+                return this.StartPosition;
+            }
+            if ((name == "Acceleration")) {
+                return this.Acceleration;
+            }
+            if ((name == "Velocity")) {
+                return this.Velocity;
+            }
+            if ((name == "Position")) {
+                return this.Position;
+            }
+            throw new System.InvalidOperationException();
+        }
+        
         public void Init() {
             this._Acc2Vel = new ModellMeister.Library.Analysis.Integral();
             this._Acc2Vel.Init();
@@ -1775,6 +2217,16 @@ namespace ModellMeister.Library.Physics {
             this._Vel2Pos.Execute(info);
             this.Position = this.Vel2Pos.Output;
             this.Velocity = this.Acc2Vel.Output;
+        }
+        
+        public object GetBlock(string name) {
+            if ((name == "Acc2Vel")) {
+                return this._Acc2Vel;
+            }
+            if ((name == "Vel2Pos")) {
+                return this._Vel2Pos;
+            }
+            throw new System.InvalidOperationException();
         }
     }
 }

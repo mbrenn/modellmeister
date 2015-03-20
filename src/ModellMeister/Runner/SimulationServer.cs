@@ -180,5 +180,17 @@ namespace ModellMeister.Runner
         {
             this.Client.AddResult(info, values);
         }
+
+        /// <summary>
+        /// Gets a value from a specific port
+        /// </summary>
+        /// <param name="name">Name of the port to be queried</param>
+        /// <returns>The value of the port</returns>
+        public object GetPortValue(string name)
+        {
+            var nameParts = name.Split(new[] { '.' });
+
+            return null;
+        }
     }
 }

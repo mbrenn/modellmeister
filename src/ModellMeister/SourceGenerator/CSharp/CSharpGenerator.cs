@@ -200,6 +200,14 @@ namespace ModellMeister.SourceGenerator.CSharp
 
             typeDeclaration.Members.Add(executeMethod);
 
+            var getBlockMethod = new CodeMemberMethod();
+            getBlockMethod.Name = "GetBlock";
+            getBlockMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference("System.String"), "name"));
+            getBlockMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            getBlockMethod.ReturnType = new CodeTypeReference("System.Object");
+
+            typeDeclaration.Members.Add(getBlockMethod);
+
             // Creates the block properties
             var flowLogic = new DataFlowLogic(compositeType);
             var wirePopulater = new WirePopulator(compositeType, executeMethod, flowLogic);
@@ -217,6 +225,20 @@ namespace ModellMeister.SourceGenerator.CSharp
                 blockField.Attributes = MemberAttributes.Private | MemberAttributes.Final;
 
                 typeDeclaration.Members.Add(blockField);
+
+                // if ( name == "BLOCKNAME" ) { return _BLOCKNAME; }
+                getBlockMethod.Statements.Add(
+                    new CodeConditionStatement(
+                        new CodeBinaryOperatorExpression(
+                            new CodeArgumentReferenceExpression("name"),
+                            CodeBinaryOperatorType.ValueEquality,
+                            new CodePrimitiveExpression(block.Name)),
+                        new CodeStatement[] {
+                            new CodeMethodReturnStatement ( 
+                                new CodeFieldReferenceExpression ( 
+                                    new CodeThisReferenceExpression(), 
+                                    fieldName))
+                        }));
 
                 // Stores the expression to retrieve the field
                 var fieldExpression = new CodeFieldReferenceExpression(
@@ -295,7 +317,11 @@ namespace ModellMeister.SourceGenerator.CSharp
                             fieldExpression,
                             "Execute"),
                         new CodeArgumentReferenceExpression("info")));
-            } 
+            }
+
+            getBlockMethod.Statements.Add(
+                new CodeThrowExceptionStatement(
+                    new CodeObjectCreateExpression("System.InvalidOperationException")));
 
             // After all the blocks are populated, we do the feedback rounds
             foreach (var block in compositeType.Blocks)
@@ -428,19 +454,35 @@ namespace ModellMeister.SourceGenerator.CSharp
         /// <param name="csharpType">The C# Type, which will host the ports</param>
         private void CreatePorts(EntityWithPorts type, CodeTypeDeclaration csharpType)
         {
+            var getPortValueMethod = new CodeMemberMethod();
+            getPortValueMethod.Name = "GetPortValue";
+            getPortValueMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference("System.String"), "name"));
+            getPortValueMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            getPortValueMethod.ReturnType = new CodeTypeReference("System.Object");
+
+            csharpType.Members.Add(getPortValueMethod);
+
             // Creates the properties for the input and output ports
             foreach (var inputPort in type.Inputs)
             {
-                this.CreatePort(csharpType, inputPort, PortType.Input);
+                this.CreatePort(csharpType, getPortValueMethod, inputPort, PortType.Input);
             }
 
             foreach (var inputPort in type.Outputs)
             {
-                this.CreatePort(csharpType, inputPort, PortType.Input);
+                this.CreatePort(csharpType, getPortValueMethod, inputPort, PortType.Input);
             }
+
+            getPortValueMethod.Statements.Add(
+                new CodeThrowExceptionStatement(
+                    new CodeObjectCreateExpression("System.InvalidOperationException")));
         }
 
-        private void CreatePort(CodeTypeDeclaration csharpType, ModelPort port, PortType portType)
+        private void CreatePort(
+            CodeTypeDeclaration csharpType,
+            CodeMemberMethod getPortValueMethod, 
+            ModelPort port, 
+            PortType portType)
         {
             var fieldName = "_" + port.Name;
             var fieldType = new CodeTypeReference(Conversion.ConvertToDotNetType(port.DataType));
@@ -475,6 +517,20 @@ namespace ModellMeister.SourceGenerator.CSharp
                         new CodeThisReferenceExpression(),
                         fieldName),
                     new CodePropertySetValueReferenceExpression()));
+
+            // if ( name == "BLOCKNAME" ) { return _BLOCKNAME; }
+            getPortValueMethod.Statements.Add(
+                new CodeConditionStatement(
+                    new CodeBinaryOperatorExpression(
+                        new CodeArgumentReferenceExpression("name"),
+                        CodeBinaryOperatorType.ValueEquality,
+                        new CodePrimitiveExpression(port.Name)),
+                    new CodeStatement[] {
+                            new CodeMethodReturnStatement ( 
+                                new CodeFieldReferenceExpression ( 
+                                    new CodeThisReferenceExpression(), 
+                                    port.Name))
+                        }));
 
             // Creates the attribute for the property
             // [Port(PortType.Input)]
