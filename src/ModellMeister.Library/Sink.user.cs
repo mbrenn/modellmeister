@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModellMeister.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,17 +30,13 @@ namespace ModellMeister.Library.Sink
             }
         }
 
+        partial void DoInit(Runtime.StepInfo info)
+        {
+            info.Server.AddWatch(this, "Channel1");
+        }
+
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
-            var channelCount = this.ChannelCount ;
-            var result = new object[channelCount];
-
-            for (var n = 1; n <= channelCount; n++)
-            {
-                result[n - 1] = this.GetChannelValue(n);
-            }
-
-            // info.Report.AddResult(info, result);
         }
     }
 }

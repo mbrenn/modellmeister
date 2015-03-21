@@ -18,7 +18,7 @@ namespace ModellMeister.Library.Physics {
             throw new System.InvalidOperationException();
         }
         
-        public void Init() {
+        public void Init(ModellMeister.Runtime.StepInfo info) {
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -40,7 +40,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Sum;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -91,8 +91,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -104,7 +104,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Difference;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -155,8 +155,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -168,7 +168,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Product;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -219,8 +219,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -232,7 +232,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Quotient;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -283,8 +283,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -294,7 +294,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -332,8 +332,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -343,7 +343,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -381,8 +381,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -392,7 +392,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -430,8 +430,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -441,7 +441,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -479,8 +479,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -490,7 +490,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -528,8 +528,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -541,7 +541,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Power;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -592,8 +592,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -603,7 +603,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -641,8 +641,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -654,7 +654,7 @@ namespace ModellMeister.Library.Algebra {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -705,8 +705,8 @@ namespace ModellMeister.Library.Algebra {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -719,7 +719,7 @@ namespace ModellMeister.Library.Analysis {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -757,8 +757,8 @@ namespace ModellMeister.Library.Analysis {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -768,7 +768,7 @@ namespace ModellMeister.Library.Analysis {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -806,8 +806,8 @@ namespace ModellMeister.Library.Analysis {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -822,7 +822,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -873,8 +873,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -886,7 +886,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -937,8 +937,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -950,7 +950,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1001,8 +1001,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1014,7 +1014,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1065,8 +1065,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1078,7 +1078,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1129,8 +1129,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1142,7 +1142,7 @@ namespace ModellMeister.Library.Comparison {
         
         private bool _Result;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1193,8 +1193,8 @@ namespace ModellMeister.Library.Comparison {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1211,7 +1211,7 @@ namespace ModellMeister.Library.ControlFlow {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1275,8 +1275,8 @@ namespace ModellMeister.Library.ControlFlow {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1287,7 +1287,7 @@ namespace ModellMeister.Library.Helper {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1312,8 +1312,8 @@ namespace ModellMeister.Library.Helper {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1321,7 +1321,7 @@ namespace ModellMeister.Library.Helper {
         
         private bool _Condition;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1346,8 +1346,8 @@ namespace ModellMeister.Library.Helper {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1362,7 +1362,7 @@ namespace ModellMeister.Library.Logic {
         
         private bool _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1413,8 +1413,8 @@ namespace ModellMeister.Library.Logic {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1424,7 +1424,7 @@ namespace ModellMeister.Library.Logic {
         
         private bool _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1462,8 +1462,8 @@ namespace ModellMeister.Library.Logic {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1475,7 +1475,7 @@ namespace ModellMeister.Library.Logic {
         
         private bool _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1526,8 +1526,8 @@ namespace ModellMeister.Library.Logic {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1539,7 +1539,7 @@ namespace ModellMeister.Library.Logic {
         
         private bool _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1590,8 +1590,8 @@ namespace ModellMeister.Library.Logic {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1604,7 +1604,7 @@ namespace ModellMeister.Library.Statistics {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1642,8 +1642,8 @@ namespace ModellMeister.Library.Statistics {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1653,7 +1653,7 @@ namespace ModellMeister.Library.Statistics {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1691,8 +1691,8 @@ namespace ModellMeister.Library.Statistics {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1705,7 +1705,7 @@ namespace ModellMeister.Library.Source {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1743,8 +1743,8 @@ namespace ModellMeister.Library.Source {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1756,7 +1756,7 @@ namespace ModellMeister.Library.Source {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1807,8 +1807,8 @@ namespace ModellMeister.Library.Source {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1820,7 +1820,7 @@ namespace ModellMeister.Library.Source {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1871,8 +1871,8 @@ namespace ModellMeister.Library.Source {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
     
@@ -1884,7 +1884,7 @@ namespace ModellMeister.Library.Source {
         
         private double _Output;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -1935,8 +1935,8 @@ namespace ModellMeister.Library.Source {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -1959,7 +1959,7 @@ namespace ModellMeister.Library.Sink {
         
         private double _Channel6;
         
-        partial void DoInit();
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
         
         partial void DoExecute(ModellMeister.Runtime.StepInfo info);
         
@@ -2062,8 +2062,8 @@ namespace ModellMeister.Library.Sink {
             this.DoExecute(info);
         }
         
-        public void Init() {
-            this.DoInit();
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
         }
     }
 }
@@ -2203,11 +2203,11 @@ namespace ModellMeister.Library.Physics {
             throw new System.InvalidOperationException();
         }
         
-        public void Init() {
+        public void Init(ModellMeister.Runtime.StepInfo info) {
             this._Acc2Vel = new ModellMeister.Library.Analysis.Integral();
-            this._Acc2Vel.Init();
+            this._Acc2Vel.Init(info);
             this._Vel2Pos = new ModellMeister.Library.Analysis.Integral();
-            this._Vel2Pos.Init();
+            this._Vel2Pos.Init(info);
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {

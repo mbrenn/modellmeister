@@ -143,11 +143,14 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Returns an empty init method
             var initMethod = new CodeMemberMethod();
             initMethod.Name = "Init";
+            initMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
             initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             initMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     new CodeThisReferenceExpression(),
-                    "DoInit"));
+                    "DoInit",
+                    new CodeArgumentReferenceExpression("info")));
 
             csharpType.Members.Add(initMethod);
 
@@ -155,7 +158,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Partial methods are not supported by CodeDom...
             // This will be called by the Init Method
             var initImplMethod = new CodeMemberField();
-            initImplMethod.Name = "DoInit()";
+            initImplMethod.Name = "DoInit(ModellMeister.Runtime.StepInfo info)";
             initImplMethod.Type = new CodeTypeReference("partial void");
             initImplMethod.Attributes = MemberAttributes.Final;
 
@@ -188,6 +191,8 @@ namespace ModellMeister.SourceGenerator.CSharp
             // Returns an empty init method
             var initMethod = new CodeMemberMethod();
             initMethod.Name = "Init";
+            initMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression("ModellMeister.Runtime.StepInfo", "info"));
             initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
             typeDeclaration.Members.Add(initMethod);
@@ -303,7 +308,8 @@ namespace ModellMeister.SourceGenerator.CSharp
                 initMethodStatements.Add(
                     new CodeMethodInvokeExpression(
                         fieldExpression,
-                        "Init"));
+                        "Init",
+                        new CodeArgumentReferenceExpression("info")));
 
                 // Adds some statements to the execution method
                 // First, populate the input values

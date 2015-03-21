@@ -38,7 +38,7 @@ namespace ModellMeister.Runner
             this.SimulationSettings = settings;
         }
 
-        public void RunSimulationInAppDomain(string workspacePath, string dllName)
+        public async Task RunSimulationInAppDomain(string workspacePath, string dllName)
         {
             var setup = new AppDomainSetup()
             {
@@ -54,7 +54,7 @@ namespace ModellMeister.Runner
 
             type.Settings = this.SimulationSettings;
             type.Client = this;
-            type.LoadAndStartFromLibrarySync(dllName);
+            await Task.Run(() => { type.LoadAndStartFromLibrarySync(dllName); });
 
             AppDomain.Unload(appDomain);
         }

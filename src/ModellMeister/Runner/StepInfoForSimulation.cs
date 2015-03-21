@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace ModellMeister.Runner
 {
+    [Serializable]
     public class StepInfoForSimulation : StepInfo
     {
         public SimulationServer Simulation
         {
-            get;
-            set;
+            get { return this.Server as SimulationServer; }
+            set { this.Server = value; }
         }
 
         public StepInfoForSimulation(SimulationServer simulation)

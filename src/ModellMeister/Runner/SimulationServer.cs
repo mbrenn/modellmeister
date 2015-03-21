@@ -13,7 +13,7 @@ namespace ModellMeister.Runner
     /// <summary>
     /// Executes the simulation
     /// </summary>
-    public class SimulationServer : MarshalByRefObject
+    public class SimulationServer : MarshalByRefObject, ISimulationServer
     {
         /// <summary>
         /// Stores the modeltype
@@ -134,42 +134,56 @@ namespace ModellMeister.Runner
                 throw new InvalidOperationException("this.Client is not set for server");
             }
 
-            return await Task.Run(() =>
+            var results = new List<StateAtTime>();
+
+            if (this.Settings.TimeInterval.TotalSeconds <= 0)
             {
-                var results = new List<StateAtTime>();
+                throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
+            }
 
-                if (this.Settings.TimeInterval.TotalSeconds <= 0)
+            if (this.modelType == null)
+            {
+                throw new InvalidOperationException("No model loaded");
+            }
+
+            var step = new StepInfoForSimulation(this);
+            this.modelType.Init(step);
+
+            var result = new SimulationResult();
+
+            step.TimeInterval = this.Settings.TimeInterval;
+            var lastRealTime = DateTime.Now;
+
+            for (var currentTime = 0.0;
+                    currentTime < this.Settings.SimulationTime.TotalSeconds;
+                    currentTime += this.Settings.TimeInterval.TotalSeconds)
+            {
+                await Task.Run(() =>
+                    {
+                        step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
+
+                        this.modelType.Execute(step);
+
+                        this.Client.Step();
+                        this.AddByWatchList(step);
+                    });
+
+                // Checks for nonsynchronous execution and wait
+                if (this.Settings.Synchronous == true)
                 {
-                    throw new InvalidOperationException("Time Interval is negative or null. Not allowed");
+                    var diff = DateTime.Now - lastRealTime + this.Settings.TimeInterval;
+                    if (diff.TotalMilliseconds > 0)
+                    {
+                        await Task.Delay(diff);
+                    }
+
+                    lastRealTime = DateTime.Now;
                 }
+            }
 
-                if (this.modelType == null)
-                {
-                    throw new InvalidOperationException("No model loaded");
-                }
-
-                this.modelType.Init();
-
-                var result = new SimulationResult();
-
-                var step = new StepInfoForSimulation(this);
-                step.TimeInterval = this.Settings.TimeInterval;
-
-                for (var currentTime = 0.0;
-                        currentTime < this.Settings.SimulationTime.TotalSeconds;
-                        currentTime += this.Settings.TimeInterval.TotalSeconds)
-                {
-                    step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
-
-                    this.modelType.Execute(step);
-
-                    this.Client.Step();
-                    this.AddByWatchList(step);
-                }
-
-                return result;
-            });
+            return result;
         }
+    
 
         /// <summary>
         /// Adds a channel to the result
@@ -198,6 +212,8 @@ namespace ModellMeister.Runner
             {
                 values[item.Index] = item.ModelType.GetPortValue(item.PortName);
             }
+
+            this.Client.AddResult(info, values);
         }
 
         /// <summary>
@@ -217,6 +233,17 @@ namespace ModellMeister.Runner
             }
 
             return currentModelType.GetPortValue(nameParts.LastOrDefault());
+        }
+
+        void ISimulationServer.AddWatch(IModelType type, string portName)
+        {
+            this.AddChannel(
+                new WatchListItem()
+                {
+                    ModelType = type,
+                    PortName = portName,
+                    Name = portName
+                });
         }
     }
 }

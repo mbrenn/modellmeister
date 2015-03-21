@@ -121,10 +121,21 @@ namespace mbgi_gui
             this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
         }
 
+        private async void btnRunRealtimeSimulation_Click(object sender, RoutedEventArgs e)
+        {
+            this.simulationSettings.Synchronous = true;
+            await this.RunSimulationOnFile();
+        }
+
         private async void btnRunSimulation_Click(object sender, RoutedEventArgs e)
         {
-            var currentFilename = this.modelFileModel.Filename;
+            this.simulationSettings.Synchronous = false;
+            await this.RunSimulationOnFile();
+        }
 
+        private async Task RunSimulationOnFile()
+        {
+            var currentFilename = this.modelFileModel.Filename;
             try
             {
                 var workspacePath = this.CreateAndGetWorkspace();
@@ -182,7 +193,7 @@ namespace mbgi_gui
                     try
                     {
                         var client = new SimulationClient(this.simulationSettings);
-                        client.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
+                        await client.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
 
                         var resultWindow = new ResultWindow();
                         resultWindow.Results = new ReportLogic(client.SimulationResult);

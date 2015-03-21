@@ -11,7 +11,7 @@ namespace ModellMeister.Runtime
         /// <summary>
         /// Initializes a modeltype
         /// </summary>
-        void Init();
+        void Init(StepInfo info);
         
         /// <summary>
         /// Executes the object
