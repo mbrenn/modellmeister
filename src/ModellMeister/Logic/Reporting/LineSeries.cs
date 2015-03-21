@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModellMeister.Logic.Report
+namespace ModellMeister.Logic.Reporting
 {
     public class LineSeries
     {

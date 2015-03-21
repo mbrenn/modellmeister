@@ -1,4 +1,4 @@
-﻿using ModellMeister.Logic.Report;
+﻿using ModellMeister.Logic.Reporting;
 using ModellMeister.Runner;
 using System;
 using System.Collections.Generic;

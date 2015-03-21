@@ -1,4 +1,5 @@
-﻿using ModellMeister.Runtime;
+﻿using ModellMeister.Logic.Reporting;
+using ModellMeister.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,6 +38,12 @@ namespace ModellMeister.Runner
             set;
         }
 
+        public WatchList WatchList
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Initializes a new instance of the Simulation. 
         /// This constructor is necessary, since the simulation is started 
@@ -44,6 +51,7 @@ namespace ModellMeister.Runner
         /// </summary>
         public SimulationServer()
         {
+            this.WatchList = new WatchList();
         }
 
         /// <summary>
@@ -156,6 +164,7 @@ namespace ModellMeister.Runner
                     this.modelType.Execute(step);
 
                     this.Client.Step();
+                    this.AddByWatchList(step);
                 }
 
                 return result;
@@ -166,31 +175,48 @@ namespace ModellMeister.Runner
         /// Adds a channel to the result
         /// </summary>
         /// <param name="channelInformation"></param>
-        public void AddChannel(Runtime.Reporting.ChannelInformation channelInformation)
+        public void AddChannel(WatchListItem channelInformation)
         {
-            this.Client.AddChannel(channelInformation);
+            this.WatchList.Add(channelInformation);
         }
 
         /// <summary>
-        /// Adds a point into the database
+        /// Adds the content to the result
         /// </summary>
-        /// <param name="absoluteTime">Absolute time to be added</param>
-        /// <param name="values">Values to be added</param>
-        public void AddResult(StepInfo info, object[] values)
+        public void AddByWatchList(StepInfo info)
         {
-            this.Client.AddResult(info, values);
+            if (this.WatchList.Items.Count == 0)
+            {
+                // No items on watchlist, no return
+                return;
+            }
+
+            var maxValue = this.WatchList.Items.Max(x => x.Index);
+            var values = new object[maxValue + 1];
+
+            foreach (var item in this.WatchList.Items)
+            {
+                values[item.Index] = item.ModelType.GetPortValue(item.PortName);
+            }
         }
 
         /// <summary>
         /// Gets a value from a specific port
         /// </summary>
-        /// <param name="name">Name of the port to be queried</param>
+        /// <param name="name">Name of the port to be queried. Block.InnerBlock.PortName</param>
         /// <returns>The value of the port</returns>
         public object GetPortValue(string name)
         {
             var nameParts = name.Split(new[] { '.' });
 
-            return null;
+            var currentModelType = this.modelType;
+            for (var n = 0; n < (nameParts.Length - 1); n++)
+            {
+                var compositeModelType = currentModelType as ICompositeModelType;
+                currentModelType = compositeModelType.GetBlock(nameParts[n]) as IModelType;
+            }
+
+            return currentModelType.GetPortValue(nameParts.LastOrDefault());
         }
     }
 }

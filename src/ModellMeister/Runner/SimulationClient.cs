@@ -1,4 +1,5 @@
-﻿using ModellMeister.Runtime;
+﻿using ModellMeister.Logic.Reporting;
+using ModellMeister.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace ModellMeister.Runner
 {
     /// <summary>
-    /// Stores the client
+    /// Stores the instance, which is controlling the server. 
     /// </summary>
     public class SimulationClient : MarshalByRefObject
     {
@@ -63,15 +64,6 @@ namespace ModellMeister.Runner
         /// </summary>
         public void Step()
         {
-        }
-
-        /// <summary>
-        /// Adds a channel to the result
-        /// </summary>
-        /// <param name="channelInformation"></param>
-        public void AddChannel(Runtime.Reporting.ChannelInformation channelInformation)
-        {
-
         }
 
         /// <summary>

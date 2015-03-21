@@ -52,8 +52,10 @@
     <Compile Include="FileParser\ParsedLine.cs" />
     <Compile Include="Logic\Conversion.cs" />
     <Compile Include="Logic\DataFlowLogic.cs" />
+    <Compile Include="Logic\Reporting\WatchList.cs" />
+    <Compile Include="Logic\Reporting\WatchListItem.cs" />
     <Compile Include="Logic\ReportLogic.cs" />
-    <Compile Include="Logic\Report\LineSeries.cs" />
+    <Compile Include="Logic\Reporting\LineSeries.cs" />
     <Compile Include="Mb2DllCompiler.cs" />
     <Compile Include="Mbgi2CsConverter.cs" />
     <Compile Include="Model\DataType.cs" />
