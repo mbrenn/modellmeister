@@ -2,28 +2,17 @@
 using mbgi_gui.Dialogs;
 using mbgi_gui.Logic;
 using mbgi_gui.Models;
-using Microsoft.CSharp;
 using ModellMeister;
 using ModellMeister.Logic;
 using ModellMeister.Runner;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace mbgi_gui
 {
@@ -124,7 +113,9 @@ namespace mbgi_gui
         private async void btnRunRealtimeSimulation_Click(object sender, RoutedEventArgs e)
         {
             this.simulationSettings.Synchronous = true;
+            
             await this.RunSimulationOnFile();
+
         }
 
         private async void btnRunSimulation_Click(object sender, RoutedEventArgs e)
@@ -193,6 +184,11 @@ namespace mbgi_gui
                     try
                     {
                         var client = new SimulationClient(this.simulationSettings);
+
+                        var dlg = new WatchlistWindow(client);
+                        dlg.Show();
+                        client.Stepped += (x, y) => dlg.RefreshData();
+
                         await client.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
 
                         var resultWindow = new ResultWindow();

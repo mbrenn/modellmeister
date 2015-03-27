@@ -55,7 +55,7 @@ namespace ModellMeister.Logic
             {
                 for (var n = 0; n < numberOfSeries; n++)
                 {
-                    if (n <= line.Values.Length)
+                    if (n < line.Values.Length)
                     {
                         // The current line has enough values
                         this.lineSeries[n].Times.Add(line.AbsoluteTime.TotalSeconds);

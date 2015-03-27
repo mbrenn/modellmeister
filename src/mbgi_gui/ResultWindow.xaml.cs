@@ -35,8 +35,11 @@ namespace mbgi_gui
                     var n = 0;
                     foreach (var v in series.Values)
                     {
-                        oxySeries.Points.Add(new DataPoint(series.Times[n], v));
-                        n++;
+                        if (n < series.Times.Count)
+                        {
+                            oxySeries.Points.Add(new DataPoint(series.Times[n], v));
+                            n++;
+                        }
                     }
 
                     model.Series.Add(oxySeries);

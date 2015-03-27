@@ -327,8 +327,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             }
 
             getBlockMethod.Statements.Add(
-                new CodeThrowExceptionStatement(
-                    new CodeObjectCreateExpression("System.InvalidOperationException")));
+                new CodeMethodReturnStatement(new CodePrimitiveExpression(null)));
 
             // After all the blocks are populated, we do the feedback rounds
             foreach (var block in compositeType.Blocks)
@@ -481,8 +480,7 @@ namespace ModellMeister.SourceGenerator.CSharp
             }
 
             getPortValueMethod.Statements.Add(
-                new CodeThrowExceptionStatement(
-                    new CodeObjectCreateExpression("System.InvalidOperationException")));
+                new CodeMethodReturnStatement(new CodePrimitiveExpression(null)));
         }
 
         private void CreatePort(

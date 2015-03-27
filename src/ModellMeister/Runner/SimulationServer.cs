@@ -165,7 +165,7 @@ namespace ModellMeister.Runner
                         this.modelType.Execute(step);
 
                         this.Client.Step();
-                        this.AddByWatchList(step);
+                        this.AddResultByWatchList(step);
                     });
 
                 // Checks for nonsynchronous execution and wait
@@ -184,20 +184,46 @@ namespace ModellMeister.Runner
             return result;
         }
     
-
         /// <summary>
         /// Adds a channel to the result
         /// </summary>
         /// <param name="channelInformation"></param>
-        public void AddChannel(WatchListItem channelInformation)
+        public bool AddChannel(WatchListItem channelInformation)
         {
+            // Checks, if port is specified
+            if (channelInformation.ModelType == null && string.IsNullOrEmpty(channelInformation.Name))
+            {
+                throw new InvalidOperationException("No Model given and no name is given");
+            }
+
+            if (channelInformation.ModelType == null)
+            {
+                string portName;
+                channelInformation.ModelType = this.GetModelTypeInstance(channelInformation.Name, out portName);
+                if (channelInformation.ModelType == null)
+                {
+                    return false;
+                }
+
+                channelInformation.PortName = portName;
+            }
+
             this.WatchList.Add(channelInformation);
+            return true;
+        }
+
+        public bool AddChannel(string nameOfPort)
+        {
+            return this.AddChannel(new WatchListItem()
+                {
+                    Name = nameOfPort
+                });
         }
 
         /// <summary>
         /// Adds the content to the result
         /// </summary>
-        public void AddByWatchList(StepInfo info)
+        public void AddResultByWatchList(StepInfo info)
         {
             if (this.WatchList.Items.Count == 0)
             {
@@ -233,6 +259,31 @@ namespace ModellMeister.Runner
             }
 
             return currentModelType.GetPortValue(nameParts.LastOrDefault());
+        }
+
+        /// <summary>
+        /// Gets the instance of the model, which contains a certain port. 
+        /// The name includes the portname. The portname is stripped out afterwards.
+        /// </summary>
+        /// <param name="name">Name of the port to be queried. Block.InnerBlock.PortName</param>
+        /// <returns>The value of the port</returns>
+        public IModelType GetModelTypeInstance(string name, out string portName)
+        {
+            var nameParts = name.Split(new[] { '.' });
+
+            var currentModelType = this.modelType;
+            for (
+                var n = 0;
+                (n < (nameParts.Length - 1)) && currentModelType != null;
+                n++)
+            {
+                var compositeModelType = currentModelType as ICompositeModelType;
+                currentModelType = compositeModelType.GetBlock(nameParts[n]) as IModelType;
+            }
+
+            portName = nameParts.LastOrDefault();
+
+            return currentModelType;
         }
 
         void ISimulationServer.AddWatch(IModelType type, string portName)

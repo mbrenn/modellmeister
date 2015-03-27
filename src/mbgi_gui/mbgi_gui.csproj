@@ -82,12 +82,17 @@
     <Compile Include="Dialogs\SimulationSettingsDlg.xaml.cs">
       <DependentUpon>SimulationSettingsDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\WatchlistWindow.xaml.cs">
+      <DependentUpon>WatchlistWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
     <Compile Include="Models\NewFileModel.cs" />
     <Compile Include="Dialogs\NewDialog.xaml.cs">
       <DependentUpon>NewDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\WatchModel.cs" />
+    <Compile Include="Models\WatchRowItem.cs" />
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
@@ -96,6 +101,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SimulationSettingsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\WatchlistWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

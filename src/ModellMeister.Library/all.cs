@@ -15,7 +15,7 @@ namespace ModellMeister.Library.Physics {
     public partial class _ : ModellMeister.Runtime.ICompositeModelType {
         
         public object GetPortValue(string name) {
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Init(ModellMeister.Runtime.StepInfo info) {
@@ -25,7 +25,7 @@ namespace ModellMeister.Library.Physics {
         }
         
         public object GetBlock(string name) {
-            throw new System.InvalidOperationException();
+            return null;
         }
     }
 }
@@ -84,7 +84,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Sum")) {
                 return this.Sum;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -148,7 +148,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Difference")) {
                 return this.Difference;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -212,7 +212,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Product")) {
                 return this.Product;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -276,7 +276,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Quotient")) {
                 return this.Quotient;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -325,7 +325,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -374,7 +374,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -423,7 +423,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -472,7 +472,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -521,7 +521,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -585,7 +585,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Power")) {
                 return this.Power;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -634,7 +634,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -698,7 +698,7 @@ namespace ModellMeister.Library.Algebra {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -750,7 +750,7 @@ namespace ModellMeister.Library.Analysis {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -799,7 +799,7 @@ namespace ModellMeister.Library.Analysis {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -866,7 +866,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -930,7 +930,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -994,7 +994,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1058,7 +1058,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1122,7 +1122,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1186,7 +1186,7 @@ namespace ModellMeister.Library.Comparison {
             if ((name == "Result")) {
                 return this.Result;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1268,7 +1268,7 @@ namespace ModellMeister.Library.ControlFlow {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1305,7 +1305,7 @@ namespace ModellMeister.Library.Helper {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1339,7 +1339,7 @@ namespace ModellMeister.Library.Helper {
             if ((name == "Condition")) {
                 return this.Condition;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1406,7 +1406,7 @@ namespace ModellMeister.Library.Logic {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1455,7 +1455,7 @@ namespace ModellMeister.Library.Logic {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1519,7 +1519,7 @@ namespace ModellMeister.Library.Logic {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1583,7 +1583,7 @@ namespace ModellMeister.Library.Logic {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1635,7 +1635,7 @@ namespace ModellMeister.Library.Statistics {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1684,7 +1684,7 @@ namespace ModellMeister.Library.Statistics {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1736,7 +1736,7 @@ namespace ModellMeister.Library.Source {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1800,7 +1800,7 @@ namespace ModellMeister.Library.Source {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1864,7 +1864,7 @@ namespace ModellMeister.Library.Source {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -1928,7 +1928,7 @@ namespace ModellMeister.Library.Source {
             if ((name == "Output")) {
                 return this.Output;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -2055,7 +2055,7 @@ namespace ModellMeister.Library.Sink {
             if ((name == "Channel6")) {
                 return this.Channel6;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {
@@ -2200,7 +2200,7 @@ namespace ModellMeister.Library.Physics {
             if ((name == "Position")) {
                 return this.Position;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
         
         public void Init(ModellMeister.Runtime.StepInfo info) {
@@ -2226,7 +2226,7 @@ namespace ModellMeister.Library.Physics {
             if ((name == "Vel2Pos")) {
                 return this._Vel2Pos;
             }
-            throw new System.InvalidOperationException();
+            return null;
         }
     }
 }
