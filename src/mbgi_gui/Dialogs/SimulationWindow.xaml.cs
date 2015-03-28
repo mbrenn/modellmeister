@@ -19,11 +19,11 @@ namespace mbgi_gui.Dialogs
     /// <summary>
     /// Interaction logic for WatchlistWindow.xaml
     /// </summary>
-    public partial class WatchlistWindow : Window
+    public partial class SimulationWindow : Window
     {
         private SimulationClient client;
 
-        public WatchlistWindow(SimulationClient client)
+        public SimulationWindow(SimulationClient client)
         {
             this.client = client;
             this.InitializeComponent();
@@ -63,6 +63,16 @@ namespace mbgi_gui.Dialogs
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.txtWatchAdd.Focus();
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+            this.client.Server.Pause();
+        }
+
+        private void btnResume_Click(object sender, RoutedEventArgs e)
+        {
+            this.client.Server.Resume();
         }
     }
 }

@@ -9,6 +9,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -16,8 +17,10 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5">Simulation Time (s):</TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5">Simulation Interval (s):</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5">Simulation Time (s):</TextBlock>
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=SimulationTimeS}" Margin="5"></TextBox>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=TimeIntervalS}" Margin="5"></TextBox>
-        <Button Grid.Row="2" Grid.Column="2" Margin="5" x:Name="btnCreate" IsDefault="True" Click="btnCreate_Click">Set Changes</Button>
+        <CheckBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" IsChecked="{Binding Path=IsPausedAtStart}"></CheckBox>
+        <Button Grid.Row="3" Grid.Column="2" Margin="5" x:Name="btnCreate" IsDefault="True" Click="btnCreate_Click">Set Changes</Button>
     </Grid>
 </Window>

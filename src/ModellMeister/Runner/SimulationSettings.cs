@@ -21,6 +21,12 @@ namespace ModellMeister.Runner
             set;
         }
 
+        public bool IsPausedAtStart
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// The simulation will be run with real time, not with
         /// maximum speed. To be used for simulation with manipulation

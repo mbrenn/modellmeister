@@ -11,14 +11,30 @@ using System.Threading.Tasks;
 namespace ModellMeister.Runner
 {
     /// <summary>
-    /// Executes the simulation
+    /// Executes the simulation and has a connection to the client, which is controlling the execution of
+    /// the server
     /// </summary>
     public class SimulationServer : MarshalByRefObject, ISimulationServer
     {
         /// <summary>
+        /// Gets a value whether the simulation is paused
+        /// </summary>
+        private bool isPaused = false;
+
+        /// <summary>
         /// Stores the modeltype
         /// </summary>
         private IModelType modelType;
+
+        /// <summary>
+        /// Defines the synchronisation object
+        /// </summary>
+        private object syncObject = new object();
+
+        /// <summary>
+        /// Stores the simulation time
+        /// </summary>
+        private TimeSpan simulatedTime = TimeSpan.Zero;
 
         /// <summary>
         /// Gets or sets the settings
@@ -42,6 +58,28 @@ namespace ModellMeister.Runner
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the simulation shall paused or not. 
+        /// </summary>
+        public bool IsPaused
+        {
+            get
+            {
+                lock (this.syncObject)
+                {
+                    return this.isPaused;
+                }
+            }
+
+            set
+            {
+                lock (this.syncObject)
+                {
+                    this.isPaused = value;
+                }
+            }
         }
 
         /// <summary>
@@ -150,33 +188,45 @@ namespace ModellMeister.Runner
             this.modelType.Init(step);
 
             var result = new SimulationResult();
-
             step.TimeInterval = this.Settings.TimeInterval;
             var lastRealTime = DateTime.Now;
+            this.simulatedTime = TimeSpan.Zero;
+            this.IsPaused = this.Settings.IsPausedAtStart;
 
             for (var currentTime = 0.0;
                     currentTime < this.Settings.SimulationTime.TotalSeconds;
                     currentTime += this.Settings.TimeInterval.TotalSeconds)
             {
-                await Task.Run(() =>
-                    {
-                        step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
 
-                        this.modelType.Execute(step);
-
-                        this.Client.Step();
-                        this.AddResultByWatchList(step);
-                    });
-
-                // Checks for nonsynchronous execution and wait
-                if (this.Settings.Synchronous == true)
+                if (!this.IsPaused)
                 {
-                    var diff = DateTime.Now - lastRealTime + this.Settings.TimeInterval;
-                    if (diff.TotalMilliseconds > 0)
-                    {
-                        await Task.Delay(diff);
-                    }
+                    await Task.Run(() =>
+                        {
+                            step.AbsoluteTime = TimeSpan.FromSeconds(currentTime);
+                            this.simulatedTime += step.TimeInterval;
 
+                            this.modelType.Execute(step);
+
+                            this.Client.Step();
+                            this.AddResultByWatchList(step);
+                        });
+
+                    // Checks for nonsynchronous execution and wait
+                    if (this.Settings.Synchronous == true)
+                    {
+                        var diff = DateTime.Now - lastRealTime + this.Settings.TimeInterval;
+                        if (diff.TotalMilliseconds > 0)
+                        {
+                            await Task.Delay(diff);
+                        }
+
+                        lastRealTime = DateTime.Now;
+                    }
+                }
+                else
+                {
+                    // Simulation is paused. 
+                    await Task.Delay(100);
                     lastRealTime = DateTime.Now;
                 }
             }
@@ -295,6 +345,22 @@ namespace ModellMeister.Runner
                     PortName = portName,
                     Name = portName
                 });
+        }
+
+        /// <summary>
+        /// Resumes the simulation
+        /// </summary>
+        public void Resume()
+        {
+            this.IsPaused = false;
+        }
+
+        /// <summary>
+        /// Pauses the simultion
+        /// </summary>
+        public void Pause()
+        {
+            this.IsPaused = true;
         }
     }
 }

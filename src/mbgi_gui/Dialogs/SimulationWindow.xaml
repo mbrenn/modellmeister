@@ -1,21 +1,28 @@
-﻿<Window x:Class="mbgi_gui.Dialogs.WatchlistWindow"
+﻿<Window x:Class="mbgi_gui.Dialogs.SimulationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Watchlist" Height="300" Width="300" Loaded="Window_Loaded">
     <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtWatchAdd" />
-            <Button Grid.Column="1" Click="AddWatch_Click">Add</Button>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="btnPause" Click="btnPause_Click">Pause</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="btnRestart" Click="btnResume_Click">Resume</Button>
+            <TextBox Grid.Row="1" x:Name="txtWatchAdd" />
+            <Button Grid.Row="1" Grid.Column="1" Click="AddWatch_Click">Add</Button>
         </Grid>
-        <ListView Grid.Row="1" x:Name="lstWatchItems">
+        <ListView Grid.Row="2" x:Name="lstWatchItems">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

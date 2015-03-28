@@ -185,7 +185,7 @@ namespace mbgi_gui
                     {
                         var client = new SimulationClient(this.simulationSettings);
 
-                        var dlg = new WatchlistWindow(client);
+                        var dlg = new SimulationWindow(client);
                         dlg.Show();
                         client.Stepped += (x, y) => dlg.RefreshData();
 
