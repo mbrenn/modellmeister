@@ -22,6 +22,11 @@ namespace ModellMeister.Runner
         private bool isPaused = false;
 
         /// <summary>
+        /// Gets or sets a flag whether the simulation shall be cancelled
+        /// </summary>
+        private bool isCancelled = false;
+
+        /// <summary>
         /// Stores the modeltype
         /// </summary>
         private IModelType modelType;
@@ -78,6 +83,28 @@ namespace ModellMeister.Runner
                 lock (this.syncObject)
                 {
                     this.isPaused = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the simulation shall be cancelled or not. 
+        /// </summary>
+        public bool IsCancelled
+        {
+            get
+            {
+                lock (this.syncObject)
+                {
+                    return this.isCancelled;
+                }
+            }
+
+            set
+            {
+                lock (this.syncObject)
+                {
+                    this.isCancelled = value;
                 }
             }
         }
@@ -361,6 +388,11 @@ namespace ModellMeister.Runner
         public void Pause()
         {
             this.IsPaused = true;
+        }
+
+        public void Cancel ()
+        {
+            this.IsCancelled = true;
         }
     }
 }

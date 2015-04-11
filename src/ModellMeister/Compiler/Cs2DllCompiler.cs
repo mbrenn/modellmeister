@@ -9,17 +9,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModellMeister
+namespace ModellMeister.Compiler
 {
     /// <summary>
     /// Compiles the C# files for the model based and returns a .dll
     /// </summary>
-    public class Mb2DllCompiler
+    public class Cs2DllCompiler
     {
         /// <summary>
         /// Defines the logger to be used
         /// </summary>
-        private static ILog logger = new ClassLogger(typeof(Mb2DllCompiler));
+        private static ILog logger = new ClassLogger(typeof(Cs2DllCompiler));
 
         /// <summary>
         /// Stores the list of assemblies
@@ -107,7 +107,6 @@ namespace ModellMeister
         {
             try
             {
-
                 File.Copy(
                     Path.Combine(
                         Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),

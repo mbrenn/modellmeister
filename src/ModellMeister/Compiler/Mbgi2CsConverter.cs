@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModellMeister
+namespace ModellMeister.Compiler
 {
     /// <summary>
     /// This file performs the actual conversion

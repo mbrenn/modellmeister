@@ -87,7 +87,7 @@
     </Compile>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
-    <Compile Include="Models\NewFileModel.cs" />
+    <Compile Include="Models\GuiSettings.cs" />
     <Compile Include="Dialogs\NewDialog.xaml.cs">
       <DependentUpon>NewDialog.xaml</DependentUpon>
     </Compile>

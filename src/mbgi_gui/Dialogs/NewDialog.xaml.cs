@@ -25,7 +25,7 @@ namespace mbgi_gui.Dialogs
             InitializeComponent();
         }
 
-        public NewFileModel Model
+        public GuiSettings Model
         {
             get;
             set;

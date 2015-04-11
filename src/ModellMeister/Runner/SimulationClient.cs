@@ -2,6 +2,7 @@
 using ModellMeister.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,8 +59,11 @@ namespace ModellMeister.Runner
         /// <param name="workspacePath">Path to the worksapce</param>
         /// <param name="dllName">Name of the dll</param>
         /// <returns>The task which is used to execute the simulationserver</returns>
-        public async Task RunSimulationInAppDomain(string workspacePath, string dllName)
+        public async Task RunSimulationInAppDomain(string pathToAssembly)
         {
+            var workspacePath = Path.GetDirectoryName(pathToAssembly);
+            var dllName = Path.GetFileName(pathToAssembly);
+
             var setup = new AppDomainSetup()
             {
                 ApplicationBase = workspacePath,

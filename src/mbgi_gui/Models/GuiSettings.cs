@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mbgi_gui.Models
 {
-    public class NewFileModel
+    public class GuiSettings
     {
         public string WorkspacePath
         {
@@ -15,6 +15,16 @@ namespace mbgi_gui.Models
         }
 
         public string Filename
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the current file path for the MBGI file. 
+        /// This will be used to store the file, when necessary
+        /// </summary>
+        public string CurrentMbgiFilePath
         {
             get;
             set;

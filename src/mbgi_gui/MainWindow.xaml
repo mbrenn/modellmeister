@@ -12,16 +12,12 @@
             <RowDefinition Height="25*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="40*"/>
         </Grid.ColumnDefinitions>
-        <Ribbon Grid.ColumnSpan="2" ShowQuickAccessToolBarOnTop="False">
+        <Ribbon Grid.ColumnSpan="3" ShowQuickAccessToolBarOnTop="False">
             <RibbonTab Header="Menu">
-                <RibbonGroup Header="File">
-                    <RibbonButton Label="New..." x:Name="btnNew" Click="btnNew_Click" />
-                    <RibbonButton Label="Load..." x:Name="btnLoad" Click="btnLoad_Click" ></RibbonButton>
-                    <RibbonButton Label="Load Examples" x:Name="btnLoadExamples" Click="btnLoadExamples_Click"></RibbonButton>
-                </RibbonGroup>
                 <RibbonGroup Header="Simulation">
                     <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>
                     <RibbonButton Label="Run" x:Name="btnRunSimulation" Click="btnRunSimulation_Click"></RibbonButton>
@@ -30,14 +26,20 @@
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <TextBlock x:Name="txtWorkspacePath" Grid.Column="0" Grid.Row="1" Margin="5"></TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions> 
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtWorkspacePath" Grid.Column="0" Margin="5"></TextBox>
+            <Button x:Name="btnSwitchPath" Grid.Column="1" Margin="5" Click="txtSwitchPath_Click" Padding="10,0,10,0">Switch</Button>
+        </Grid>
+        <ListView x:Name="lstFiles" Grid.Row="2" Margin="5" SelectionChanged="lstFiles_SelectionChanged">
+        </ListView>
         <TextBlock x:Name="txtNameOfFiles" Grid.Column="1" Grid.Row="1" Margin="5"></TextBlock>
-        <TextBox Grid.Column="0" Grid.Row="2" Margin="5" x:Name="txtMBGISource" AcceptsReturn="True"
+        <TextBox Grid.Column="1"  Grid.ColumnSpan="2" Grid.Row="2" Margin="5" x:Name="txtMBGISource" AcceptsReturn="True"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontFamily="Consolas"></TextBox>
-        <TextBox Grid.Column="1" Grid.Row="2" Margin="5" x:Name="txtUserCs" AcceptsReturn="True" 
-                 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                 TextWrapping="Wrap" FontFamily="Consolas"></TextBox>
-        <TextBox x:Name="txtLog" Grid.Column="0" Grid.ColumnSpan="2" 
+        <TextBox x:Name="txtLog" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                  Grid.Row="3"  Margin="5" IsReadOnly="True" AcceptsReturn="True"></TextBox>
     </Grid>

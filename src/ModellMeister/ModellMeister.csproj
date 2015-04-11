@@ -50,14 +50,15 @@
     <Compile Include="FileParser\LineParser.cs" />
     <Compile Include="FileParser\MbgiFileParser.cs" />
     <Compile Include="FileParser\ParsedLine.cs" />
+    <Compile Include="Interfaces\ILogSink.cs" />
     <Compile Include="Logic\Conversion.cs" />
     <Compile Include="Logic\DataFlowLogic.cs" />
     <Compile Include="Logic\Reporting\WatchList.cs" />
     <Compile Include="Logic\Reporting\WatchListItem.cs" />
     <Compile Include="Logic\ReportLogic.cs" />
     <Compile Include="Logic\Reporting\LineSeries.cs" />
-    <Compile Include="Mb2DllCompiler.cs" />
-    <Compile Include="Mbgi2CsConverter.cs" />
+    <Compile Include="Compiler\Cs2DllCompiler.cs" />
+    <Compile Include="Compiler\Mbgi2CsConverter.cs" />
     <Compile Include="Model\DataType.cs" />
     <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\EntityType.cs" />
@@ -71,7 +72,9 @@
     <Compile Include="Model\ModelCompositeType.cs" />
     <Compile Include="Model\ModelWire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Compiler\MbgiCompilationResult.cs" />
     <Compile Include="Runner\SimulationClient.cs" />
+    <Compile Include="Compiler\MbgiWorkspaceCompiler.cs" />
     <Compile Include="Runner\StateAtTime.cs" />
     <Compile Include="Runner\SimulationServer.cs" />
     <Compile Include="Runner\SimulationResult.cs" />

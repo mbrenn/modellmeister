@@ -1,5 +1,6 @@
 ﻿using BurnSystems.CommandLine;
 using ModellMeister;
+using ModellMeister.Compiler;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace mbgi2cs
                 if (!string.IsNullOrEmpty(result.DoCompileDll))
                 {
                     Console.WriteLine("- Start of the compilation");
-                    var compiler = new Mb2DllCompiler();
+                    var compiler = new Cs2DllCompiler();
                     var importedAssemblies = converter.ImportedAssemblies;
                     compiler.AddLibraries(importedAssemblies);
                     compiler.CompileSourceCode(

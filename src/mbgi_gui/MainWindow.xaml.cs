@@ -3,12 +3,15 @@ using mbgi_gui.Dialogs;
 using mbgi_gui.Logic;
 using mbgi_gui.Models;
 using ModellMeister;
+using ModellMeister.Compiler;
+using ModellMeister.Interfaces;
 using ModellMeister.Logic;
 using ModellMeister.Runner;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,252 +22,92 @@ namespace mbgi_gui
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ILogSink
     {
         private static ClassLogger log = new ClassLogger(typeof(MainWindow));
 
         private SimulationSettings simulationSettings = new SimulationSettings();
 
-        private NewFileModel modelFileModel;
+        private MbgiWorkspaceCompiler workSpace;
+
+        private GuiSettings guiSettings;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            this.AddMessage("Model Based Source Generator and Executor is started");
-            this.modelFileModel = new NewFileModel()
+            this.workSpace = new MbgiWorkspaceCompiler(this);
+            this.AddMessageToLog("Model Based Source Generator and Executor is started");
+
+            this.txtWorkspacePath.Text = WorkspaceLogic.WorkspacePath;
+            this.guiSettings = new GuiSettings()
             {
-                WorkspacePath = WorkspaceLogic.WorkspacePath,
-                Filename = "modelbased"
+                WorkspacePath = WorkspaceLogic.WorkspacePath
             };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.LoadContent(true);
-        }
-
-        private void LoadContent(bool loadFromFile)
-        {
-            this.txtWorkspacePath.Text = "Workspace: \r\n" + this.modelFileModel.WorkspacePath;
-            this.txtNameOfFiles.Text = "Workspace: \r\n" + this.modelFileModel.Filename;
-
-            if (loadFromFile)
-            {
-                var workspacePath = this.modelFileModel.WorkspacePath;
-                var csMbgiPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".mbgi");
-                if (File.Exists(csMbgiPath))
-                {
-                    this.txtMBGISource.Text = File.ReadAllText(csMbgiPath);
-                }
-                else
-                {
-                    this.txtMBGISource.Text = string.Empty;
-                }
-
-                var csUserPath = Path.Combine(workspacePath, this.modelFileModel.Filename + ".user.cs");
-                if (File.Exists(csUserPath))
-                {
-                    this.txtUserCs.Text = File.ReadAllText(csUserPath);
-                }
-                else
-                {
-                    this.txtUserCs.Text = string.Empty;
-                }
-            }
-        }
-
-        private string CreateAndGetWorkspace()
-        {
-            var workspacePath = this.modelFileModel.WorkspacePath;
-            Environment.CurrentDirectory = workspacePath;
-            if (!Directory.Exists(workspacePath))
-            {
-                Directory.CreateDirectory(workspacePath);
-            }
-
-            // Copies the library
-            try
-            {
-                Mb2DllCompiler.CopyFileIntoWorkspace
-                    (workspacePath, "ModellMeister.Library.dll");
-                Mb2DllCompiler.CopyFileIntoWorkspace
-                    (workspacePath, "ModellMeister.Library.pdb");
-                Mb2DllCompiler.CopyAssemblies(workspacePath);
-            }
-            catch
-            {
-                log.Message("Could not copy ModellMeister.Library, but we still continue");
-            }
-
-            return workspacePath;
-        }
-
-        public void ClearMessages()
-        {
-            this.txtLog.Text = string.Empty;
-        }
-
-        public void AddMessage(string message)
-        {
-            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
+            this.SwitchWorkPath();
         }
 
         private async void btnRunRealtimeSimulation_Click(object sender, RoutedEventArgs e)
         {
             this.simulationSettings.Synchronous = true;
-            
-            await this.RunSimulationOnFile();
 
+            var filePath = this.guiSettings.CurrentMbgiFilePath;
+            File.WriteAllText(filePath, this.txtMBGISource.Text);
+            await this.workSpace.CompileOnMbgiFile(filePath);
         }
 
         private async void btnRunSimulation_Click(object sender, RoutedEventArgs e)
         {
-            this.simulationSettings.Synchronous = false;
-            await this.RunSimulationOnFile();
-        }
-
-        private async Task RunSimulationOnFile()
-        {
-            var currentFilename = this.modelFileModel.Filename;
             try
             {
-                var workspacePath = this.CreateAndGetWorkspace();
-                StringBuilder generatedSource;
-
-                List<string> importedAssemblies;
-
-                // Gets the source code
-                using (var sourceReader = new StringReader(this.txtMBGISource.Text))
+                if (!this.PrepareFiles())
                 {
-                    using (var sourcewriter = new StringWriter())
-                    {
-                        var converter = new Mbgi2CsConverter();
-                        converter.ConvertStreams(workspacePath, sourceReader, sourcewriter);
-
-                        generatedSource = sourcewriter.GetStringBuilder();
-
-                        importedAssemblies = converter.ImportedAssemblies;
-                    }
-                }
-
-                var csList = new List<string>();
-                var csPath = Path.Combine(workspacePath, currentFilename + ".cs");
-                var csMbgiPath = Path.Combine(workspacePath, currentFilename + ".mbgi");
-                var dllPath = Path.Combine(workspacePath, currentFilename + ".dll");
-                var csUserPath = Path.Combine(workspacePath, currentFilename + ".user.cs");
-                var resultPath = Path.Combine(workspacePath, currentFilename + ".result.txt");
-                csList.Add(csPath);
-
-                File.WriteAllText(csMbgiPath, this.txtMBGISource.Text);
-                File.WriteAllText(csUserPath, this.txtUserCs.Text);
-                File.WriteAllText(csPath, generatedSource.ToString());
-
-                this.AddMessage("C#-file Generated: " + csPath);
-                this.AddMessage("MBGI-file Generated: " + csMbgiPath);
-
-                if (File.Exists(csUserPath))
-                {
-                    csList.Add(csUserPath);
-                    this.AddMessage("User-defined file found for: " + csUserPath);
-                }
-                else
-                {
-                    this.AddMessage("No user-defined file found for: " + csUserPath);
-                }
-
-                var dllCompiler = new Mb2DllCompiler();
-                dllCompiler.AddLibraries(importedAssemblies);
-                var compileResult = await dllCompiler.CompileSourceCode(workspacePath, csList, dllPath);
-
-                if (compileResult.Errors.Count == 0)
-                {
-                    this.AddMessage("Running simulation");
-
-                    try
-                    {
-                        var client = new SimulationClient(this.simulationSettings);
-
-                        var dlg = new SimulationWindow(client);
-                        dlg.Show();
-                        client.Stepped += (x, y) => dlg.RefreshData();
-
-                        await client.RunSimulationInAppDomain(workspacePath, currentFilename + ".dll");
-
-                        var resultWindow = new ResultWindow();
-                        resultWindow.Results = new ReportLogic(client.SimulationResult);
-                        resultWindow.ShowDialog();
-                    }
-                    catch (Exception exc)
-                    {
-                        this.AddMessage("Unhandled exception: " + exc.ToString());
-                    }
-                }
-                else
-                {
-                    foreach (var error in compileResult.Errors)
-                    {
-                        this.AddMessage("Compile Error: " + error.ToString());
-                    }
+                    MessageBox.Show("Files could not be prepared");
+                    return;
                 }
             }
             catch (Exception exc)
             {
-                this.AddMessage(exc.ToString());
+                MessageBox.Show(exc.Message);
             }
-        }
 
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new NewDialog();
-            dlg.Owner = this;
-            dlg.Model = this.modelFileModel;
-            if (dlg.ShowDialog() == true)
+            this.simulationSettings.Synchronous = false;
+
+            var filePath = this.guiSettings.CurrentMbgiFilePath;
+            var compileResult = await this.workSpace.CompileOnMbgiFile(filePath);
+            if (compileResult != null)
             {
-                this.LoadContent(true);
-            }
-        }
+                this.AddMessageToLog("Running simulation");
 
-        private void btnLoad_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.RestoreDirectory = true;
-            dlg.Filter = "MBGI-File|*.mbgi";
-            dlg.InitialDirectory = this.modelFileModel.WorkspacePath;
-
-            if (dlg.ShowDialog() == true)
-            {
-                this.modelFileModel.WorkspacePath = Path.GetDirectoryName(dlg.FileName);
-                this.modelFileModel.Filename = Path.GetFileNameWithoutExtension(dlg.FileName);
-
-                this.LoadContent(true);
-            }
-        }
-
-        private void btnLoadExamples_Click(object sender, RoutedEventArgs e)
-        {
-            var exampleDlg = new ExampleDialog();
-            exampleDlg.Owner = this;
-
-            if (exampleDlg.ShowDialog() == true)
-            {
-                var selectedExample = exampleDlg.SelectedExample;
-                if (selectedExample != null)
+                try
                 {
-                    // Load...
-                    this.txtMBGISource.Text = selectedExample.MbgiFile;
-                    this.txtUserCs.Text = selectedExample.CsFile;
-                    this.modelFileModel.WorkspacePath = WorkspaceLogic.WorkspacePath;
-                    this.modelFileModel.Filename = selectedExample.Name;
+                    var client = new SimulationClient(this.simulationSettings);
 
-                    this.LoadContent(false);
+                    var dlg = new SimulationWindow(client);
+                    dlg.Show();
+                    client.Stepped += (x, y) => dlg.RefreshData();
+
+                    await client.RunSimulationInAppDomain(compileResult.PathToAssembly);
+
+                    var resultWindow = new ResultWindow();
+                    resultWindow.Results = new ReportLogic(client.SimulationResult);
+                    resultWindow.ShowDialog();
+                }
+                catch (Exception exc)
+                {
+                    this.AddMessageToLog("Unhandled exception: " + exc.ToString());
                 }
             }
         }
 
         private void btnOpenWorkspace_Click(object sender, RoutedEventArgs e)
         {
-            var workSpacePath = this.CreateAndGetWorkspace();
+            var workSpacePath = this.guiSettings.WorkspacePath;
+            this.workSpace.PrepareWorkspace(workSpacePath);
             Process.Start(workSpacePath);
         }
 
@@ -275,7 +118,81 @@ namespace mbgi_gui
             dlg.DataContext = this.simulationSettings;
             if (dlg.ShowDialog() == true)
             {
+                // Nothing to do here
             }
         }
+
+        private void txtSwitchPath_Click(object sender, RoutedEventArgs e)
+        {
+            this.SwitchWorkPath();
+        }
+
+        private bool PrepareFiles()
+        {
+            var filePath = this.guiSettings.CurrentMbgiFilePath;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
+            File.WriteAllText(filePath, this.txtMBGISource.Text);
+            return true;
+        }
+
+        /// <summary>
+        /// Switches the work path
+        /// </summary>
+        private void SwitchWorkPath()
+        {
+            this.SaveCurrentFileIfNecessary();
+            var directoryPath = this.txtWorkspacePath.Text;
+            if (!Directory.Exists(directoryPath))
+            {
+                MessageBox.Show("The given path does not exist.");
+            }
+
+            this.guiSettings.WorkspacePath = directoryPath;
+
+            // Loads the switch path
+            var files = Directory.GetFiles(directoryPath)
+                .Where(x => Path.GetExtension(x) == ".mbgi")
+                .Select(x => Path.GetFileName(x));
+            this.lstFiles.ItemsSource = files;
+        }
+
+        private void lstFiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            this.SaveCurrentFileIfNecessary();
+            var selectedItem = this.lstFiles.SelectedItem;
+            if (selectedItem != null)
+            {
+                var completePath = Path.Combine(this.guiSettings.WorkspacePath, selectedItem.ToString());
+                this.guiSettings.CurrentMbgiFilePath = completePath;
+                this.txtMBGISource.Text = File.ReadAllText(completePath);
+            }
+        }
+
+        /// <summary>
+        /// Saves the current file being opened
+        /// </summary>
+        /// <returns>true, if one file has been saved</returns>
+        private bool SaveCurrentFileIfNecessary()
+        {
+            return this.PrepareFiles();
+        }
+
+        #region Logging in the window
+
+        public void ClearLogMessages()
+        {
+            this.txtLog.Text = string.Empty;
+        }
+
+        public void AddMessageToLog(string message)
+        {
+            this.txtLog.Text = "[" + DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss") + "]: " + message + "\r\n" + this.txtLog.Text;
+        }
+
+        #endregion
     }
 }
