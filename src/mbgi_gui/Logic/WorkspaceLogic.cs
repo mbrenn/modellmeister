@@ -9,7 +9,7 @@ namespace mbgi_gui.Logic
 {
     public class WorkspaceLogic
     {
-        public static string WorkspacePath
+        public static string DefaultWorkspacePath
         {
             get
             {

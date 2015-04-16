@@ -241,7 +241,12 @@ namespace ModellMeister.FileParser
 
             if (!File.Exists(fullPath))
             {
-                throw new InvalidOperationException("Library not found: " + fullPath);
+                fullPath = Path.GetFullPath(Path.Combine(this.pathOfContext, "bin/" + line.Arguments[0]));
+
+                if (!File.Exists(fullPath))
+                {
+                    throw new InvalidOperationException("Library not found: " + fullPath);
+                }
             }
 
             // Adds the assembly to the list of imported assemblies

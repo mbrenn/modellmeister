@@ -61,13 +61,16 @@ namespace ModellMeister.Runner
         /// <returns>The task which is used to execute the simulationserver</returns>
         public async Task RunSimulationInAppDomain(string pathToAssembly)
         {
-            var workspacePath = Path.GetDirectoryName(pathToAssembly);
+            var binPath = Path.GetDirectoryName(pathToAssembly);
             var dllName = Path.GetFileName(pathToAssembly);
 
+            var oldCurrentDirectory = Environment.CurrentDirectory;
+
+            Environment.CurrentDirectory = binPath;
             var setup = new AppDomainSetup()
             {
-                ApplicationBase = workspacePath,
-                PrivateBinPath = workspacePath,
+                ApplicationBase = binPath,
+                PrivateBinPath = binPath,
                 ConfigurationFile = null
             };
 
@@ -83,6 +86,8 @@ namespace ModellMeister.Runner
             this.Server = null;
 
             AppDomain.Unload(appDomain);
+
+            Environment.CurrentDirectory = oldCurrentDirectory;
         }
 
         /// <summary>

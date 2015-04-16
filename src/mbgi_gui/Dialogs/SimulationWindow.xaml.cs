@@ -1,5 +1,6 @@
 ﻿using mbgi_gui.Models;
 using ModellMeister.Runner;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,10 @@ namespace mbgi_gui.Dialogs
 
         private WatchModel model;
 
+        private TimeSpan diagramUpdateRate = TimeSpan.FromSeconds(0.2);
+        private DateTime lastUpdate = DateTime.MinValue;
         /// <summary>
-        /// Refreshes the complete data
+        /// Refreshes the complete data. Slow, but working
         /// </summary>
         /// <returns>The refreshed data</returns>
         public void RefreshData()
@@ -43,7 +46,38 @@ namespace mbgi_gui.Dialogs
             this.Dispatcher.Invoke(() =>
                 {
                     this.lstWatchItems.ItemsSource = null;
-                    this.lstWatchItems.ItemsSource = model.Items;
+                    this.lstWatchItems.ItemsSource = this.model.Items;
+
+                    // Only update the graph, when time is done
+                    if (DateTime.Now - lastUpdate > diagramUpdateRate)
+                    {
+                        lastUpdate = DateTime.Now;
+                        var clientResult = this.client.SimulationResult.Result;
+                        if (clientResult.Count > 0)
+                        {
+                            var oxyModel = new PlotModel();
+                            var maxLines = clientResult.Max(x => x.Values.Count());
+                            var oxySeries = new List<OxyPlot.Series.LineSeries>();
+                            for (var n = 0; n < maxLines; n++)
+                            {
+                                var newSeries = new OxyPlot.Series.LineSeries();
+                                oxySeries.Add(newSeries);
+                                oxyModel.Series.Add(newSeries);
+                            }
+
+                            foreach (var state in clientResult)
+                            {
+                                var n = 0;
+                                foreach (var v in state.Values)
+                                {
+                                    oxySeries[n].Points.Add(new DataPoint(state.AbsoluteTime.TotalSeconds, Convert.ToDouble(v)));
+                                    n++;
+                                }
+                            }
+
+                            this.View.Model = oxyModel;
+                        }
+                    }
                 });
         }
 

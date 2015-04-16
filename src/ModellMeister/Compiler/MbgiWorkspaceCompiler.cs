@@ -28,23 +28,20 @@ namespace ModellMeister.Compiler
         /// <summary>
         /// Creates the workspace for the user by copying the necessary files
         /// </summary>
-        /// <param name="workspacePath"></param>
-        public void PrepareWorkspace(string workspacePath)
+        /// <param name="binPath">The binary path, where all the compilation results shall be put to</param>
+        public void PrepareWorkspace(string binPath)
         {
-            var assemblyPath = Assembly.GetEntryAssembly().Location;
-            Environment.CurrentDirectory = workspacePath;
-
-            if (!Directory.Exists(workspacePath))
+            if (!Directory.Exists(binPath))
             {
-                Directory.CreateDirectory(workspacePath);
+                Directory.CreateDirectory(binPath);
             }
 
             // Copies the library
             Cs2DllCompiler.CopyFileIntoWorkspace
-                (workspacePath, Path.Combine(assemblyPath, "ModellMeister.Library.dll"));
+                (binPath, "ModellMeister.Library.dll");
             Cs2DllCompiler.CopyFileIntoWorkspace
-                (workspacePath, Path.Combine(assemblyPath, "ModellMeister.Library.pdb"));
-            Cs2DllCompiler.CopyAssemblies(workspacePath);
+                (binPath, "ModellMeister.Library.pdb");
+            Cs2DllCompiler.CopyAssemblies(binPath);
         }
 
         public async Task<MbgiCompilationResult> CompileOnMbgiFile(string filePath)
@@ -54,33 +51,39 @@ namespace ModellMeister.Compiler
 
             try
             {
-                this.PrepareWorkspace(workspacePath);
-                StringBuilder generatedSource;
+                var binPath = Path.Combine(workspacePath, "bin");
+                if (!Directory.Exists(binPath))
+                {
+                    Directory.CreateDirectory(binPath);
+                }
+
+                this.PrepareWorkspace(binPath);
 
                 List<string> importedAssemblies;
 
                 // Gets the source code
                 var completePath = Path.Combine(workspacePath, filename);
+
+                var csList = new List<string>();
+                var csPath = Path.Combine(binPath, Path.ChangeExtension(filename, ".cs"));
+                var resultPath = Path.Combine(binPath, filename + ".result.txt");
+                csList.Add(csPath);
+
                 using (var sourceReader = new StreamReader(completePath))
                 {
-                    using (var sourcewriter = new StringWriter())
+                    using (var sourcewriter = new StreamWriter(csPath))
                     {
                         var converter = new Mbgi2CsConverter();
                         converter.ConvertStreams(workspacePath, sourceReader, sourcewriter);
 
-                        generatedSource = sourcewriter.GetStringBuilder();
                         importedAssemblies = converter.ImportedAssemblies;
                     }
                 }
 
-                var csList = new List<string>();
-                var csPath = Path.Combine(workspacePath, Path.ChangeExtension(filename, ".cs"));
-                File.WriteAllText(csPath, generatedSource.ToString());
-                var csMbgiPath = Path.Combine(workspacePath, filename + ".mbgi");
-                var dllPath = Path.Combine(workspacePath, filename + ".dll");
-                var csUserPath = Path.Combine(workspacePath, filename + ".user.cs");
-                var resultPath = Path.Combine(workspacePath, filename + ".result.txt");
-                csList.Add(csPath);
+                // Writes the file for compilation
+                var csMbgiPath = Path.Combine(workspacePath, Path.ChangeExtension(filename, ".mbgi"));
+                var dllPath = Path.Combine(binPath, Path.ChangeExtension(filename, ".dll"));
+                var csUserPath = Path.Combine(workspacePath, Path.ChangeExtension(filename, ".user.cs"));
 
                 this.logSink.AddMessageToLog("C#-file Generated: " + csPath);
                 this.logSink.AddMessageToLog("MBGI-file Generated: " + csMbgiPath);

@@ -34,8 +34,8 @@ namespace ModellMeister.Compiler
         /// <param name="pathDll">The path, where final .dll will be located</param>
         /// <returns>The compiler results</returns>
         public async Task<CompilerResults> CompileSourceCode(
-            string workspacePath, 
-            IEnumerable<string> pathCsFiles, 
+            string workspacePath,
+            IEnumerable<string> pathCsFiles,
             string pathDll)
         {
             // Start the compilation
@@ -55,7 +55,8 @@ namespace ModellMeister.Compiler
                 parameters.ReferencedAssemblies.Add(Path.GetFileName(assembly));
             }
 
-            CopyAssemblies(workspacePath);
+            var binPath = Path.GetDirectoryName(pathDll);
+            CopyAssemblies(binPath);
 
             return await Task.Run(() =>
                 {
@@ -67,6 +68,16 @@ namespace ModellMeister.Compiler
                         // http://msdn.microsoft.com/de-de/library/82h240ac(v=vs.90).aspx
                         parameters.IncludeDebugInformation = false;
                         compileResult = compiler.CompileAssemblyFromFile(parameters, pathCsFiles.ToArray());
+                    }
+
+                    // Move all *.pdb files from local path to bin path
+                    if (binPath != workspacePath)
+                    {
+                        foreach (var file in Directory.GetFiles(workspacePath)
+                            .Where(x => Path.GetExtension(x) == ".pdb"))
+                        {
+                            File.Move(Path.Combine(workspacePath, file), Path.Combine(binPath, file));
+                        }
                     }
 
                     return compileResult;
@@ -88,30 +99,36 @@ namespace ModellMeister.Compiler
         /// <summary>
         /// Copies the assemblies to the workspace path
         /// </summary>
-        /// <param name="workspacePath">Path, where workspace is located</param>
-        public static void CopyAssemblies(string workspacePath)
+        /// <param name="binPath">Path, where binary location for workspace is located</param>
+        public static void CopyAssemblies(string binPath)
         {
             // Copies the ModellMeister.Runtime.dll to path
-            CopyFileIntoWorkspace(workspacePath, "ModellMeister.dll");
-            CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.dll");
-            CopyFileIntoWorkspace(workspacePath, "ModellMeister.pdb");
-            CopyFileIntoWorkspace(workspacePath, "ModellMeister.Runtime.pdb");
+            CopyFileIntoWorkspace(binPath, "ModellMeister.dll");
+            CopyFileIntoWorkspace(binPath, "ModellMeister.Runtime.dll");
+            CopyFileIntoWorkspace(binPath, "ModellMeister.pdb");
+            CopyFileIntoWorkspace(binPath, "ModellMeister.Runtime.pdb");
         }
 
         /// <summary>
         /// Copies the file into the workspace
         /// </summary>
-        /// <param name="workspacePath">Path of the workspace</param>
+        /// <param name="binPath">Path of the binary location for workspace</param>
         /// <param name="fileName">Filename to be copied</param>
-        public static void CopyFileIntoWorkspace(string workspacePath, string fileName)
+        public static void CopyFileIntoWorkspace(string binPath, string fileName)
         {
             try
             {
-                File.Copy(
-                    Path.Combine(
+                var sourceFilePath = Path.Combine(
                         Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-                        fileName),
-                    Path.Combine(workspacePath, fileName),
+                        fileName);
+                if (!File.Exists(sourceFilePath))
+                {
+                    logger.Fail("Could not copy file. It is not there: " + sourceFilePath);
+                }
+
+                File.Copy(
+                    sourceFilePath,
+                    Path.Combine(binPath, fileName),
                     true);
             }
             catch (Exception exc)

@@ -163,6 +163,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModellMeister.Library\ModellMeister.Library.csproj">
+      <Project>{20268db5-7c69-4b26-bddd-7e7af4b2464b}</Project>
+      <Name>ModellMeister.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ModellMeister.Runtime\ModellMeister.Runtime.csproj">
       <Project>{c3425e68-9814-4cef-9060-d53feb953919}</Project>
       <Name>ModellMeister.Runtime</Name>

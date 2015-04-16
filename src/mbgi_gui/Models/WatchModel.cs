@@ -21,11 +21,13 @@ namespace mbgi_gui.Models
         public IEnumerable<WatchRowItem> Items
         {
             get
-            {                
+            {
                 var lastState = this.Client.SimulationResult.Result.LastOrDefault();
                 if (lastState != null)
                 {
+                    yield return new WatchRowItem("Time", Math.Round(lastState.AbsoluteTime.TotalSeconds, 3) + "s");
                     var n = 1;
+
                     foreach (var item in lastState.Values)
                     {
                         if (item == null)

@@ -39,10 +39,10 @@ namespace mbgi_gui
             this.workSpace = new MbgiWorkspaceCompiler(this);
             this.AddMessageToLog("Model Based Source Generator and Executor is started");
 
-            this.txtWorkspacePath.Text = WorkspaceLogic.WorkspacePath;
+            this.txtWorkspacePath.Text = WorkspaceLogic.DefaultWorkspacePath;
             this.guiSettings = new GuiSettings()
             {
-                WorkspacePath = WorkspaceLogic.WorkspacePath
+                WorkspacePath = WorkspaceLogic.DefaultWorkspacePath
             };
         }
 
@@ -55,59 +55,19 @@ namespace mbgi_gui
         {
             this.simulationSettings.Synchronous = true;
 
-            var filePath = this.guiSettings.CurrentMbgiFilePath;
-            File.WriteAllText(filePath, this.txtMBGISource.Text);
-            await this.workSpace.CompileOnMbgiFile(filePath);
+            await StartSimulation();
         }
 
         private async void btnRunSimulation_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (!this.PrepareFiles())
-                {
-                    MessageBox.Show("Files could not be prepared");
-                    return;
-                }
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-
             this.simulationSettings.Synchronous = false;
 
-            var filePath = this.guiSettings.CurrentMbgiFilePath;
-            var compileResult = await this.workSpace.CompileOnMbgiFile(filePath);
-            if (compileResult != null)
-            {
-                this.AddMessageToLog("Running simulation");
-
-                try
-                {
-                    var client = new SimulationClient(this.simulationSettings);
-
-                    var dlg = new SimulationWindow(client);
-                    dlg.Show();
-                    client.Stepped += (x, y) => dlg.RefreshData();
-
-                    await client.RunSimulationInAppDomain(compileResult.PathToAssembly);
-
-                    var resultWindow = new ResultWindow();
-                    resultWindow.Results = new ReportLogic(client.SimulationResult);
-                    resultWindow.ShowDialog();
-                }
-                catch (Exception exc)
-                {
-                    this.AddMessageToLog("Unhandled exception: " + exc.ToString());
-                }
-            }
+            await StartSimulation();
         }
 
         private void btnOpenWorkspace_Click(object sender, RoutedEventArgs e)
         {
             var workSpacePath = this.guiSettings.WorkspacePath;
-            this.workSpace.PrepareWorkspace(workSpacePath);
             Process.Start(workSpacePath);
         }
 
@@ -118,13 +78,25 @@ namespace mbgi_gui
             dlg.DataContext = this.simulationSettings;
             if (dlg.ShowDialog() == true)
             {
-                // Nothing to do here
+                // Nothing to do here, properties are directly updated
             }
         }
 
         private void txtSwitchPath_Click(object sender, RoutedEventArgs e)
         {
             this.SwitchWorkPath();
+        }
+
+        private void lstFiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            this.SaveCurrentFileIfNecessary();
+            var selectedItem = this.lstFiles.SelectedItem;
+            if (selectedItem != null)
+            {
+                var completePath = Path.Combine(this.guiSettings.WorkspacePath, selectedItem.ToString());
+                this.guiSettings.CurrentMbgiFilePath = completePath;
+                this.txtMBGISource.Text = File.ReadAllText(completePath);
+            }
         }
 
         private bool PrepareFiles()
@@ -155,20 +127,57 @@ namespace mbgi_gui
 
             // Loads the switch path
             var files = Directory.GetFiles(directoryPath)
-                .Where(x => Path.GetExtension(x) == ".mbgi")
+                .Where(x => x.EndsWith(".mbgi") || x.EndsWith(".cs"))
                 .Select(x => Path.GetFileName(x));
             this.lstFiles.ItemsSource = files;
         }
 
-        private void lstFiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        /// <summary>
+        /// Starts the simulation and creates all the necessary windows
+        /// </summary>
+        /// <returns>The task being used to run</returns>
+        private async Task StartSimulation()
         {
-            this.SaveCurrentFileIfNecessary();
-            var selectedItem = this.lstFiles.SelectedItem;
-            if (selectedItem != null)
+            var filePath = this.guiSettings.CurrentMbgiFilePath;
+
+            try
             {
-                var completePath = Path.Combine(this.guiSettings.WorkspacePath, selectedItem.ToString());
-                this.guiSettings.CurrentMbgiFilePath = completePath;
-                this.txtMBGISource.Text = File.ReadAllText(completePath);
+                if (!this.PrepareFiles())
+                {
+                    MessageBox.Show("Files could not be prepared");
+                    return;
+                }
+
+                if (Path.GetExtension(filePath) != ".mbgi")
+                {
+                    MessageBox.Show("Only .mbgi files can be started");
+                    return;
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
+            var compileResult = await this.workSpace.CompileOnMbgiFile(filePath);
+            if (compileResult != null)
+            {
+                this.AddMessageToLog("Running simulation");
+
+                try
+                {
+                    var client = new SimulationClient(this.simulationSettings);
+
+                    var dlg = new SimulationWindow(client);
+                    dlg.Owner = this;
+                    dlg.Show();
+                    client.Stepped += (x, y) => dlg.RefreshData();
+                    await client.RunSimulationInAppDomain(compileResult.PathToAssembly);
+                }
+                catch (Exception exc)
+                {
+                    this.AddMessageToLog("Unhandled exception: " + exc.ToString());
+                }
             }
         }
 
@@ -194,5 +203,10 @@ namespace mbgi_gui
         }
 
         #endregion
+
+        private void btnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://1drv.ms/1J4YEsw");
+        }
     }
 }
