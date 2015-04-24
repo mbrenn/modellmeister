@@ -11,9 +11,9 @@
     }
     public partial class ToConsoleType
     {
-        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        partial void DoInit(ModellMeister.Runtime.StepInfo info)
         {
-            info.Debug.AddResult(info, new object[]{this.Input});
+            info.Server.AddWatch(this, "Input");
         }
     }
 }

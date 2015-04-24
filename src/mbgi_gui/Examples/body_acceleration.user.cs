@@ -13,7 +13,7 @@
     {
         private System.Random random = new System.Random();
 
-        partial void DoInit()
+        partial void DoInit(ModellMeister.Runtime.StepInfo info)
         {
             this.Output = this.Offset;
         }
@@ -24,9 +24,11 @@
     }
     public partial class Report
     {
-        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        partial void DoInit(ModellMeister.Runtime.StepInfo info)
         {
-            info.Debug.AddResult(info, new object[]{this.Input1, this.Input2, this.Input3});
+            info.Server.AddWatch(this, "Input1");
+            info.Server.AddWatch(this, "Input2");
+            info.Server.AddWatch(this, "Input3");
         }
     }
 }

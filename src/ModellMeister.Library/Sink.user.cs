@@ -32,7 +32,10 @@ namespace ModellMeister.Library.Sink
 
         partial void DoInit(Runtime.StepInfo info)
         {
-            info.Server.AddWatch(this, "Channel1");
+            for (var n = 1; n <= this.ChannelCount; n++)
+            {
+                info.Server.AddWatch(this, "Channel" + n.ToString());
+            }
         }
 
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
