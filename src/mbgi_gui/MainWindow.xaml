@@ -20,6 +20,7 @@
             <RibbonTab Header="Menu">
                 <RibbonGroup Header="Simulation">
                     <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>
+                    <RibbonButton Label="Open Examples" x:Name="btnExamples" Click="btnExamples_Click"></RibbonButton>
                     <RibbonButton Label="Run" x:Name="btnRunSimulation" Click="btnRunSimulation_Click"></RibbonButton>
                     <RibbonButton Label="Run Realtime" x:Name="btnRunRealimeSimulation" Click="btnRunRealtimeSimulation_Click"></RibbonButton>
                     <RibbonButton Label="Open Workspace" x:Name="btnOpenWorkspace" Click="btnOpenWorkspace_Click"></RibbonButton>

@@ -12,7 +12,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
@@ -31,6 +33,11 @@ namespace mbgi_gui
         private MbgiWorkspaceCompiler workSpace;
 
         private GuiSettings guiSettings;
+
+        /// <summary>
+        /// Stores the filesystem watcher being used to update the content
+        /// </summary>
+        private FileSystemWatcher watcher = null;
 
         public MainWindow()
         {
@@ -67,8 +74,24 @@ namespace mbgi_gui
 
         private void btnOpenWorkspace_Click(object sender, RoutedEventArgs e)
         {
-            var workSpacePath = this.guiSettings.WorkspacePath;
-            Process.Start(workSpacePath);
+            string workSpacePath = this.guiSettings.CurrentMbgiFilePath;
+            if (string.IsNullOrEmpty(workSpacePath))
+            {
+                workSpacePath = this.guiSettings.WorkspacePath;
+            }
+
+            if (Directory.Exists(workSpacePath))
+            {
+                var args = string.Format("/root, \"{0}\"", workSpacePath);
+                var pfi = new ProcessStartInfo("Explorer.exe", args);
+                Process.Start(pfi);
+            }
+            else
+            {
+                var args = string.Format("/select, \"{0}\"", workSpacePath);
+                var pfi = new ProcessStartInfo("Explorer.exe", args);
+                Process.Start(pfi);
+            }
         }
 
         private void btnSimulationSetting_Click(object sender, RoutedEventArgs e)
@@ -90,6 +113,15 @@ namespace mbgi_gui
         private void lstFiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             this.SaveCurrentFileIfNecessary();
+            this.PutFileContentToEditor();
+        }
+
+        /// <summary>
+        /// Puts the file content to the editor and overwrites possible
+        /// changes which were not stored into the file
+        /// </summary>
+        private void PutFileContentToEditor()
+        {
             var selectedItem = this.lstFiles.SelectedItem;
             if (selectedItem != null)
             {
@@ -117,10 +149,24 @@ namespace mbgi_gui
         private void SwitchWorkPath()
         {
             this.SaveCurrentFileIfNecessary();
+            
+            if (this.watcher != null)
+            {
+                this.watcher.EnableRaisingEvents = false;
+                this.watcher.Dispose();
+                this.watcher = null;
+            }
+            
             var directoryPath = this.txtWorkspacePath.Text;
+
+            this.watcher = new FileSystemWatcher(directoryPath);
+            this.watcher.Changed += OnFileIsChanged;
+            this.watcher.Renamed += OnFileIsChanged;
+            this.watcher.EnableRaisingEvents = true;
             if (!Directory.Exists(directoryPath))
             {
                 MessageBox.Show("The given path does not exist.");
+                return;
             }
 
             this.guiSettings.WorkspacePath = directoryPath;
@@ -130,6 +176,21 @@ namespace mbgi_gui
                 .Where(x => x.EndsWith(".mbgi") || x.EndsWith(".cs"))
                 .Select(x => Path.GetFileName(x));
             this.lstFiles.ItemsSource = files;
+        }
+
+        /// <summary>
+        /// This method is called, when the file was changed
+        /// </summary>
+        /// <param name="sender">Sender being used</param>
+        /// <param name="e">Arguments of the event</param>
+        private void OnFileIsChanged(object sender, FileSystemEventArgs e)
+        {
+            if (e.FullPath == this.guiSettings.CurrentMbgiFilePath)
+            {
+                Thread.Sleep(50);
+                this.Dispatcher.Invoke(new Action(() =>
+                    this.PutFileContentToEditor()));
+            }
         }
 
         /// <summary>
@@ -207,6 +268,16 @@ namespace mbgi_gui
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("http://1drv.ms/1J4YEsw");
+        }
+
+        private void btnExamples_Click(object sender, RoutedEventArgs e)
+        {
+            var examplePath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                "examples");
+            this.txtWorkspacePath.Text = examplePath;
+
+            this.SwitchWorkPath();
         }
     }
 }
