@@ -8,6 +8,11 @@ namespace ModellMeister.Library.Analysis
 {
     public partial class Integral
     {
+        partial void DoInit(Runtime.StepInfo info)
+        {
+            this.Output = this.Offset;
+        }
+
         partial void DoExecute(ModellMeister.Runtime.StepInfo info)
         {
             this.Output += this.Input * info.TimeInterval.TotalSeconds;

@@ -18,12 +18,15 @@
         </Grid.ColumnDefinitions>
         <Ribbon Grid.ColumnSpan="3" ShowQuickAccessToolBarOnTop="False">
             <RibbonTab Header="Menu">
-                <RibbonGroup Header="Simulation">
-                    <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>
+                <RibbonGroup Header="File">
                     <RibbonButton Label="Open Examples" x:Name="btnExamples" Click="btnExamples_Click"></RibbonButton>
+                    <RibbonButton Label="Open in Explorer" x:Name="btnOpenWorkspace" Click="btnOpenWorkspace_Click"></RibbonButton>
+                    <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>
+                </RibbonGroup>
+                <RibbonGroup Header="Simulation">
+                    <RibbonButton Label="Compile" x:Name="btnCompile" Click="btnCompile_Click"></RibbonButton>                                        
                     <RibbonButton Label="Run" x:Name="btnRunSimulation" Click="btnRunSimulation_Click"></RibbonButton>
-                    <RibbonButton Label="Run Realtime" x:Name="btnRunRealimeSimulation" Click="btnRunRealtimeSimulation_Click"></RibbonButton>
-                    <RibbonButton Label="Open Workspace" x:Name="btnOpenWorkspace" Click="btnOpenWorkspace_Click"></RibbonButton>
+                    <RibbonButton Label="Run Realtime" x:Name="btnRunRealimeSimulation" Click="btnRunRealtimeSimulation_Click"></RibbonButton>                    
                 </RibbonGroup>
                 <RibbonGroup Header="Help">
                     <RibbonButton Label="Help" x:Name="btnHelp" Click="btnHelp_Click" />
@@ -40,7 +43,6 @@
         </Grid>
         <ListView x:Name="lstFiles" Grid.Row="2" Margin="5" SelectionChanged="lstFiles_SelectionChanged">
         </ListView>
-        <TextBlock x:Name="txtNameOfFiles" Grid.Column="1" Grid.Row="1" Margin="5"></TextBlock>
         <TextBox Grid.Column="1"  Grid.ColumnSpan="2" Grid.Row="2" Margin="5" x:Name="txtMBGISource" AcceptsReturn="True"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontFamily="Consolas"></TextBox>
         <TextBox x:Name="txtLog" Grid.Column="0" Grid.ColumnSpan="3" 

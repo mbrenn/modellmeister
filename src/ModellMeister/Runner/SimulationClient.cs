@@ -44,6 +44,11 @@ namespace ModellMeister.Runner
         public event EventHandler Stepped;
 
         /// <summary>
+        /// This event is thrown, when a simualtion step has been performed
+        /// </summary>
+        public event EventHandler Finished;
+
+        /// <summary>
         /// Initializes a new instance of the SimulationClient class. 
         /// </summary>
         /// <param name="result"></param>
@@ -91,11 +96,23 @@ namespace ModellMeister.Runner
         }
 
         /// <summary>
-        /// Called 
+        /// Calls the Stepped event
         /// </summary>
-        public void Step()
+        public void OnStep()
         {
             var ev = this.Stepped;
+            if (ev != null)
+            {
+                ev(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Calls the Finished event
+        /// </summary>
+        public void OnFinished()
+        {
+            var ev = this.Finished;
             if (ev != null)
             {
                 ev(this, EventArgs.Empty);

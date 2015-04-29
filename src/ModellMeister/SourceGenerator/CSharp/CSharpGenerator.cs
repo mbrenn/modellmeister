@@ -216,7 +216,7 @@ namespace ModellMeister.SourceGenerator.CSharp
 
             // Creates the block properties
             var flowLogic = new DataFlowLogic(compositeType);
-            var wirePopulater = new WirePopulator(compositeType, executeMethod, flowLogic);
+            var wirePopulater = new WirePopulator(compositeType, initMethod, executeMethod, flowLogic);
 
             foreach (var block in flowLogic.GetBlocksByDataFlow())
             {
@@ -304,18 +304,18 @@ namespace ModellMeister.SourceGenerator.CSharp
                     }
                 }
 
+                // Adds some statements to the execution method
+                // First, populate the input values
+                wirePopulater.PopulateWireAssignmentOnInnerBlocks(
+                    block,
+                    EntityType.Wire);
+
                 // Invokes the init Method of the block
                 initMethodStatements.Add(
                     new CodeMethodInvokeExpression(
                         fieldExpression,
                         "Init",
                         new CodeArgumentReferenceExpression("info")));
-
-                // Adds some statements to the execution method
-                // First, populate the input values
-                wirePopulater.PopulateWireAssignmentOnInnerBlocks(
-                    block,
-                    EntityType.Wire);
 
                 // Second, Execute it
                 executeMethod.Statements.Add(
@@ -343,15 +343,18 @@ namespace ModellMeister.SourceGenerator.CSharp
         private class WirePopulator
         {
             private ModelCompositeType compositeType;
+            private CodeMemberMethod initMethod;
             private CodeMemberMethod executeMethod;
             private DataFlowLogic flowLogic;
 
             public WirePopulator(
                 ModelCompositeType compositeType,
+                CodeMemberMethod initMethod,
                 CodeMemberMethod executeMethod,
                 DataFlowLogic flowLogic)
             {
                 this.compositeType = compositeType;
+                this.initMethod = initMethod;
                 this.executeMethod = executeMethod;
                 this.flowLogic = flowLogic;
             }
@@ -402,9 +405,11 @@ namespace ModellMeister.SourceGenerator.CSharp
                         new CodeFieldReferenceExpression(
                             sourceBlockExpression,
                             tuple.Item2.InputOfWire.Name);
-                    executeMethod.Statements.Add(new CodeAssignStatement(
+                    var assignStatement = new CodeAssignStatement(
                         targetPortName,
-                        sourcePortName));
+                        sourcePortName);
+                    this.initMethod.Statements.Add(assignStatement);
+                    this.executeMethod.Statements.Add(assignStatement);
                 }
             }
 
@@ -446,9 +451,11 @@ namespace ModellMeister.SourceGenerator.CSharp
                         new CodeFieldReferenceExpression(
                             sourceBlockExpression,
                             tuple.Item2.InputOfWire.Name);
-                    executeMethod.Statements.Add(new CodeAssignStatement(
+                    var assignStatement = new CodeAssignStatement(
                         targetPortName,
-                        sourcePortName));
+                        sourcePortName);
+                    this.initMethod.Statements.Add(assignStatement);
+                    this.executeMethod.Statements.Add(assignStatement);
                 }
             }
         }

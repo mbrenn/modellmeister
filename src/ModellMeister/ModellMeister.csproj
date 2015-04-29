@@ -75,6 +75,7 @@
     <Compile Include="Compiler\MbgiCompilationResult.cs" />
     <Compile Include="Runner\SimulationClient.cs" />
     <Compile Include="Compiler\MbgiWorkspaceCompiler.cs" />
+    <Compile Include="Runner\SimulationStepEventArgs.cs" />
     <Compile Include="Runner\StateAtTime.cs" />
     <Compile Include="Runner\SimulationServer.cs" />
     <Compile Include="Runner\SimulationResult.cs" />

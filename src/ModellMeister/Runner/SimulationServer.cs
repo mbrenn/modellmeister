@@ -224,7 +224,6 @@ namespace ModellMeister.Runner
                     currentTime < this.Settings.SimulationTime.TotalSeconds;
                     currentTime += this.Settings.TimeInterval.TotalSeconds)
             {
-
                 if (!this.IsPaused)
                 {
                     await Task.Run(() =>
@@ -234,7 +233,7 @@ namespace ModellMeister.Runner
 
                             this.modelType.Execute(step);
 
-                            this.Client.Step();
+                            this.Client.OnStep();
                             this.AddResultByWatchList(step);
                         });
 
@@ -257,6 +256,8 @@ namespace ModellMeister.Runner
                     lastRealTime = DateTime.Now;
                 }
             }
+
+            this.Client.OnFinished();
 
             return result;
         }

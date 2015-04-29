@@ -46,7 +46,15 @@ namespace mbgi_gui
             this.workSpace = new MbgiWorkspaceCompiler(this);
             this.AddMessageToLog("Model Based Source Generator and Executor is started");
 
-            this.txtWorkspacePath.Text = WorkspaceLogic.DefaultWorkspacePath;
+            if (string.IsNullOrEmpty(ModellMeisterSettings.Default.LastWorkPath))
+            {
+                this.txtWorkspacePath.Text = WorkspaceLogic.DefaultWorkspacePath;
+            }
+            else
+            {
+                this.txtWorkspacePath.Text = ModellMeisterSettings.Default.LastWorkPath;
+            }
+            
             this.guiSettings = new GuiSettings()
             {
                 WorkspacePath = WorkspaceLogic.DefaultWorkspacePath
@@ -56,6 +64,18 @@ namespace mbgi_gui
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.SwitchWorkPath();
+        }
+
+        private async void btnCompile_Click(object sender, RoutedEventArgs e)
+        {
+            if (await this.Compile() != null)
+            {
+                MessageBox.Show("Compilation finished.");
+            }
+            else
+            {
+                MessageBox.Show("Compilation failed.");
+            }
         }
 
         private async void btnRunRealtimeSimulation_Click(object sender, RoutedEventArgs e)
@@ -162,6 +182,10 @@ namespace mbgi_gui
             this.watcher = new FileSystemWatcher(directoryPath);
             this.watcher.Changed += OnFileIsChanged;
             this.watcher.Renamed += OnFileIsChanged;
+            this.watcher.Renamed += OnDirectoryChanged;
+                
+            this.watcher.Deleted += OnDirectoryChanged;
+            this.watcher.Created += OnDirectoryChanged;
             this.watcher.EnableRaisingEvents = true;
             if (!Directory.Exists(directoryPath))
             {
@@ -171,11 +195,27 @@ namespace mbgi_gui
 
             this.guiSettings.WorkspacePath = directoryPath;
 
+            this.PopulateFileList(directoryPath);
+            ModellMeisterSettings.Default.LastWorkPath = directoryPath;
+            ModellMeisterSettings.Default.Save();
+        }
+
+        private void PopulateFileList(string directoryPath)
+        {
             // Loads the switch path
             var files = Directory.GetFiles(directoryPath)
                 .Where(x => x.EndsWith(".mbgi") || x.EndsWith(".cs"))
                 .Select(x => Path.GetFileName(x));
             this.lstFiles.ItemsSource = files;
+        }
+
+        private void OnDirectoryChanged(object sender, FileSystemEventArgs e)
+        {
+            this.Dispatcher.Invoke(() =>
+                {
+                    var directoryPath = this.guiSettings.WorkspacePath;
+                    this.PopulateFileList(directoryPath);
+                });
         }
 
         /// <summary>
@@ -194,25 +234,31 @@ namespace mbgi_gui
         }
 
         /// <summary>
-        /// Starts the simulation and creates all the necessary windows
+        /// Compiles the current file and returns the compilation result
         /// </summary>
-        /// <returns>The task being used to run</returns>
-        private async Task StartSimulation()
+        /// <returns></returns>
+        private async Task<MbgiCompilationResult> Compile()
         {
             var filePath = this.guiSettings.CurrentMbgiFilePath;
 
             try
             {
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    MessageBox.Show("No files was selected");
+                    return null;
+                }
+
                 if (!this.PrepareFiles())
                 {
                     MessageBox.Show("Files could not be prepared");
-                    return;
+                    return null;
                 }
 
                 if (Path.GetExtension(filePath) != ".mbgi")
                 {
                     MessageBox.Show("Only .mbgi files can be started");
-                    return;
+                    return null;
                 }
             }
             catch (Exception exc)
@@ -220,7 +266,16 @@ namespace mbgi_gui
                 MessageBox.Show(exc.Message);
             }
 
-            var compileResult = await this.workSpace.CompileOnMbgiFile(filePath);
+            return await this.workSpace.CompileOnMbgiFile(filePath);
+        }
+
+        /// <summary>
+        /// Starts the simulation and creates all the necessary windows
+        /// </summary>
+        /// <returns>The task being used to run</returns>
+        private async Task StartSimulation()
+        {
+            var compileResult = await this.Compile();
             if (compileResult != null)
             {
                 this.AddMessageToLog("Running simulation");
@@ -232,7 +287,8 @@ namespace mbgi_gui
                     var dlg = new SimulationWindow(client);
                     dlg.Owner = this;
                     dlg.Show();
-                    client.Stepped += (x, y) => dlg.RefreshData();
+                    client.Stepped += (x, y) => dlg.RefreshData(false);
+                    client.Finished += (x, y) => dlg.RefreshData(true);
                     await client.RunSimulationInAppDomain(compileResult.PathToAssembly);
                 }
                 catch (Exception exc)

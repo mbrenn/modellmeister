@@ -60,6 +60,7 @@ namespace ModellMeister.Compiler
                 this.PrepareWorkspace(binPath);
 
                 List<string> importedAssemblies;
+                List<string> importedFiles;
 
                 // Gets the source code
                 var completePath = Path.Combine(workspacePath, filename);
@@ -77,6 +78,7 @@ namespace ModellMeister.Compiler
                         converter.ConvertStreams(workspacePath, sourceReader, sourcewriter);
 
                         importedAssemblies = converter.ImportedAssemblies;
+                        importedFiles = converter.ImportedFiles;
                     }
                 }
 
@@ -95,8 +97,23 @@ namespace ModellMeister.Compiler
                 }
                 else
                 {
-                    this.logSink.AddMessageToLog("No user-defined file found for: " + csUserPath);
+                    this.logSink.AddMessageToLog("No User-defined file found for: " + csUserPath);
                 }
+
+                foreach (var importedFile in importedFiles)
+                {
+                    var csOtherUsPath = Path.ChangeExtension(importedFile, ".user.cs");
+                    if (File.Exists(csOtherUsPath))
+                    {
+                        this.logSink.AddMessageToLog("User-defined file found for imported File: " + csOtherUsPath);
+                        csList.Add(csOtherUsPath);
+                    }
+                    else
+                    {
+                        this.logSink.AddMessageToLog("No User-defined file found for imported File: " + csOtherUsPath);
+                    }
+                }
+
 
                 var dllCompiler = new Cs2DllCompiler();
                 dllCompiler.AddLibraries(importedAssemblies);

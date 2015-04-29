@@ -23,11 +23,24 @@ namespace ModellMeister.Compiler
         private List<string> importedAssemblies;
 
         /// <summary>
+        /// Stores the list of imported assemblies
+        /// </summary>
+        private List<string> importedFiles;
+
+        /// <summary>
         /// Gets the list of imported assemblies
         /// </summary>
         public List<string> ImportedAssemblies
         {
             get { return this.importedAssemblies; }
+        }
+
+        /// <summary>
+        /// Gets the list of imported assemblies
+        /// </summary>
+        public List<string> ImportedFiles
+        {
+            get { return this.importedFiles; }
         }
 
         public void ConvertFile(string pathSourceFile, string pathTargetFile)
@@ -65,6 +78,7 @@ namespace ModellMeister.Compiler
             generator.CreateSource(model, writer);
 
             this.importedAssemblies = parser.ImportedAssemblies;
+            this.importedFiles = parser.ImportedFiles;
         }
     }
 }

@@ -79,26 +79,29 @@ namespace ModellMeister.FileParser
         /// Initializes a new instance of the LineParser class
         /// </summary>
         /// <param name="reader"></param>
-        public IEnumerable<ParsedLine> ParseFile(TextReader reader)
+        public IEnumerable<ParsedLine> ParseFile(TextReader reader, string filename)
         {
             if (reader == null)
             {
                 throw new ArgumentNullException("reader");
             }
 
-            return this.GetLines(reader);
+            return this.GetLines(reader, filename);
         }
 
-        private IEnumerable<ParsedLine> GetLines(TextReader reader)
+        private IEnumerable<ParsedLine> GetLines(TextReader reader, string filename)
         {
             string line;
+            var n = 0; 
             while ((line = reader.ReadLine()) != null)
             {
-                var parsedLine = this.ParseLine(line);
+                var parsedLine = this.ParseLine(line, n, filename);
                 if (parsedLine != null)
                 {
                     yield return parsedLine;
                 }
+
+                n++;
             }
         }
 
@@ -107,7 +110,7 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="line">Line to be parsed</param>
         /// <returns>Returns the parsed line</returns>
-        public ParsedLine ParseLine(string line)
+        public ParsedLine ParseLine(string line, int lineNumber = 0, string filename = "<< inline >>")
         {
             // Remove comment
             var indexHash = line.IndexOf('#');
@@ -130,12 +133,15 @@ namespace ModellMeister.FileParser
                 .ToList();
 
             var parsedLine = new ParsedLine();
+            parsedLine.RawLineContent = line;
+            parsedLine.LineNumber = lineNumber;
+            parsedLine.Filename = filename;
 
             // Sets the model type
             EntityType found;
             if (!modelTypes.TryGetValue(parts[0].ToUpper(), out found))
             {
-                throw new InvalidOperationException("The type '" + parts[0] + "' is not know");
+                parsedLine.ThrowExceptionOnLine("The type '" + parts[0] + "' is not know");
             }
 
             parsedLine.LineType = found;
@@ -166,12 +172,12 @@ namespace ModellMeister.FileParser
                     var key = parts[n];
                     if ((n + 1) == parts.Count)
                     {
-                        throw new InvalidOperationException("Parameter '" + key + "' has just a key and does not have a value");
+                        parsedLine.ThrowExceptionOnLine("Parameter '" + key + "' has just a key and does not have a value");
                     }
 
                     var value = parts[n + 1];
 
-                    var foundPropertyType = ConvertToPropertyType(key);
+                    var foundPropertyType = ConvertToPropertyType(parsedLine, key);
 
                     parsedLine.Parameters[foundPropertyType] = value;
                 }
@@ -185,12 +191,12 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static PropertyType ConvertToPropertyType(string key)
+        public static PropertyType ConvertToPropertyType(ParsedLine parsedLine, string key)
         {
             PropertyType foundPropertyType;
             if (!propertyTypes.TryGetValue(key, out foundPropertyType))
             {
-                throw new InvalidOperationException("Unknown property type '" + key + "'");
+                parsedLine.ThrowExceptionOnLine("Unknown property type '" + key + "'");
             }
 
             return foundPropertyType;
@@ -201,12 +207,12 @@ namespace ModellMeister.FileParser
         /// </summary>
         /// <param name="text">Text to be converted</param>
         /// <returns>The found datattype</returns>
-        public static DataType ConvertToDataType(string text)
+        public static DataType ConvertToDataType(ParsedLine parsedLine, string text)
         {
             DataType result;
             if (!dataTypes.TryGetValue(text, out result))
             {
-                throw new InvalidOperationException("Unknown data type '" + text + "'");
+                parsedLine.ThrowExceptionOnLine("Unknown data type '" + text + "'");
             }
 
             return result;

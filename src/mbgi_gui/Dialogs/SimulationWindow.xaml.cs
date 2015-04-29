@@ -37,11 +37,13 @@ namespace mbgi_gui.Dialogs
 
         private TimeSpan diagramUpdateRate = TimeSpan.FromSeconds(0.2);
         private DateTime lastUpdate = DateTime.MinValue;
+
         /// <summary>
         /// Refreshes the complete data. Slow, but working
         /// </summary>
+        /// <param name="forceRefreshOfDiagram">true, if the diagram needs to be refreshed</param>
         /// <returns>The refreshed data</returns>
-        public void RefreshData()
+        public void RefreshData(bool forceRefreshOfDiagram)
         {
             this.Dispatcher.Invoke(() =>
                 {
@@ -49,7 +51,8 @@ namespace mbgi_gui.Dialogs
                     this.lstWatchItems.ItemsSource = this.model.Items;
 
                     // Only update the graph, when time is done
-                    if (DateTime.Now - lastUpdate > diagramUpdateRate)
+                    if (forceRefreshOfDiagram || 
+                        DateTime.Now - lastUpdate > diagramUpdateRate)
                     {
                         lastUpdate = DateTime.Now;
                         var clientResult = this.client.SimulationResult.Result;

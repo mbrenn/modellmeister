@@ -12,6 +12,33 @@ namespace ModellMeister.FileParser
     /// </summary>
     public class ParsedLine
     {
+        /// <summary>
+        /// Gets or sets the filename of the file, which contains the current line
+        /// </summary>
+        public string Filename
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the linenumber
+        /// </summary>
+        public int LineNumber
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the raw content of the line
+        /// </summary>
+        public string RawLineContent
+        {
+            get;
+            set;
+        }
+
         public EntityType LineType
         {
             get;
@@ -72,6 +99,17 @@ namespace ModellMeister.FileParser
             }
 
             return null;
+        }
+
+        public void ThrowExceptionOnLine(string message)
+        {
+            throw new InvalidOperationException(
+                string.Format(
+                    "{0} ({1}): {2} [{3}]", 
+                    this.Filename, 
+                    this.LineNumber + 1, 
+                    message, 
+                    this.RawLineContent));
         }
     }
 }

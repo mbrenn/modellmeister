@@ -2,6 +2,7 @@
 
 T Integral
 TI Input : Double
+TI Offset : Double
 TO Output : Double
 
 T Derivative

@@ -87,6 +87,11 @@
     </Compile>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
+    <Compile Include="ModellMeisterSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>ModellMeisterSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Models\GuiSettings.cs" />
     <Compile Include="Dialogs\NewDialog.xaml.cs">
       <DependentUpon>NewDialog.xaml</DependentUpon>
@@ -159,6 +164,10 @@
     </None>
     <None Include="Examples\examplesources.mbgi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ModellMeisterSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ModellMeisterSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

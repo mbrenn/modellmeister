@@ -67,6 +67,11 @@ namespace ModellMeister.FileParser
         private List<string> importedAssemblies = new List<string>();
 
         /// <summary>
+        /// Stores the list of imported files which were included via the "!i" statement
+        /// </summary>
+        private List<string> importedFiles = new List<string>();
+
+        /// <summary>
         /// Gets the list of imported assemblies
         /// </summary>
         public List<string> ImportedAssemblies
@@ -74,15 +79,23 @@ namespace ModellMeister.FileParser
             get { return this.importedAssemblies; }
         }
 
+        /// <summary>
+        /// Gets the list of imported files
+        /// </summary>
+        public List<string> ImportedFiles
+        {
+            get { return this.importedFiles; }
+        }
+
         public ModelCompositeType ParseFileFromText(string fileContent)
         {
             var reader = new StringReader(fileContent);
-            return this.ParseFileFromReader(reader);
+            return this.ParseFileFromReader(reader, "<< inline >>");
         }
 
-        public ModelCompositeType ParseFileFromFile(string loadedFile)
+        public ModelCompositeType ParseFileFromFile(string pathOfFile)
         {
-            var fullPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, loadedFile));
+            var fullPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, pathOfFile));
             this.pathOfContext = Path.GetDirectoryName(fullPath);
 
             if (!File.Exists(fullPath))
@@ -92,7 +105,7 @@ namespace ModellMeister.FileParser
 
             using (var reader = new StreamReader(fullPath))
             {
-                return this.ParseFileFromReader(reader);
+                return this.ParseFileFromReader(reader, Path.GetFileName(pathOfFile));
             }
         }
 
@@ -104,10 +117,10 @@ namespace ModellMeister.FileParser
         public ModelCompositeType ParseFileFromReader(string pathOfContext, TextReader reader)
         {
             this.pathOfContext = pathOfContext;
-            return this.ParseFileFromReader(reader);
+            return this.ParseFileFromReader(reader, "<< inline >>");
         }
 
-        private ModelCompositeType ParseFileFromReader(TextReader reader)
+        private ModelCompositeType ParseFileFromReader(TextReader reader, string filename)
         {
             if (this.alreadyUsed)
             {
@@ -123,7 +136,7 @@ namespace ModellMeister.FileParser
             this.currentScope = CurrentScope.Global;
 
             var lineParser = new LineParser();
-            foreach (var line in lineParser.ParseFile(reader))
+            foreach (var line in lineParser.ParseFile(reader, filename))
             {
                 this.ParseLine(line);
             }
@@ -203,7 +216,7 @@ namespace ModellMeister.FileParser
             }
             else
             {
-                throw new InvalidOperationException("Unhandled type: " + line.LineType.ToString());
+                line.ThrowExceptionOnLine("Unhandled type: " + line.LineType.ToString());
             }
         }
 
@@ -216,13 +229,17 @@ namespace ModellMeister.FileParser
 
             if (!File.Exists(fullPath))
             {
-                throw new InvalidOperationException("File not found: " + fullPath);
+                line.ThrowExceptionOnLine("File not found: " + fullPath);
             }
 
+            // Adds the file to list of file to be imported
+            this.importedFiles.Add(fullPath);
+
+            // Import the file
             using (var reader = new StreamReader(fullPath))
             {
                 var lineParser = new LineParser();
-                foreach (var innerLine in lineParser.ParseFile(reader))
+                foreach (var innerLine in lineParser.ParseFile(reader, Path.GetFileName(fullPath)))
                 {
                     this.ParseLine(innerLine);
                 }
@@ -245,7 +262,7 @@ namespace ModellMeister.FileParser
 
                 if (!File.Exists(fullPath))
                 {
-                    throw new InvalidOperationException("Library not found: " + fullPath);
+                    line.ThrowExceptionOnLine("Library not found: " + fullPath);
                 }
             }
 
@@ -302,7 +319,7 @@ namespace ModellMeister.FileParser
                             }
                             else
                             {
-                                throw new InvalidOperationException("Unknown port type: " + portAttribute.PortType.ToString());
+                                line.ThrowExceptionOnLine("Unknown port type: " + portAttribute.PortType.ToString());
                             }
                         }
                     }
@@ -357,7 +374,7 @@ namespace ModellMeister.FileParser
         {
             if (line.Arguments.Count != 2)
             {
-                throw new InvalidOperationException("Line for Wire (W) does not have two attributes");
+                line.ThrowExceptionOnLine("Line for Wire (W) does not have two attributes");
             }
 
             this.currentScope = CurrentScope.Global;
@@ -369,7 +386,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InType)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InType");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InType");
             }
 
             var port = CreatePort(line);
@@ -382,7 +399,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InType)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InType");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InType");
             }
 
             var port = CreatePort(line);
@@ -395,7 +412,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InBlock");
             }
 
             // If the type is auto generated, the type also needs to get the ports
@@ -419,7 +436,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InBlock");
             }
 
             // If the type is auto generated, the type also needs to get the ports
@@ -454,7 +471,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InCompositeBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InCompositeBlock");
             }
 
             this.ReadAndAddBlock(line, this.currentCompositeType);
@@ -464,7 +481,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InCompositeBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InCompositeBlock");
             }
 
             var port = CreatePort(line);
@@ -477,7 +494,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InCompositeBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InCompositeBlock");
             }
 
             var port = CreatePort(line);
@@ -500,7 +517,7 @@ namespace ModellMeister.FileParser
         {
             if (this.currentScope != CurrentScope.InCompositeBlock)
             {
-                throw new InvalidOperationException("Unexpected scope: Expected InCompositeBlock");
+                line.ThrowExceptionOnLine("Unexpected scope: Expected InCompositeBlock");
             }
 
             this.ReadAndAddWire(line, this.currentCompositeType, isFeedback);
@@ -536,14 +553,14 @@ namespace ModellMeister.FileParser
             var currentBlock = new ModelBlock();
             currentBlock.Name = line.Name;
             currentBlock.Type = blockType;
-            this.PopulateBlock(currentBlock);
+            this.PopulateBlock(line, currentBlock);
 
             logger.Verbose("Block is created: " + currentBlock.Name);
             compositeBlock.Blocks.Add(currentBlock);
             return currentBlock;
         }
 
-        private void ReadAndAddWire(ParsedLine line, ModelCompositeType compositeType, bool asFeedback)
+        private void ReadAndAddWire(ParsedLine parsedLine, ModelCompositeType compositeType, bool asFeedback)
         {
             var wire = new ModelWire();
             if (asFeedback)
@@ -556,12 +573,12 @@ namespace ModellMeister.FileParser
             }
 
             logger.Verbose("Wire is created between "
-                + line.Arguments[0]
+                + parsedLine.Arguments[0]
                 + " and "
-                + line.Arguments[1]);
+                + parsedLine.Arguments[1]);
 
-            var inputPort = this.FindPort(compositeType, line.Arguments[0]);
-            var outputPort = this.FindPort(compositeType, line.Arguments[1]);
+            var inputPort = this.FindPort(parsedLine, compositeType, parsedLine.Arguments[0]);
+            var outputPort = this.FindPort(parsedLine, compositeType, parsedLine.Arguments[1]);
             wire.InputOfWire = inputPort;
             wire.OutputOfWire = outputPort;
         }
@@ -571,12 +588,12 @@ namespace ModellMeister.FileParser
         /// and output ports of the associated type
         /// </summary>
         /// <param name="modelBlock">The modelblock to be populated</param>
-        private void PopulateBlock(ModelBlock modelBlock)
+        private void PopulateBlock(ParsedLine parsedLine, ModelBlock modelBlock)
         {
             var otherType = modelBlock.Type;
             if (otherType == null)
             {
-                throw new InvalidOperationException("Block '" + modelBlock.Name + "' has no type");
+                parsedLine.ThrowExceptionOnLine("Block '" + modelBlock.Name + "' has no type");
             }
 
             foreach (var inputPort in otherType.Inputs)
@@ -593,22 +610,22 @@ namespace ModellMeister.FileParser
         /// <summary>
         /// Creates the port by a parsed line
         /// </summary>
-        /// <param name="line">ine to be parsed</param>
+        /// <param name="parsedLine">ine to be parsed</param>
         /// <returns>The created port</returns>
-        public static ModelPort CreatePort(ParsedLine line)
+        public static ModelPort CreatePort(ParsedLine parsedLine)
         {
             var port = new ModelPort();
-            port.Name = line.Name;
+            port.Name = parsedLine.Name;
 
-            if (line.GetProperty(PropertyType.OfType) == null)
+            if (parsedLine.GetProperty(PropertyType.OfType) == null)
             {
-                throw new InvalidOperationException("No type for the port is given: " + port.Name);
+                parsedLine.ThrowExceptionOnLine("No type for the port is given: " + port.Name);
             }
 
-            port.DataType = LineParser.ConvertToDataType(line.GetProperty(PropertyType.OfType));
+            port.DataType = LineParser.ConvertToDataType(parsedLine, parsedLine.GetProperty(PropertyType.OfType));
 
             var defaultValueAsString
-                = line.GetProperty(PropertyType.DefaultValue);
+                = parsedLine.GetProperty(PropertyType.DefaultValue);
             if (!string.IsNullOrEmpty(defaultValueAsString))
             {
                 port.DefaultValue = Conversion.ToDataType(defaultValueAsString, port.DataType);
@@ -617,18 +634,18 @@ namespace ModellMeister.FileParser
             return port;
         }
 
-        private static void UpdatePort(ParsedLine line, List<ModelPort> portList)
+        private static void UpdatePort(ParsedLine parsedLine, List<ModelPort> portList)
         {
-            var foundPort = portList.Where(x => x.Name == line.Name).FirstOrDefault();
+            var foundPort = portList.Where(x => x.Name == parsedLine.Name).FirstOrDefault();
             if (foundPort == null)
             {
-                throw new InvalidOperationException("Did not find the block: " + line.Name);
+                parsedLine.ThrowExceptionOnLine("Did not find the block: " + parsedLine.Name);
             }
 
-            var defaultValue = line.Parameters[PropertyType.DefaultValue];
+            var defaultValue = parsedLine.Parameters[PropertyType.DefaultValue];
             if (defaultValue == null)
             {
-                throw new InvalidOperationException("No default Value is given");
+                parsedLine.ThrowExceptionOnLine("No default Value is given");
             }
 
             foundPort.DefaultValue = Conversion.ToDataType(
@@ -686,7 +703,7 @@ namespace ModellMeister.FileParser
         /// <param name="compositeType">Composite type to be used</param>
         /// <param name="portName">Name of the port to be used</param>
         /// <returns>The found port or an exception when not found</returns>
-        private ModelPort FindPort(ModelCompositeType compositeType, string portName)
+        private ModelPort FindPort(ParsedLine parsedLine, ModelCompositeType compositeType, string portName)
         {
             var portParts = portName.Split(new[] { '.' });
             if (portParts.Length == 1)
@@ -698,7 +715,8 @@ namespace ModellMeister.FileParser
 
                 if (found == null)
                 {
-                    throw new InvalidOperationException("Port '" + portName + "' was not found");
+                    parsedLine.ThrowExceptionOnLine("Port '" + portName + "' was not found");
+                    return null;
                 }
 
                 return found;
@@ -712,7 +730,8 @@ namespace ModellMeister.FileParser
 
                 if (foundBlock == null)
                 {
-                    throw new InvalidOperationException("Block for '" + portName + "' was not found");
+                    parsedLine.ThrowExceptionOnLine("Block for '" + portName + "' was not found");
+                    return null;
                 }
 
                 // Find the port
@@ -723,14 +742,16 @@ namespace ModellMeister.FileParser
 
                 if (found == null)
                 {
-                    throw new InvalidOperationException("Port '" + portName + "' was not found");
+                    parsedLine.ThrowExceptionOnLine("Port '" + portName + "' was not found");
+                    return null;
                 }
 
                 return found;
             }
             else
             {
-                throw new InvalidOperationException("Portname '" + portName + "' is not understood");
+                parsedLine.ThrowExceptionOnLine("Portname '" + portName + "' is not understood");
+                return null;
             }
         }
 

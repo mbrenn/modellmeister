@@ -717,6 +717,8 @@ namespace ModellMeister.Library.Analysis {
         
         private double _Input;
         
+        private double _Offset;
+        
         private double _Output;
         
         partial void DoInit(ModellMeister.Runtime.StepInfo info);
@@ -734,6 +736,16 @@ namespace ModellMeister.Library.Analysis {
         }
         
         [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Offset {
+            get {
+                return this._Offset;
+            }
+            set {
+                this._Offset = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
         public double Output {
             get {
                 return this._Output;
@@ -746,6 +758,9 @@ namespace ModellMeister.Library.Analysis {
         public object GetPortValue(string name) {
             if ((name == "Input")) {
                 return this.Input;
+            }
+            if ((name == "Offset")) {
+                return this.Offset;
             }
             if ((name == "Output")) {
                 return this.Output;
