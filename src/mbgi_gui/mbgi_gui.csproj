@@ -85,6 +85,9 @@
     <Compile Include="Dialogs\SimulationWindow.xaml.cs">
       <DependentUpon>SimulationWindow.xaml</DependentUpon>
     </Compile>
+    <None Include="Examples\example3.user.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Compile Include="Logic\ExampleItem.cs" />
     <Compile Include="Logic\Examples.cs" />
     <Compile Include="ModellMeisterSettings.Designer.cs">
@@ -153,6 +156,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Examples\example3.mbgi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Examples\example2.mbgi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

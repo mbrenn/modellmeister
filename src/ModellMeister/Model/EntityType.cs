@@ -23,6 +23,7 @@ namespace ModellMeister.Model
         CompositeTypeInput,
         CompositeTypeOutput,
         CompositeBlock,
+        CompositeBlockInput,
         CompositeWire,
         CompositeFeedback,
         NameSpace,

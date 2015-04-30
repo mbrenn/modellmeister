@@ -1,0 +1,31 @@
+﻿T Summer
+TI Summand1 : Double
+TI Summand2 : Double
+TO Sum : Double
+
+C ThreeSummer
+CB Summer1 : Summer
+CB Summer2 : Summer 
+CB Summer3 : Summer
+CI Summand1 : Double
+CI Summand2 : Double
+CI Summand3 : Double
+CO Sum : Double
+CW Summand1 Summer1.Summand1
+CW Summand2 Summer1.Summand2
+CW Summer1.Sum Summer2.Summand1
+CW Summand3 Summer2.Summand2
+CW Summer2.Sum Summer3.Summand1
+CBI Summer3.Summand2 defaultvalue 3	  # Sets the default value
+CW Summer3.Sum Sum
+
+B Summer : ThreeSummer
+BI Summand1 defaultvalue 5
+BI Summand2 defaultvalue 7
+BI Summand3 defaultvalue 10
+
+B ToConsole
+BI Input : Double
+
+# Wires the output of the random Block to the Console
+W Summer.Sum ToConsole.Input		

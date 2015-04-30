@@ -53,6 +53,7 @@ namespace ModellMeister.FileParser
             modelTypes["CI"] = EntityType.CompositeTypeInput;
             modelTypes["CO"] = EntityType.CompositeTypeOutput;
             modelTypes["CB"] = EntityType.CompositeBlock;
+            modelTypes["CBI"] = EntityType.CompositeBlockInput;
             modelTypes["CW"] = EntityType.CompositeWire;
             modelTypes["CF"] = EntityType.CompositeFeedback;
             modelTypes["S"] = EntityType.Setting;
