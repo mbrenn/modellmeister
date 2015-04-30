@@ -101,4 +101,20 @@ namespace ModellMeister.Library.Algebra
             this.Output = Math.Log(this.Antilogarithm, this.Base);
         }
     }
+
+    public partial class Max
+    {
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        {
+            this.Output = Math.Max(this.Input1, this.Input2);
+        }
+    }
+
+    public partial class Min
+    {
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info)
+        {
+            this.Output = Math.Min(this.Input1, this.Input2);
+        }
+    }
 }

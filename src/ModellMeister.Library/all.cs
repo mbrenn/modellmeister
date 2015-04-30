@@ -709,6 +709,134 @@ namespace ModellMeister.Library.Algebra {
             this.DoInit(info);
         }
     }
+    
+    public partial class Max : ModellMeister.Runtime.IModelType {
+        
+        private double _Input1;
+        
+        private double _Input2;
+        
+        private double _Output;
+        
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input1 {
+            get {
+                return this._Input1;
+            }
+            set {
+                this._Input1 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input2 {
+            get {
+                return this._Input2;
+            }
+            set {
+                this._Input2 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            return null;
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
+        }
+    }
+    
+    public partial class Min : ModellMeister.Runtime.IModelType {
+        
+        private double _Input1;
+        
+        private double _Input2;
+        
+        private double _Output;
+        
+        partial void DoInit(ModellMeister.Runtime.StepInfo info);
+        
+        partial void DoExecute(ModellMeister.Runtime.StepInfo info);
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input1 {
+            get {
+                return this._Input1;
+            }
+            set {
+                this._Input1 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Input2 {
+            get {
+                return this._Input2;
+            }
+            set {
+                this._Input2 = value;
+            }
+        }
+        
+        [ModellMeister.Runtime.Port(ModellMeister.Runtime.PortType.Input)]
+        public double Output {
+            get {
+                return this._Output;
+            }
+            set {
+                this._Output = value;
+            }
+        }
+        
+        public object GetPortValue(string name) {
+            if ((name == "Input1")) {
+                return this.Input1;
+            }
+            if ((name == "Input2")) {
+                return this.Input2;
+            }
+            if ((name == "Output")) {
+                return this.Output;
+            }
+            return null;
+        }
+        
+        public void Execute(ModellMeister.Runtime.StepInfo info) {
+            this.DoExecute(info);
+        }
+        
+        public void Init(ModellMeister.Runtime.StepInfo info) {
+            this.DoInit(info);
+        }
+    }
 }
 namespace ModellMeister.Library.Analysis {
     
@@ -2220,9 +2348,13 @@ namespace ModellMeister.Library.Physics {
         
         public void Init(ModellMeister.Runtime.StepInfo info) {
             this._Acc2Vel = new ModellMeister.Library.Analysis.Integral();
+            this.Acc2Vel.Input = this.Force;
             this._Acc2Vel.Init(info);
             this._Vel2Pos = new ModellMeister.Library.Analysis.Integral();
+            this.Vel2Pos.Input = this.Acc2Vel.Output;
             this._Vel2Pos.Init(info);
+            this.Position = this.Vel2Pos.Output;
+            this.Velocity = this.Acc2Vel.Output;
         }
         
         public void Execute(ModellMeister.Runtime.StepInfo info) {

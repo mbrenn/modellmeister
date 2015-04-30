@@ -104,12 +104,18 @@ namespace mbgi_gui.Dialogs
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
         {
-            this.client.Server.Pause();
+            if (this.client != null && this.client.Server != null)
+            {
+                this.client.Server.Pause();
+            }
         }
 
         private void btnResume_Click(object sender, RoutedEventArgs e)
         {
-            this.client.Server.Resume();
+            if (this.client != null && this.client.Server != null)
+            {
+                this.client.Server.Resume();
+            }
         }
     }
 }

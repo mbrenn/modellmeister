@@ -19,6 +19,7 @@
         <Ribbon Grid.ColumnSpan="3" ShowQuickAccessToolBarOnTop="False">
             <RibbonTab Header="Menu">
                 <RibbonGroup Header="File">
+                    <RibbonButton Label="Open Workspace" x:Name="btnWorkspace" Click="btnWorkspace_Click"></RibbonButton>
                     <RibbonButton Label="Open Examples" x:Name="btnExamples" Click="btnExamples_Click"></RibbonButton>
                     <RibbonButton Label="Open in Explorer" x:Name="btnOpenWorkspace" Click="btnOpenWorkspace_Click"></RibbonButton>
                     <RibbonButton Label="Settings" x:Name="btnSimulationSetting" Click="btnSimulationSetting_Click"></RibbonButton>

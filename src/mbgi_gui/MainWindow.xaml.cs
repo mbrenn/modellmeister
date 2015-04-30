@@ -228,8 +228,13 @@ namespace mbgi_gui
             if (e.FullPath == this.guiSettings.CurrentMbgiFilePath)
             {
                 Thread.Sleep(50);
-                this.Dispatcher.Invoke(new Action(() =>
-                    this.PutFileContentToEditor()));
+
+                // Run asynchronously to prevent deadlock
+                Task.Run(() =>
+                    {
+                        this.Dispatcher.Invoke(new Action(() =>
+                            this.PutFileContentToEditor()));
+                    });
             }
         }
 
@@ -332,6 +337,13 @@ namespace mbgi_gui
                 Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
                 "examples");
             this.txtWorkspacePath.Text = examplePath;
+
+            this.SwitchWorkPath();
+        }
+
+        private void btnWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            this.txtWorkspacePath.Text = WorkspaceLogic.DefaultWorkspacePath;
 
             this.SwitchWorkPath();
         }

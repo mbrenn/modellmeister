@@ -53,3 +53,13 @@ T Logarithm
 TI Antilogarithm : Double
 TI Base : Double
 TO Output : Double
+
+T Max
+TI Input1 : Double
+TI Input2 : Double
+TO Output : Double
+
+T Min
+TI Input1 : Double
+TI Input2 : Double
+TO Output : Double
